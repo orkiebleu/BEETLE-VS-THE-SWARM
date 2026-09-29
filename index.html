@@ -1,0 +1,1863 @@
+<!--
+  Beetle vs. the Swarm — single-file build. Made by Ory and bip.
+  Built on canvas-vampire-survivors by ricardo-foundry, used under the MIT License (see LICENSE in the source repo).
+-->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta name="color-scheme" content="dark" />
+        <meta name="theme-color" content="#1b1330" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta
+            name="description"
+            content="Bug-world swarm-survival roguelite for 1-2 players. Vanilla JS + HTML5 Canvas, zero dependencies."
+        />
+        <title>Beetle vs. the Swarm — Bug-World Roguelite</title>
+
+        <!-- Canonical + favicon (SVG keeps the bundle dependency-free) -->
+        <link rel="canonical" href="https://ricardo-foundry.github.io/canvas-vampire-survivors/" />
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMjQwIiByb2xlPSJpbWciIGFyaWEtbGFiZWxsZWRieT0idGl0bGUgZGVzYyI+CiAgICA8dGl0bGUgaWQ9InRpdGxlIj5TdXJ2aXZvciDigJQgb3Blbi1zb3VyY2UgSFRNTDUgQ2FudmFzIHJvZ3VlbGl0ZTwvdGl0bGU+CiAgICA8ZGVzYyBpZD0iZGVzYyI+QSBzdHlsaXNlZCB3b3JkbWFyayB3aXRoIGEgZ2xvd2luZyBwdXJwbGUgZ3JhZGllbnQgb24gYSBkYXJrIGJhY2tkcm9wLCBldm9raW5nIGEgdmFtcGlyaWMgYXJlbmEuPC9kZXNjPgogICAgPGRlZnM+CiAgICAgICAgPHJhZGlhbEdyYWRpZW50IGlkPSJnbG93IiBjeD0iNTAlIiBjeT0iNTAlIiByPSI2MCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjYzk3YmZmIiBzdG9wLW9wYWNpdHk9IjAuNTUiIC8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iNjAlIiBzdG9wLWNvbG9yPSIjM2ExMTY2IiBzdG9wLW9wYWNpdHk9IjAuMjUiIC8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBhMGExMiIgc3RvcC1vcGFjaXR5PSIwIiAvPgogICAgICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJ0ZXh0RmlsbCIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZlODlhIiAvPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjU1JSIgc3RvcC1jb2xvcj0iI2ZmYjQwMCIgLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjYTA0NTAwIiAvPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJiZ0ZpbGwiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzFiMTMzMCIgLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMGEwYTEyIiAvPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjI0MCIgZmlsbD0idXJsKCNiZ0ZpbGwpIiByeD0iMTIiIC8+CiAgICA8ZWxsaXBzZSBjeD0iNDAwIiBjeT0iMTIwIiByeD0iMzYwIiByeT0iMTIwIiBmaWxsPSJ1cmwoI2dsb3cpIiAvPgogICAgPCEtLSBEZWNvcmF0aXZlIG9yYml0IHNoYXJkcyAobWF0Y2hlcyBpbi1nYW1lIE9yYml0ZXIgd2VhcG9uKSAtLT4KICAgIDxnIGZpbGw9IiNmZmQyNGQiIG9wYWNpdHk9IjAuODUiPgogICAgICAgIDxjaXJjbGUgY3g9IjgwIiBjeT0iNjAiIHI9IjQiIC8+CiAgICAgICAgPGNpcmNsZSBjeD0iNzIwIiBjeT0iNjAiIHI9IjQiIC8+CiAgICAgICAgPGNpcmNsZSBjeD0iODAiIGN5PSIxODAiIHI9IjQiIC8+CiAgICAgICAgPGNpcmNsZSBjeD0iNzIwIiBjeT0iMTgwIiByPSI0IiAvPgogICAgICAgIDxjaXJjbGUgY3g9IjYwIiBjeT0iMTIwIiByPSIzIiAvPgogICAgICAgIDxjaXJjbGUgY3g9Ijc0MCIgY3k9IjEyMCIgcj0iMyIgLz4KICAgIDwvZz4KICAgIDwhLS0gRGVjb3JhdGl2ZSBiYXRzIC8gc2lsaG91ZXR0ZXMgLS0+CiAgICA8ZyBmaWxsPSIjM2ExMTY2IiBvcGFjaXR5PSIwLjU1Ij4KICAgICAgICA8cGF0aCBkPSJNMTIwIDIwMCBxMTUgLTIyIDMwIDAgcTE1IC0yMiAzMCAwIHoiIC8+CiAgICAgICAgPHBhdGggZD0iTTYyMCA0MCBxMTUgLTIyIDMwIDAgcTE1IC0yMiAzMCAwIHoiIC8+CiAgICA8L2c+CiAgICA8dGV4dCB4PSI0MDAiIHk9IjE0OCIKICAgICAgICAgIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sICdTZWdvZSBVSScsIHNhbnMtc2VyaWYiCiAgICAgICAgICBmb250LXNpemU9Ijk2IgogICAgICAgICAgZm9udC13ZWlnaHQ9IjkwMCIKICAgICAgICAgIGxldHRlci1zcGFjaW5nPSI2IgogICAgICAgICAgdGV4dC1hbmNob3I9Im1pZGRsZSIKICAgICAgICAgIGZpbGw9InVybCgjdGV4dEZpbGwpIgogICAgICAgICAgc3Ryb2tlPSIjM2ExMTY2IgogICAgICAgICAgc3Ryb2tlLXdpZHRoPSIzIgogICAgICAgICAgcGFpbnQtb3JkZXI9InN0cm9rZSBmaWxsIj5TVVJWSVZPUjwvdGV4dD4KICAgIDx0ZXh0IHg9IjQwMCIgeT0iMTkwIgogICAgICAgICAgZm9udC1mYW1pbHk9InN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgJ1NlZ29lIFVJJywgc2Fucy1zZXJpZiIKICAgICAgICAgIGZvbnQtc2l6ZT0iMTgiCiAgICAgICAgICBsZXR0ZXItc3BhY2luZz0iNCIKICAgICAgICAgIHRleHQtYW5jaG9yPSJtaWRkbGUiCiAgICAgICAgICBmaWxsPSIjYzBhOGZmIgogICAgICAgICAgb3BhY2l0eT0iMC45Ij5PUEVOIMK3IFNPVVJDRSDCtyBDQU5WQVMgwrcgUk9HVUVMSVRFPC90ZXh0Pgo8L3N2Zz4K" />
+        
+        <!-- Open Graph / social share -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Beetle vs. the Swarm — Bug-World Roguelite" />
+        <meta
+            property="og:description"
+            content="A zero-dependency HTML5 Canvas roguelite. Clone, play, hack."
+        />
+        <meta property="og:image" content="./docs/og-card.svg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+            property="og:url"
+            content="https://ricardo-foundry.github.io/canvas-vampire-survivors/"
+        />
+
+        <!-- Twitter card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Beetle vs. the Swarm — Bug-World Roguelite" />
+        <meta
+            name="twitter:description"
+            content="A zero-dependency HTML5 Canvas roguelite. Clone, play, hack."
+        />
+        <meta name="twitter:image" content="./docs/og-card.svg" />
+
+        <style>/* Survivor — open-source roguelite styles */
+/* Beetle vs. the Swarm — vaporwave theme */
+:root {
+    --bg: #0d0221;
+    --card: rgba(13, 2, 33, 0.92);
+    --accent: #ffd24d;
+    --accent-strong: #ffb400;
+    /* Vaporwave neon: hot pink primary, cyan secondary. #ff2d95 clears the
+       WCAG AA 4.5:1 bar at 15px weight 600 on white text (~4.6:1). */
+    --primary: #ff2d95;
+    --primary-strong: #ff6ab5;
+    --neon-cyan: #00e5ff;
+    --neon-purple: #b537f2;
+    --danger: #ff3355;
+    --muted: #a49ac0;
+    --text: #f2ecff;
+    --border: #3d2a5e;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    /* Use small-viewport / dynamic-viewport units with a vh fallback so iOS
+       Safari doesn't overflow behind the address bar. */
+    height: 100vh;
+    height: 100svh;
+    height: 100dvh;
+    background:
+        radial-gradient(ellipse at 50% -10%, #3b1163 0%, transparent 55%),
+        radial-gradient(ellipse at top, #2b0a4e 0%, #0d0221 70%);
+    color: var(--text);
+    font-family:
+        system-ui,
+        -apple-system,
+        'Segoe UI',
+        'Microsoft YaHei',
+        sans-serif;
+    overflow: hidden;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none; /* disable browser pinch/zoom inside the game */
+    overscroll-behavior: none; /* no pull-to-refresh on mobile */
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameContainer {
+    position: relative;
+    box-shadow: 0 0 60px rgba(120, 60, 220, 0.35);
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 100vw;
+    max-height: 100vh;
+    max-height: 100svh;
+    max-height: 100dvh;
+}
+
+/*
+ * Accessibility: a visually-hidden element that still exposes text to
+ * assistive tech. Paired with aria-live="polite" to announce game events.
+ */
+.sr-only {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Visible focus ring for keyboard users. Pointer users keep a clean look. */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+.btn:focus-visible,
+.icon-btn:focus-visible,
+.upgrade-option:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba(255, 210, 77, 0.25);
+}
+
+canvas {
+    display: block;
+    border: 1px solid #222;
+    background: #1a1a2e;
+    width: 100%;
+    height: 100%;
+    image-rendering: crisp-edges;
+}
+
+#ui {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.hud {
+    position: absolute;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 14px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    line-height: 1.6;
+}
+
+.hud-sub {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+#topLeft {
+    top: 10px;
+    left: 10px;
+}
+#topRight {
+    top: 10px;
+    right: 10px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+#bottomLeft {
+    bottom: 10px;
+    left: 10px;
+}
+
+.bar-label {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.hp-bar,
+.exp-bar {
+    width: 220px;
+    height: 12px;
+    background: rgba(20, 22, 36, 0.9);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff3355, #ff6a7a);
+    transition: width 0.2s;
+}
+.exp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3388ff, #66bbff);
+    transition: width 0.2s;
+}
+
+.chip-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.weapon-icons {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    max-width: 260px;
+    justify-content: flex-end;
+    /* iter-10: float HUD chips above the gameplay so the player avatar can
+       never tuck under them when the camera stops at the arena edge. The
+       semi-transparent backdrop on `.chip` keeps things legible without
+       hiding the world behind it. */
+    z-index: 5;
+    pointer-events: none;
+}
+.weapon-icons .chip {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+}
+
+.chip {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    background: rgba(0, 0, 0, 0.72);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+.chip.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(255, 210, 77, 0.35);
+}
+.chip.maxed {
+    border-color: #00d9a0;
+    box-shadow: 0 0 10px rgba(0, 217, 160, 0.4);
+}
+.chip.evolved {
+    border-color: #ff66aa;
+    box-shadow: 0 0 12px rgba(255, 102, 170, 0.55);
+}
+.chip-lvl {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: var(--accent);
+    color: #111;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 4px;
+    border-radius: 6px;
+}
+
+.icon-btn {
+    pointer-events: auto;
+    background: rgba(10, 12, 22, 0.85);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.icon-btn:hover {
+    background: #1a1c30;
+}
+
+/* Overlays ------------------------------------------------------------- */
+.overlay {
+    /* Fixed (not absolute): the game canvas is letterboxed on portrait
+       phones, but modal dialogs must cover the whole viewport. */
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 6, 14, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.overlay-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    text-align: center;
+    min-width: 360px;
+    max-width: 92vw;
+    max-height: 92vh;
+    overflow-y: auto;
+    margin: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.overlay-card h1 {
+    color: var(--primary-strong);
+    font-size: 36px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    text-shadow: 0 0 20px rgba(85, 160, 255, 0.5);
+}
+.overlay-card h2 {
+    color: var(--accent);
+    margin-bottom: 18px;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+.overlay-card .subtitle {
+    color: var(--muted);
+    margin-bottom: 22px;
+}
+
+.instructions {
+    text-align: left;
+    margin: 18px 0;
+    padding: 16px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.btn-row.vertical {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.btn {
+    border: 0;
+    padding: 12px 26px;
+    font-size: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition:
+        transform 0.15s ease,
+        background 0.2s;
+    color: #fff;
+}
+.btn:hover {
+    transform: translateY(-1px);
+}
+.btn.primary {
+    background: var(--primary);
+}
+.btn.primary:hover {
+    background: var(--primary-strong);
+}
+.btn.ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+.btn.ghost:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+/* Co-op player-count toggle: highlight the active choice. */
+.btn.ghost.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+.btn.danger {
+    background: var(--danger);
+}
+
+/* Vaporwave CRT layers -------------------------------------------------
+   Pure-CSS vignette + scanlines over the canvas. Zero per-frame cost.
+   Disabled via .fx-off when the player enables reduced motion. */
+#fx-vignette,
+#fx-scanlines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+#fx-vignette {
+    background: radial-gradient(
+        ellipse at center,
+        transparent 52%,
+        rgba(8, 0, 24, 0.55) 100%
+    );
+}
+#fx-scanlines {
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.2) 0 1px,
+        transparent 1px 3px
+    );
+    opacity: 0.5;
+}
+#gameContainer.fx-off #fx-vignette,
+#gameContainer.fx-off #fx-scanlines {
+    display: none;
+}
+
+/* Vaporwave title screen ------------------------------------------------ */
+#startScreen {
+    overflow: hidden;
+}
+#startScreen .overlay-card {
+    position: relative;
+    z-index: 2;
+    background: rgba(13, 2, 33, 0.88);
+    border: 1px solid rgba(255, 45, 149, 0.4);
+    box-shadow:
+        0 0 40px rgba(255, 45, 149, 0.25),
+        0 20px 60px rgba(0, 0, 0, 0.6);
+}
+/* Chrome-gradient logo. text-shadow can't be used with transparent
+   fill text, so the neon glow comes from drop-shadow filters. */
+#startTitle {
+    background: linear-gradient(
+        180deg,
+        #ffffff 0%,
+        #aee7ff 28%,
+        #ff7ac0 50%,
+        #ff2d95 58%,
+        #7a2d8f 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    font-size: 44px;
+    letter-spacing: 4px;
+    filter:
+        drop-shadow(0 0 16px rgba(255, 45, 149, 0.6))
+        drop-shadow(0 3px 0 rgba(0, 229, 255, 0.25));
+}
+#startScreen .subtitle {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+/* Synthwave sun: warm gradient disc with slat cutouts, floating behind
+   the menu card. Static (no animation) so it stays cheap and calm. */
+.vw-sun {
+    position: absolute;
+    top: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: linear-gradient(
+        180deg,
+        #ffe94a 0%,
+        #ff9e2c 35%,
+        #ff2d95 72%,
+        #b537f2 100%
+    );
+    -webkit-mask-image: repeating-linear-gradient(
+        180deg,
+        #000 0 16px,
+        transparent 16px 22px
+    );
+    mask-image: repeating-linear-gradient(
+        180deg,
+        #000 0 16px,
+        transparent 16px 22px
+    );
+    opacity: 0.8;
+    filter: blur(1px);
+    box-shadow: 0 0 90px rgba(255, 45, 149, 0.55);
+    pointer-events: none;
+    z-index: 1;
+}
+/* Perspective synthwave grid along the bottom of the start screen. */
+#startScreen::after {
+    content: '';
+    position: absolute;
+    left: -25%;
+    right: -25%;
+    bottom: -6%;
+    height: 46%;
+    background-image:
+        linear-gradient(rgba(255, 45, 149, 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.35) 1px, transparent 1px);
+    background-size: 100% 34px, 58px 100%;
+    transform: perspective(420px) rotateX(62deg);
+    transform-origin: bottom;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 45%);
+    mask-image: linear-gradient(180deg, transparent, #000 45%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Neon buttons ---------------------------------------------------------- */
+.btn.primary {
+    background: linear-gradient(180deg, #ff5ad2 0%, #ff2d95 55%, #c2147a 100%);
+    border: 1px solid #ff7ac0;
+    box-shadow:
+        0 0 18px rgba(255, 45, 149, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.btn.primary:hover {
+    background: linear-gradient(180deg, #ff7ac0 0%, #ff2d95 60%, #d61a86 100%);
+    box-shadow:
+        0 0 26px rgba(255, 45, 149, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+.btn.ghost {
+    border: 1px solid rgba(0, 229, 255, 0.5);
+    color: #c9f6ff;
+    box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.07);
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+.btn.ghost:hover {
+    background: rgba(0, 229, 255, 0.12);
+    border-color: var(--neon-cyan);
+    box-shadow:
+        0 0 14px rgba(0, 229, 255, 0.35),
+        inset 0 0 12px rgba(0, 229, 255, 0.12);
+}
+/* Co-op player-count toggle: highlight the active choice. */
+.btn.ghost.active {
+    background: rgba(255, 45, 149, 0.28);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow:
+        0 0 16px rgba(255, 45, 149, 0.55),
+        inset 0 0 12px rgba(255, 45, 149, 0.25);
+    text-shadow: 0 0 8px rgba(255, 45, 149, 0.8);
+}
+
+/* Level-up ----------------------------------------------------------- */
+.overlay-card.levelup {
+    min-width: 440px;
+}
+.upgrade-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    outline: none;
+}
+.upgrade-option:hover,
+.upgrade-option:focus {
+    background: rgba(255, 210, 77, 0.12);
+    border-color: var(--accent);
+    transform: translateX(2px);
+}
+.upgrade-option .name {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 16px;
+}
+.upgrade-option .desc {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+.upgrade-option.maxed {
+    opacity: 0.55;
+    cursor: default;
+    border-style: dashed;
+}
+.upgrade-option.maxed:hover,
+.upgrade-option.maxed:focus {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border);
+    transform: none;
+}
+.upgrade-option.maxed .name::after {
+    content: '';
+}
+
+/* Achievements gallery ---------------------------------------------- */
+.achievements-card {
+    min-width: 540px;
+    max-width: 92vw;
+    max-height: 88vh;
+    overflow-y: auto;
+}
+.achievements-card .ach-count {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    margin-left: 8px;
+}
+.ach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin: 14px 0 18px;
+}
+.ach-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+    transition: transform 0.15s;
+}
+.ach-card.earned {
+    border-color: var(--accent);
+    background: rgba(255, 210, 77, 0.07);
+}
+.ach-card.locked {
+    opacity: 0.55;
+    filter: grayscale(0.6);
+}
+.ach-card-icon {
+    font-size: 28px;
+    line-height: 1;
+}
+.ach-card-name {
+    margin-top: 6px;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 13px;
+}
+.ach-card.locked .ach-card-name {
+    color: var(--muted);
+}
+.ach-card-desc {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+/* Game over ---------------------------------------------------------- */
+.overlay-card.gameover {
+    border-color: var(--danger);
+}
+.overlay-card.gameover h1 {
+    color: var(--danger);
+    text-shadow: 0 0 20px rgba(255, 51, 85, 0.5);
+}
+.stats {
+    margin: 18px 0;
+    font-size: 16px;
+    line-height: 2;
+}
+
+/* Settings ----------------------------------------------------------- */
+.settings-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 26px 28px;
+    min-width: 360px;
+    max-width: 92vw;
+    max-height: 88vh;
+    overflow-y: auto;
+}
+.settings-card h2 {
+    color: var(--accent);
+    margin-bottom: 16px;
+}
+.settings-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px dashed var(--border);
+    font-size: 14px;
+}
+.settings-row:first-of-type {
+    border-top: 0;
+}
+.settings-row input[type='range'] {
+    width: 100%;
+}
+.settings-row output {
+    color: var(--muted);
+    font-size: 12px;
+    min-width: 36px;
+    text-align: right;
+}
+.settings-row select {
+    background: #101224;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 8px;
+}
+.settings-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+/* Boss banner -------------------------------------------------------- */
+.boss-banner {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    color: var(--danger);
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(255, 50, 80, 0.7);
+    opacity: 0;
+    transition:
+        opacity 0.4s,
+        transform 0.4s;
+    pointer-events: none;
+}
+.boss-banner.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Virtual joystick (touch only) -------------------------------------- */
+/* iter-14: edge-button size is now driven by --touch-button-size, set on
+   <html> by storage.js settings.touchButtonScale (0.8 / 1.0 / 1.2). The
+   joystick base + knob and the special-skill button all scale together so
+   thumb reach stays consistent. */
+:root {
+    --touch-button-size: 140px;
+    --touch-knob-size: 58px;
+    --touch-special-size: 96px;
+}
+.joystick {
+    position: absolute;
+    bottom: 80px;
+    left: 30px;
+    width: var(--touch-button-size);
+    height: var(--touch-button-size);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    display: none;
+    pointer-events: auto;
+    touch-action: none;
+}
+.joystick-knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--touch-knob-size);
+    height: var(--touch-knob-size);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    transform: translate(-50%, -50%);
+}
+
+/* Special-skill button — mirrors the joystick on the bottom-right. */
+.special-skill-btn {
+    position: absolute;
+    bottom: 100px;
+    right: 30px;
+    width: var(--touch-special-size);
+    height: var(--touch-special-size);
+    border-radius: 50%;
+    background: rgba(120, 80, 200, 0.25);
+    color: #fff;
+    border: 2px solid rgba(180, 140, 255, 0.55);
+    font-size: 36px;
+    line-height: 1;
+    display: none;
+    pointer-events: auto;
+    touch-action: none;
+    cursor: pointer;
+}
+.special-skill-btn:active {
+    background: rgba(160, 110, 240, 0.4);
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .joystick,
+    .special-skill-btn {
+        display: block;
+    }
+}
+
+/* iter-14: PWA install prompt slot. */
+.pwa-install-prompt {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 9999;
+    font-size: 14px;
+}
+
+/* Accessibility ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .upgrade-option,
+    .boss-banner,
+    .ach-toast,
+    .hp-fill,
+    .exp-fill {
+        transition: none !important;
+        animation: none !important;
+    }
+    .btn:hover {
+        transform: none;
+    }
+    .upgrade-option:hover,
+    .upgrade-option:focus {
+        transform: none;
+    }
+}
+
+/*
+ * High-contrast mode. We opt into this both via the user's OS preference
+ * (prefers-contrast: more) and the forced-colors mode that Windows uses.
+ * Colours are widened, outlines thicken, and low-opacity surfaces are
+ * replaced with solid fills so text stays legible.
+ */
+@media (prefers-contrast: more) {
+    :root {
+        --accent: #ffff44;
+        --primary: #66ddff;
+        --danger: #ff6699;
+        --muted: #c8cbd8;
+        --border: #888ea5;
+    }
+    .overlay {
+        background: rgba(0, 0, 0, 0.9);
+    }
+    .overlay-card,
+    .settings-card {
+        border-width: 2px;
+    }
+    .chip {
+        border-width: 3px;
+    }
+    .btn {
+        outline: 1px solid rgba(255, 255, 255, 0.3);
+    }
+}
+
+@media (forced-colors: active) {
+    .btn,
+    .icon-btn,
+    .upgrade-option {
+        border: 1px solid ButtonBorder;
+        forced-color-adjust: none;
+    }
+    :focus-visible {
+        outline: 3px solid Highlight;
+    }
+}
+
+/* Achievement toasts ------------------------------------------------- */
+.ach-toast-host {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+    z-index: 20;
+    width: min(380px, 92vw);
+}
+.ach-toast {
+    background: rgba(8, 12, 24, 0.92);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--text);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease;
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.5);
+}
+.ach-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.ach-toast .ach-icon {
+    font-size: 22px;
+    width: 34px;
+    text-align: center;
+}
+.ach-toast .ach-title {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    text-transform: uppercase;
+}
+.ach-toast .ach-name {
+    font-weight: 700;
+    font-size: 14px;
+}
+.ach-toast .ach-desc {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* High score list --------------------------------------------------- */
+.hs-details {
+    text-align: left;
+    margin: 12px 0 6px;
+    color: var(--muted);
+    font-size: 13px;
+}
+.hs-details > summary {
+    cursor: pointer;
+    color: var(--accent);
+    font-weight: 600;
+    padding: 6px 0;
+}
+.hs-list {
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 12px;
+}
+.hs-head,
+.hs-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 1fr 1fr 1.4fr;
+    padding: 6px 10px;
+    gap: 6px;
+}
+.hs-head {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+.hs-row:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+.hs-empty {
+    color: var(--muted);
+    padding: 10px;
+    font-style: italic;
+}
+
+/* Speedrun splits + leaderboard wide view ---------------------------- */
+.splits {
+    margin: 6px 0 10px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 12px;
+}
+.splits-head {
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.split-row {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 10px;
+}
+.hs-head.wide,
+.hs-row.wide {
+    grid-template-columns: 24px 70px 60px 60px 1.4fr 100px 50px;
+}
+.hs-list.scroll {
+    max-height: 260px;
+    overflow-y: auto;
+}
+.leaderboard-card {
+    max-width: 720px;
+    width: 90vw;
+}
+.lb-section {
+    margin-top: 10px;
+}
+.lb-section h3 {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+.lb-json {
+    width: 100%;
+    margin-top: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    color: #ddd;
+    border-radius: 6px;
+    resize: vertical;
+}
+.no-hit {
+    color: #66ddaa;
+    font-weight: 700;
+}
+
+/* Evolve badge on level-up option ----------------------------------- */
+.upgrade-option .evolve-tag {
+    color: #ff88bb;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Colorblind / high-contrast mode ----------------------------------- */
+body.cb-mode {
+    --accent: #ffff44;
+    --primary: #55ddff;
+    --danger: #ff77aa;
+}
+body.cb-mode .chip {
+    border-width: 3px;
+}
+body.cb-mode .hp-fill {
+    background: #ff77aa;
+}
+body.cb-mode .exp-fill {
+    background: #55ddff;
+}
+
+/* Phones ------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .overlay-card,
+    .overlay-card.levelup,
+    .settings-card {
+        min-width: 260px;
+        padding: 18px;
+    }
+    .hud {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+    .hp-bar,
+    .exp-bar {
+        width: 140px;
+    }
+    .chip {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+    }
+    .overlay-card h1 {
+        font-size: 26px;
+    }
+    .boss-banner {
+        font-size: 28px;
+    }
+}
+
+/* iter-12: stage picker + daily share ------------------------------- */
+.stage-picker-card {
+    max-width: 720px;
+}
+.stage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+.stage-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 14px;
+    color: var(--fg, #eee);
+    text-align: left;
+    cursor: pointer;
+    transition:
+        border-color 0.15s,
+        transform 0.1s;
+}
+.stage-card:hover,
+.stage-card:focus-visible {
+    border-color: var(--accent, #ffcc66);
+    transform: translateY(-1px);
+}
+.stage-card.active {
+    border-color: var(--accent, #ffcc66);
+    background: rgba(255, 204, 102, 0.08);
+}
+.stage-icon {
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+.stage-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.stage-desc {
+    font-size: 13px;
+    opacity: 0.78;
+}
+.daily-share-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin: 10px 0 4px;
+}
+.share-preview {
+    background: rgba(0, 0, 0, 0.35);
+    color: #ddd;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+/* iter-13: stage chip on main menu Stage button --------------------- */
+.stage-chip {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255, 204, 102, 0.12);
+    border: 1px solid rgba(255, 204, 102, 0.4);
+    border-radius: 999px;
+    color: var(--accent, #ffcc66);
+    vertical-align: middle;
+}
+
+.hotkey-hint {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--muted, #aaa);
+    text-align: center;
+}
+.hotkey-hint kbd {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin: 0 2px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+}
+
+/* iter-13: daily streak overlay ------------------------------------- */
+.streak-card {
+    max-width: 560px;
+}
+.streak-stats {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+.streak-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 110px;
+}
+.streak-pill span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+.streak-pill strong {
+    font-size: 22px;
+    color: var(--accent, #ffcc66);
+}
+.streak-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    margin-bottom: 6px;
+}
+.streak-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 12px;
+}
+.streak-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.45);
+}
+.streak-cell.played {
+    background: rgba(85, 160, 255, 0.18);
+    border-color: rgba(85, 160, 255, 0.4);
+    color: #cfe5ff;
+}
+.streak-cell.won {
+    background: rgba(85, 220, 130, 0.22);
+    border-color: rgba(85, 220, 130, 0.5);
+    color: #d0ffd9;
+}
+.streak-cell.missed {
+    /* default; kept explicit so the contract is obvious in tests */
+}
+
+/* iter-13: help (keyboard shortcuts) overlay ------------------------ */
+.help-card {
+    max-width: 460px;
+}
+.help-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+.help-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+.help-row kbd {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 12px;
+}
+
+/* iter-13: how-to-play overlay -------------------------------------- */
+.howto-card {
+    max-width: 520px;
+}
+.howto-list {
+    text-align: left;
+    margin: 12px 0 18px;
+    padding-left: 22px;
+    line-height: 1.7;
+    font-size: 14px;
+}
+.howto-list li + li {
+    margin-top: 6px;
+}
+
+/* iter-15: tutorial offer + tutorial banner + replay menu --------------- */
+.tutorial-offer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8, 6, 18, 0.78);
+    backdrop-filter: blur(2px);
+    z-index: 60;
+}
+.tutorial-offer-card {
+    background: #1a1432;
+    border: 1px solid #3a2f5a;
+    border-radius: 14px;
+    padding: 22px 26px;
+    text-align: center;
+    max-width: 380px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+.tutorial-banner {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 12, 38, 0.92);
+    border: 1px solid #4a3a8a;
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: #f3edff;
+    font-size: 13px;
+    line-height: 1.4;
+    max-width: min(560px, 90vw);
+    z-index: 50;
+    pointer-events: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.tutorial-banner strong {
+    display: block;
+    color: #ffd66b;
+    margin-bottom: 4px;
+}
+.tutorial-banner .tutorial-body {
+    display: block;
+}
+.tutorial-banner .tutorial-skip-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    opacity: 0.7;
+}
+.replay-card {
+    max-width: 480px;
+}
+.replay-summary {
+    text-align: left;
+    margin: 12px 0 18px;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+</style>
+    </head>
+    <body>
+        <div id="gameContainer" aria-label="Beetle vs. the Swarm game">
+            <canvas
+                id="gameCanvas"
+                width="1200"
+                height="800"
+                tabindex="0"
+                aria-label="Game canvas"
+            ></canvas>
+
+            <!-- Vaporwave CRT layers: pure-CSS vignette + scanlines over the
+                 canvas. Toggled off via .fx-off on #gameContainer when the
+                 player enables reduced motion (see Game._applyFxOverlays). -->
+            <div id="fx-vignette" aria-hidden="true"></div>
+            <div id="fx-scanlines" aria-hidden="true"></div>
+
+            <div id="ui" role="presentation">
+                <div id="topLeft" class="hud">
+                    <div><span data-i18n="level">LEVEL</span>: <span id="level">1</span></div>
+                    <div class="bar-label" data-i18n="xp">XP</div>
+                    <div class="exp-bar">
+                        <div class="exp-fill" id="expBar" style="width: 0%"></div>
+                    </div>
+                    <div class="bar-label">
+                        <span data-i18n="time">TIME</span>: <span id="time">00:00</span>
+                    </div>
+                    <div id="waveLabel" class="hud-sub"></div>
+                    <div id="highScore" class="hud-sub"></div>
+                </div>
+
+                <div id="topRight" class="hud">
+                    <div><span data-i18n="kills">KILLS</span>: <span id="kills">0</span></div>
+                    <div id="fpsCounter" class="hud-sub" style="display: none">0 fps</div>
+                    <button id="btnPause" class="icon-btn" aria-label="Pause">⏸</button>
+                </div>
+
+                <div id="bottomLeft" class="hud">
+                    <div>
+                        <span data-i18n="hp">HP</span>: <span id="hp">100</span>/<span id="maxHp"
+                            >100</span
+                        >
+                    </div>
+                    <div class="hp-bar">
+                        <div class="hp-fill" id="hpBar" style="width: 100%"></div>
+                    </div>
+                    <div id="p2hud" class="hud-sub" style="display: none">
+                        P2: <span id="hp2">100</span>/<span id="maxHp2">100</span>
+                        HP · <span data-i18n="level">LEVEL</span> <span id="level2">1</span>
+                    </div>
+                    <div class="chip-row" id="passiveIcons" role="list" aria-label="Passives"></div>
+                </div>
+
+                <div
+                    class="chip-row weapon-icons"
+                    id="weaponIcons"
+                    role="list"
+                    aria-label="Weapons"
+                ></div>
+
+                <div id="bossBanner" class="boss-banner" aria-live="polite"></div>
+
+                <div
+                    id="achievementToasts"
+                    class="ach-toast-host"
+                    aria-live="polite"
+                    aria-atomic="false"
+                ></div>
+
+                <!--
+                    Visually-hidden live region. All gameplay events with
+                    meaningful accessibility signal (boss incoming, level-up,
+                    achievement unlock, boss defeated) are mirrored into this
+                    paragraph so screen readers announce them. See
+                    docs/ACCESSIBILITY.md for the full list.
+                -->
+                <p
+                    id="a11yLiveRegion"
+                    class="sr-only"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                ></p>
+            </div>
+
+            <!-- Virtual joystick (touch only) -->
+            <div id="joystickBase" class="joystick" aria-hidden="true">
+                <div id="joystickKnob" class="joystick-knob"></div>
+            </div>
+
+            <!-- iter-14: special-skill button (touch only). Bottom-right counterpart
+                 to the joystick on mobile. Opens the pause menu by default until
+                 per-build skills are wired in. -->
+            <button
+                id="specialSkillBtn"
+                class="special-skill-btn"
+                aria-label="Special skill"
+                aria-hidden="true"
+            >
+                ✦
+            </button>
+
+            <!-- iter-14: PWA install prompt. Shown once on first load on a browser
+                 that fires `beforeinstallprompt`; dismissed forever once the user
+                 acts on it. -->
+            <div
+                id="pwaInstallPrompt"
+                class="pwa-install-prompt"
+                role="dialog"
+                aria-live="polite"
+                style="display: none"
+            >
+                <span>Install Beetle vs. the Swarm as an app for full-screen play.</span>
+                <button id="pwaInstallBtn" class="btn primary">Install</button>
+                <button id="pwaInstallDismiss" class="btn">Not now</button>
+            </div>
+
+            <!-- Menus -->
+            <div
+                id="startScreen"
+                class="overlay"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="startTitle"
+            >
+                <!-- Vaporwave set dressing: synthwave sun + perspective grid
+                     are pure CSS (see styles.css). Decorative only. -->
+                <div class="vw-sun" aria-hidden="true"></div>
+                <div class="overlay-card">
+                    <h1 id="startTitle" data-i18n="title">BEETLE VS. THE SWARM</h1>
+                    <div class="subtitle" data-i18n="subtitle">
+                        A bug-world swarm-survival roguelite
+                    </div>
+                    <div class="instructions">
+                        <div><strong data-i18n="howToPlay">How to play</strong></div>
+                        <div>• <span data-i18n="move">WASD / arrow keys to move</span></div>
+                        <div>
+                            • <span data-i18n="coop">2 Players: P1 uses WASD, P2 uses arrows</span>
+                        </div>
+                        <div>
+                            • <span data-i18n="autoAttack">Weapons auto-attack nearby foes</span>
+                        </div>
+                        <div>• Esc / P to pause</div>
+                        <div>• <span data-i18n="survive">Survive as long as you can!</span></div>
+                    </div>
+                    <div
+                        class="btn-row"
+                        role="group"
+                        aria-label="Player count"
+                    >
+                        <button id="btn1P" class="btn ghost" aria-pressed="true">1P</button>
+                        <button id="btn2P" class="btn ghost" aria-pressed="false">2P</button>
+                    </div>
+                    <div class="btn-row">
+                        <button id="btnStart" class="btn primary" data-i18n="start">
+                            Start Run
+                        </button>
+                        <button
+                            id="btnStage"
+                            class="btn ghost"
+                            data-i18n="stage"
+                            aria-describedby="btnStageChip"
+                        >
+                            Stage <span id="btnStageChip" class="stage-chip">🍂 Leaf Litter</span>
+                        </button>
+                        <button id="btnDaily" class="btn ghost" data-i18n="dailyChallenge">
+                            Daily Challenge
+                        </button>
+                        <button id="btnViewStreak" class="btn ghost" data-i18n="viewStreak">
+                            View Streak
+                        </button>
+                        <button id="btnSpeedrun" class="btn ghost" data-i18n="speedrun">
+                            Speedrun
+                        </button>
+                        <button id="btnLeaderboard" class="btn ghost" data-i18n="leaderboard">
+                            Leaderboard
+                        </button>
+                        <button id="btnSettings" class="btn ghost" data-i18n="settings">
+                            Settings
+                        </button>
+                        <button id="btnAchievements" class="btn ghost" data-i18n="viewAchievements">
+                            View Achievements
+                        </button>
+                        <button id="btnHowTo" class="btn ghost" data-i18n="howToPlayBtn">
+                            How to Play
+                        </button>
+                        <button id="btnTutorial" class="btn ghost" data-i18n="tryTutorial">
+                            Try Tutorial
+                        </button>
+                        <button id="btnReplay" class="btn ghost" data-i18n="replayLastRun">
+                            Replay Last Run
+                        </button>
+                    </div>
+                    <div class="hotkey-hint" aria-hidden="true">
+                        <span data-i18n="hotkeyHint"
+                            >Tip: <kbd>P</kbd>/<kbd>Esc</kbd> pause · <kbd>M</kbd> mute ·
+                            <kbd>H</kbd> help</span
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div id="achievementsScreen" class="overlay" style="display: none"></div>
+            <div id="leaderboardScreen" class="overlay" style="display: none"></div>
+            <div id="stagePickerScreen" class="overlay" style="display: none"></div>
+            <div id="streakScreen" class="overlay" style="display: none"></div>
+            <div id="helpScreen" class="overlay" style="display: none"></div>
+            <div id="howToPlayScreen" class="overlay" style="display: none"></div>
+
+            <div
+                id="levelUpMenu"
+                class="overlay"
+                style="display: none"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="levelUpTitle"
+            >
+                <div class="overlay-card levelup">
+                    <h2 id="levelUpTitle">
+                        <span id="levelUpPlayer"></span><span data-i18n="chooseUpgrade">Choose an upgrade</span>
+                    </h2>
+                    <div id="upgradeOptions" role="menu"></div>
+                </div>
+            </div>
+
+            <div
+                id="pauseMenu"
+                class="overlay"
+                style="display: none"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="pauseTitle"
+            >
+                <div class="overlay-card">
+                    <h2 id="pauseTitle" data-i18n="paused">PAUSED</h2>
+                    <div class="btn-row vertical">
+                        <button id="btnResume" class="btn primary" data-i18n="resume">
+                            Resume
+                        </button>
+                        <button id="btnQuit" class="btn ghost" data-i18n="quit">
+                            Quit to Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                id="gameOver"
+                class="overlay"
+                style="display: none"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="gameOverTitle"
+            >
+                <div class="overlay-card gameover">
+                    <h1 id="gameOverTitle" data-i18n="gameover">YOU DIED</h1>
+                    <div class="stats">
+                        <div>
+                            <span data-i18n="finalTime">Survived</span>:
+                            <span id="finalTime">00:00</span>
+                        </div>
+                        <div>
+                            <span data-i18n="finalKills">Kills</span>:
+                            <span id="finalKills">0</span>
+                        </div>
+                        <div>
+                            <span data-i18n="finalLevel">Level</span>:
+                            <span id="finalLevel">1</span>
+                        </div>
+                    </div>
+                    <details class="hs-details">
+                        <summary data-i18n="highScores">High Scores</summary>
+                        <div id="highScoreList" class="hs-list"></div>
+                    </details>
+                    <div class="btn-row">
+                        <button id="btnRetry" class="btn primary" data-i18n="retry">Retry</button>
+                        <button id="btnMenu" class="btn ghost" data-i18n="mainMenu">
+                            Main Menu
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settingsMenu" class="overlay" style="display: none"></div>
+        </div>
+
+        <script>
+(()=>{var v={CANVAS_WIDTH:1200,CANVAS_HEIGHT:800,ARENA_WIDTH:2400,ARENA_HEIGHT:1600,PLAYER_SPEED:240,PLAYER_SIZE:20,MAX_ENEMIES:300,SPAWN_RADIUS:900,DESPAWN_RADIUS:1200,EXP_ORB_LIFETIME:30,INVINCIBILITY_TIME:.5,PICKUP_DISTANCE:24,MAGNET_BASE:120,MAX_WEAPONS:6,MAX_PASSIVES:6,WEAPON_MAX_LEVEL:5,WEAPON_EVOLVE_LEVEL:5,PASSIVE_MAX_STACK:5,TARGET_FPS:60,GRID_SIZE:50,SPATIAL_CELL_SIZE:64,DT_CLAMP:.05,WAVE_DURATION:30,HIGHSCORE_SLOTS:10,SPEEDRUN_SEED:1398231630,SPEEDRUN_SPLITS:[60,180,300,450,600,720],SPEEDRUN_MAX_SLOTS:10,LEADERBOARD_PAGE_SIZE:20,EARLY_EVOLVE_THRESHOLD:420,NOVA_SLOW_DEFAULT:.5,BOMBER_DEFAULT_RADIUS:120,SEEN_BUILDS_CAP:1e3,VERSION:"2.8.0"},b=Object.freeze({MENU:"menu",PLAYING:"playing",PAUSED:"paused",LEVEL_UP:"levelup",GAMEOVER:"gameover",SETTINGS:"settings"}),De=Object.freeze({EASY:{id:"easy",label:"Easy",hpMult:.75,dmgMult:.75,spawnMult:.8},NORMAL:{id:"normal",label:"Normal",hpMult:1,dmgMult:1,spawnMult:1},HARD:{id:"hard",label:"Hard",hpMult:1.3,dmgMult:1.25,spawnMult:1.25},NIGHTMARE:{id:"nightmare",label:"Nightmare",hpMult:1.75,dmgMult:1.5,spawnMult:1.6}}),le="vs_clone_save_v2",We="speedrun_highscores";var he={WHIP:{id:"whip",name:"Mandible Slash",icon:"\u{1F9B7}",description:"Chomps to both sides of the beetle. Evolves: full circle sweep.",baseDamage:20,baseCooldown:1.5,baseRange:90,projectileCount:1,piercing:!1,type:"melee",evolveLevel:5,evolveName:"Titan Mandibles"},MAGIC_WAND:{id:"magic_wand",name:"Acid Spit",icon:"\u{1F4A7}",description:"Homing glob of acid seeks the closest foe. Evolves: triple volley.",baseDamage:15,baseCooldown:1.2,baseRange:320,projectileCount:1,piercing:!1,type:"projectile",speed:420,homing:!0,evolveLevel:5,evolveName:"Formic Barrage"},KNIFE:{id:"knife",name:"Stinger Darts",icon:"\u{1F41D}",description:"Piercing stingers thrown forward. Evolves: wide 5-stinger fan.",baseDamage:12,baseCooldown:.4,baseRange:420,projectileCount:1,piercing:!0,type:"projectile",speed:620,evolveLevel:5,evolveName:"Hornet Volley",evolveBonusCrit:.1},ORBIT:{id:"orbit",name:"Carapace Shards",icon:"\u{1F300}",description:"Spinning shell shards circle the beetle. Evolves: two rings spinning.",baseDamage:16,baseCooldown:.4,baseRange:120,projectileCount:2,piercing:!0,type:"orbit",evolveLevel:5,evolveName:"Twin Carapace",evolveDamageMult:1.1},LIGHTNING:{id:"lightning",name:"Firefly Flash",icon:"\u2728",description:"A firefly smites a random foe. Lv3+ chains. Evolves: storm burst.",baseDamage:35,baseCooldown:3,baseRange:420,piercing:!0,type:"instant",chain:!0,chainCount:3,evolveLevel:5,evolveName:"Firefly Storm",evolveBonusCrit:.15},MINE:{id:"mine",name:"Stink Gland",icon:"\u{1F4A8}",description:"Drops a stink gland that arms and detonates. Evolves: double-stack.",baseDamage:45,baseCooldown:2.2,baseRange:100,projectileCount:1,piercing:!0,type:"mine",fuse:1.2,evolveLevel:5,evolveName:"Cluster Glands"},GARLIC:{id:"garlic",name:"Pheromone Cloud",icon:"\u{1F33F}",description:"Damaging pheromone aura around the beetle.",baseDamage:5,baseCooldown:.2,baseRange:110,piercing:!0,type:"aura",continuous:!0},FROST_NOVA:{id:"frost_nova",name:"Snare Web",icon:"\u{1F578}\uFE0F",description:"Expanding ring of web slows foes caught in the burst. Evolves: twin-ring.",baseDamage:28,baseCooldown:3.2,baseRange:200,projectileCount:1,piercing:!0,type:"nova",slowPct:.5,slowDuration:1.2,evolveLevel:5,evolveName:"Widow's Snare"},SOUL_DRAIN:{id:"soul_drain",name:"Mosquito Kiss",icon:"\u{1F99F}",description:"Proboscis tethers the nearest foe and heals on tick. Evolves: dual-lash.",baseDamage:8,baseCooldown:.25,baseRange:260,projectileCount:1,piercing:!0,type:"drain",lifestealPct:.25,evolveLevel:5,evolveName:"Swarm Feast"},BOOMERANG:{id:"boomerang",name:"Elytra Throw",icon:"\u{1FAB2}",description:"Flung wing-case homes back to the beetle. Evolves: twin arc.",baseDamage:18,baseCooldown:1.1,baseRange:340,projectileCount:1,piercing:!0,type:"projectile",speed:380,boomerang:!0,evolveLevel:5,evolveName:"Twin Elytra",evolveCooldownMult:.95},RETRO_BLASTER:{id:"retro_blaster",name:"Glitch Grub",icon:"\u{1F47E}",description:"8-bit arcade grub. Pierces forward in a tight burst. Evolves: triple beam.",baseDamage:14,baseCooldown:.5,baseRange:480,projectileCount:2,piercing:!0,type:"projectile",speed:700,evolveLevel:5,evolveName:"Pixel Swarm"}},nt={MAX_HP:{id:"max_hp",name:"Hardened Shell",icon:"\u{1F41A}",description:"Max HP +20%",effect:{maxHpMult:.2}},RECOVERY:{id:"recovery",name:"Royal Jelly",icon:"\u{1F36F}",description:"Regen +0.5 HP/s",effect:{hpRegen:.5}},ARMOR:{id:"armor",name:"Chitin Plating",icon:"\u{1F6E1}\uFE0F",description:"Damage taken -1",effect:{armor:1}},MOVESPEED:{id:"movespeed",name:"Swift Legs",icon:"\u{1F9B5}",description:"Move speed +10%",effect:{speedMult:.1}},MIGHT:{id:"might",name:"Mighty Mandibles",icon:"\u{1F4AA}",description:"Damage +10%",effect:{damageMult:.1}},AREA:{id:"area",name:"Wide Wingspan",icon:"\u{1F4CF}",description:"Weapon range +10%",effect:{areaMult:.1}},COOLDOWN:{id:"cooldown",name:"Quick Nerves",icon:"\u23F1\uFE0F",description:"Attack speed +8%",effect:{cooldownMult:-.08}},MAGNET:{id:"magnet",name:"Big Appetite",icon:"\u{1F9F2}",description:"Pickup range +25%",effect:{magnetMult:.25}},GROWTH:{id:"growth",name:"Metamorphosis",icon:"\u{1F4C8}",description:"XP gain +10%",effect:{expMult:.1}},LUCK:{id:"luck",name:"Compound Eyes",icon:"\u{1F440}",description:"Crit chance +5%",effect:{critChance:.05}},DODGE:{id:"dodge",name:"Skitter",icon:"\u{1F4A8}",description:"Dodge chance +5%",effect:{dodgeChance:.05}},MAGNET_PLUS:{id:"magnet_plus",name:"Bigger Appetite",icon:"\u{1F9F2}",description:"Pickup range +35%",effect:{magnetMult:.35}},DAMAGE_REDUCTION:{id:"damage_reduction",name:"Iron Elytra",icon:"\u{1F6E1}\uFE0F",description:"Incoming damage -8%",effect:{damageReduction:.08}}},z={BAT:{id:"bat",name:"Mite",archetype:"chaser",hp:15,speed:110,damage:10,exp:10,color:"#d8b93c",size:12},ZOMBIE:{id:"zombie",name:"Aphid",archetype:"chaser",hp:30,speed:70,damage:15,exp:15,color:"#7dd956",size:18},SKELETON:{id:"skeleton",name:"Ant",archetype:"chaser",hp:25,speed:95,damage:12,exp:12,color:"#b5542d",size:14},WOLF:{id:"wolf",name:"Tiger Beetle",archetype:"dasher",dasher:!0,dashSpeed:320,dashInterval:3.5,dashDuration:.6,hp:40,speed:150,damage:20,exp:20,color:"#e07b39",size:16},GOLEM:{id:"golem",name:"Ironclad Beetle",archetype:"shielded",shielded:!0,shieldHp:60,damageReduction:.5,hp:120,speed:45,damage:30,exp:50,color:"#5a5a6e",size:28},GHOST:{id:"ghost",name:"Gnat",archetype:"chaser",hp:20,speed:130,damage:18,exp:18,color:"#aee7ff",size:15,ghost:!0},MAGE:{id:"mage",name:"Wasp",archetype:"ranged",ranged:!0,firingRange:360,keepDistance:260,projectileSpeed:220,projectileDamage:14,fireCooldown:2.4,hp:28,speed:70,damage:8,exp:22,color:"#e8b923",size:14},SLIME:{id:"slime",name:"Broodmother",archetype:"splitter",splitter:!0,splitCount:2,hp:55,speed:65,damage:14,exp:24,color:"#c96fa0",size:20},SLIMELING:{id:"slimeling",name:"Grubling",archetype:"chaser",hp:18,speed:105,damage:8,exp:6,color:"#e39ec0",size:10},BOMBER:{id:"bomber",name:"Bombardier Beetle",archetype:"bomber",bomber:!0,fuseRange:80,fuseTime:1.4,blastRadius:120,blastDamage:40,hp:35,speed:120,damage:10,exp:28,color:"#ff5a2a",size:14},ILLUSIONIST:{id:"illusionist",name:"Mimic Spider",archetype:"illusionist",illusionist:!0,cloneCooldown:5.5,cloneCount:2,hp:42,speed:95,damage:12,exp:30,color:"#9a6fd0",size:15}};z.SLIME.splitInto="slimeling";var V={REAPER:{id:"reaper",name:"Praying Mantis",hp:2500,speed:80,damage:40,exp:500,color:"#3fa34d",size:48,boss:!0,ability:"summon",spawnAt:300},VOID_LORD:{id:"void_lord",name:"Spider Queen",hp:6e3,speed:60,damage:60,exp:1200,color:"#7a2d8f",size:64,boss:!0,ability:"charge",spawnAt:600},NECROMANCER:{id:"necromancer",name:"Wasp Queen",hp:4200,speed:70,damage:50,exp:850,color:"#d9a416",size:54,boss:!0,ability:"summon",spawnAt:450},CHRONO_LICH:{id:"chrono_lich",name:"Termite Empress",hp:1e4,speed:55,damage:75,exp:2e3,color:"#8a6b3d",size:72,boss:!0,ability:"charge",spawnAt:720},ICE_QUEEN:{id:"ice_queen",name:"Gloomwidow",hp:6200,speed:55,damage:60,exp:1300,color:"#4a6fa5",size:66,boss:!0,ability:"charge",spawnAt:660,iceQueen:!0}},q=[{from:0,to:30,pool:["bat","zombie"],spawnMult:1,label:"Hatchlings"},{from:30,to:60,pool:["bat","zombie","skeleton"],spawnMult:1.1,label:"Skitter"},{from:60,to:90,pool:["zombie","skeleton","mage"],spawnMult:1.15,label:"Stingers"},{from:90,to:120,pool:["skeleton","wolf","ghost","mage"],spawnMult:1.2,label:"The Pack"},{from:120,to:180,pool:["wolf","ghost","slime","mage","bomber"],spawnMult:1.3,label:"Broodlings"},{from:180,to:240,pool:["wolf","golem","ghost","slime","bomber"],spawnMult:1.4,label:"Vanguard"},{from:240,to:300,pool:["golem","ghost","slime","mage","illusionist"],spawnMult:1.5,label:"Swarm Pressure"},{from:300,to:420,pool:["wolf","golem","ghost","slime","mage","bomber","illusionist"],spawnMult:1.6,label:"Post-Mantis"},{from:420,to:600,pool:["golem","slime","mage","ghost","wolf","illusionist"],spawnMult:1.75,label:"Infestation"},{from:600,to:1/0,pool:["golem","slime","mage","ghost","wolf","skeleton","bomber","illusionist"],spawnMult:2,label:"The Swarm"}],C=[{id:"first_blood",name:"First Squish",icon:"\u{1F5E1}\uFE0F",description:"Squish your first foe.",check:a=>a.game.kills>=1},{id:"slayer_100",name:"Centipede",icon:"\u{1F3AF}",description:"Defeat 100 foes in a single run.",check:a=>a.game.kills>=100},{id:"slayer_1000",name:"Swarm Breaker",icon:"\u{1F3C6}",description:"Defeat 1000 foes in a single run.",check:a=>a.game.kills>=1e3},{id:"boss_slayer",name:"Mantis Down",icon:"\u2620\uFE0F",description:"Defeat the Praying Mantis mid-boss.",check:a=>!!a.run.bossesDefeated?.reaper},{id:"void_breaker",name:"Queen Breaker",icon:"\u{1F30C}",description:"Defeat the Spider Queen.",check:a=>!!a.run.bossesDefeated?.void_lord},{id:"survive_5min",name:"Five-Minute Forager",icon:"\u23F1\uFE0F",description:"Survive 5 minutes.",check:a=>a.game.gameTime>=300},{id:"survive_10min",name:"Ten-Minute Titan",icon:"\u{1F525}",description:"Survive 10 minutes.",check:a=>a.game.gameTime>=600},{id:"survive_15min",name:"Quarter Hour",icon:"\u231B",description:"Survive 15 minutes.",check:a=>a.game.gameTime>=900},{id:"weapon_max",name:"Mastery",icon:"\u{1F31F}",description:"Reach max level on any weapon.",check:a=>!!a.run.maxedWeapon},{id:"untouchable",name:"Untouchable",icon:"\u{1F6E1}\uFE0F",description:"Avoid damage for 60 straight seconds.",check:a=>(a.run.longestUnhit||0)>=60},{id:"xp_hoarder",name:"Honeydew Hoarder",icon:"\u{1F48E}",description:"Collect 100 honeydew drops in a run.",check:a=>(a.run.orbsCollected||0)>=100},{id:"level_20",name:"High Roller",icon:"\u{1F4C8}",description:"Reach beetle level 20.",check:a=>a.game.player?.level>=20},{id:"speed_demon",name:"Speed Demon",icon:"\u{1F4A8}",description:"Defeat the Spider Queen in under 5 minutes of real time.",check:a=>!!a.run.bossesDefeated?.void_lord&&(a.run.realSecondsToVoidLord||1/0)<300},{id:"no_hit_boss",name:"Flawless Duel",icon:"\u{1F54A}\uFE0F",description:"Defeat any boss without taking damage during the fight.",check:a=>!!a.run.noHitBoss},{id:"max_all",name:"Max All",icon:"\u{1F451}",description:"Reach max level on every weapon slot in a single run.",check:a=>(a.run.maxedWeaponCount||0)>=6},{id:"early_evolve",name:"Early Evolve",icon:"\u{1F52E}",description:"Evolve a weapon before the 7-minute mark.",check:a=>!!a.run.evolvedBefore?.sevenMin},{id:"triple_build",name:"Triple Threat",icon:"\u{1F3B2}",description:"Finish 3 distinct weapon-composition runs (lifetime).",check:a=>(a.game.save?.totals?.uniqueBuilds||0)>=3},{id:"zen_5min",name:"Zen Grub",icon:"\u{1F9D8}",description:"Survive 5 minutes without picking up a single passive.",check:a=>a.game.gameTime>=300&&(a.run.passivesPicked||0)===0},{id:"konami_code",name:"Konami Code",icon:"\u{1F3AE}",description:"Found the legendary cheat. Unlocks the Retro Blaster.",hidden:!0,check:a=>!!a.run.konamiCode},{id:"speedrun_plus",name:"Speedrunner Plus",icon:"\u26A1",description:"Cleared a major boss in under 5 minutes of real time. Unlocks a sprite trail.",hidden:!0,check:a=>!!a.run.fastBossClear},{id:"pacifist_provoked",name:"Pacifist Provoked",icon:"\u{1F54A}\uFE0F",description:"Survived 60 seconds with zero kills \u2014 let the world do the work. Unlocks a special boss title.",hidden:!0,check:a=>(a.run.pacifistTimer||0)>=60&&a.game.kills===0}],I={first_blood:{weapon:"magic_wand"},slayer_100:{weapon:"knife"},survive_5min:{weapon:"orbit"},boss_slayer:{weapon:"lightning"},survive_10min:{weapon:"mine"},survive_15min:{weapon:"boomerang"},void_breaker:{weapon:"frost_nova"},speed_demon:{weapon:"soul_drain"},konami_code:{weapon:"retro_blaster"},speedrun_plus:{cosmetic:"sprite_trail"},pacifist_provoked:{cosmetic:"boss_title_pacifist"}};var w="#14100c";function S(a,e,t=3,s=null){return{rows:a,pal:e,scale:t,glow:s}}var at=["........","..K..K..","..KB.BK.",".KBBBBK.",".KBBBBK.","..KBBK..","...KK...","........"],rt={beetle_p1:S([".......KK.........","......KWWK........","......KWWK........","...KKKBBBK........","..KBBBBBBBK.......",".KBBEEEDDEEBK.....",".KBEDDDDDDDEBK....","KBBDDDDDDDDDDBK...","KBBDDDDDDDDDDBK...",".KBEDDDDDDDEBK....",".KBBEEEDDEEBK.....","..KBBBBBBBK.......","...KKKBBBK........",".....K.K.K........"],{K:w,B:"#12b5a5",D:"#0a3f3a",E:"#3fe0cf",W:"#ffd23e"},3,"#12b5a5"),beetle_p2:S([".......KK...KK....","......KRRK.KRRK...","......KRRKKRRK....","...KKKRBBBK.......","..KRBBBBBBBK......",".KRBEEDDDDEEBK....",".KREDDDDDDDDEBK...","KRBDDDDDDDDDDBK...","KRBDDDDDDDDDDBK...",".KREDDDDDDDDEBK...",".KRBEEDDDDEEBK....","..KRBBBBBBBK......","...KKKRBBBK.......",".....K.K.K........"],{K:w,R:"#ffd23e",B:"#c2147a",D:"#5e0a38",E:"#ff6ab5"},3,"#ff2d95"),mite:S(at,{K:w,B:"#e8ff47"},3),grubling:S(at,{K:w,B:"#ff5ad2"},3),gnat:S(["........","...KK...","..KWWK..","..KWWK..",".KBBBBK.",".KBBBBK.","..KBBK..",".K....K."],{K:w,W:"#eaf7ff",B:"#37f4ff"},3),aphid:S(["..........","..K....K..","..KBBBK...",".KBBBBBK..","KBBBBBBBK.","KBBBBBBBK.",".KBBBBBK..","..KBBBK...","...K.K....",".........."],{K:w,B:"#a6ff00"},3),ant:S(["............",".K..K..K..K.",".KB.KBBBK.B.","..KBBBBBBK..","..KBEKKEBK..","..KBBBBBBK..",".KB.KBBBK.B.",".K..K..K..K.","............","............"],{K:w,B:"#ff7a1a",E:"#a33d00"},3),tiger:S(["............",".K..K..K....",".KBKBBBKBBK.","..KBBBBBBBK.","..KBEKKKEBK.","..KBBBBBBBK.",".KBKBBBKBBK.",".K..K..K....","............","............"],{K:w,B:"#ff9e2c",E:"#8a3d00"},3),bombardier:S(["............",".K..K..K....",".KBKBBBKBBK.","..KBBBBBBBK.","..KBRRRRBK..","..KBBBBBBBK.",".KBKBBBKBBK.",".K..K..K....","............","............"],{K:w,B:"#ff3b1f",R:"#ffd23e"},3),wasp:S(["............","...K..K.....","..KWK.KYK...","..KBBBBBK...",".KBBYKYBBK..",".KBBYKYBBK..","..KBBBBBK...","..KWK.KYK...","...K..K.....","............"],{K:w,B:"#ffe94a",Y:"#2b2118",W:"#f4ecd8"},3),mimic:S(["............",".K.K....K.K.",".KBKBBBBKBK.","..KBBBBBBK..","..KBEBBEBK..","..KBBBBBBK..",".KBKBBBBKBK.",".K.K....K.K.","............","............"],{K:w,B:"#c95bff",E:"#e8dcff"},3),ironclad:S(["..............",".K...K..K...K.",".KBKKBBBBKKBK.","..KBBBBBBBBK..","..KBDDDDDDBK..",".KBBDDDDDDBBK.",".KBBDDDDDDBBK.","..KBDDDDDDBK..","..KBBBBBBBBK..",".KBKKBBBBKKBK.",".K...K..K...K.",".............."],{K:w,B:"#7d8bff",D:"#2b3050"},3),broodmother:S(["..............","..K........K..","..KBBBBBBBBK..",".KBBBBBBBBBBK.",".KBBPPPPPPBBK.","KBBPPPPPPPPBBK","KBBPPPPPPPPBBK",".KBBPPPPPPBBK.",".KBBBBBBBBBBK.","..KBBBBBBBBK..","...K......K...",".............."],{K:w,B:"#ff4fd8",P:"#a3135b"},3),mantis:S(["..........KK............",".........KGGK...........","........KGEEGK..........",".......KGGEEGGK.........","........KGGGGK..........",".......KGGKKGGK.........","......KGK....KGK........",".....KGK......KGK.......","....KGK........KGK......",".....KGKKKKKKKGK........","......KGGGGGGGGK........",".....KGGDDDDDDGGK.......","....KGGDDDDDDDDGGK......","....KGDDDDDDDDDDGK......","....KGGDDDDDDDDGGK......",".....KGGDDDDDDGGK.......","....KGK.KGGGGK.KGK......","...KGK...KKKK...KGK.....","...KK..............KK...","........................"],{K:w,G:"#39ff6a",D:"#0d5c26",E:"#eaff5e"},4,"#39ff6a"),wasp_queen:S(["........KKKKKK........",".......KYYYYYYK.......","......KYYKYYKYYK......","...KKKYYYYYYYYKKK.....","..KYYYYYYYYYYYYYYK....",".KYYYKYYYYYYYYKYYYK...","KWYKYYBBBBBBBBYYKYWK..","KWYKYYBBBBBBBBYYKYWK..",".KYYYKBBBBBBBBKYYYK...","..KYYYBBBBBBBBYYYK....","...KKKBBBBBBBBKKK.....","......KBBKBBKBBK......",".......KYYYYYYK.......","........KKKKKK........"],{K:w,Y:"#ffd23e",B:"#6b4a10",W:"#f4ecd8"},4,"#ffd23e"),spider_queen:S(["..K.K..........K.K....","..KBK..........KBK....","...KBK........KBK.....","....KBKKKKKKKBK.......",".....KPPPPPPPK........","....KPPPPPPPPPK.......","...KPPKPPPPKPPPK......","...KPPPPPPPPPPPK......","..KPPPKPEEPKPPPK......","..KPPPPPEEPPPPPK......","...KPPPKPEEPKPPPK.....","...KPPPPPPPPPPPK......","...KPPKPPPPKPPPK......","....KPPPPPPPPPK.......",".....KPPPPPPPK........","....KBKKKKKKKBK.......","...KBK........KBK.....","..KBK..........KBK....","..K.K..........K.K...."],{K:w,P:"#b537f2",B:"#2b2118",E:"#ff5a5a"},4,"#b537f2"),gloomwidow:S(["..K.K..........K.K....","..KBK..........KBK....","...KBK........KBK.....","....KBKKKKKKKBK.......",".....KBBBBBBBK........","....KBBBBBBBBBK.......","...KBBKBBBBKBBBK......","...KBBBBBBBBBBBK......","..KBBBKBEEBKBBBK......","..KBBBBBEEBBBBBK......","...KBBBKBEEBKBBBK.....","...KBBBBBBBBBBBK......","...KBBKBBBBKBBBK......","....KBBBBBBBBBK.......",".....KBBBBBBBK........","....KBKKKKKKKBK.......","...KBK........KBK.....","..KBK..........KBK....","..K.K..........K.K...."],{K:w,B:"#29cfff",E:"#cfe6ff"},4,"#29cfff"),termite_empress:S(["............KKKKKK............","...........KWWWWWWK...........","..........KWKWWWWKWK..........",".......KKKWWWWWWWWKKK.........","......KWWWWWWWWWWWWWWK........",".....KWWKWWWWWWWWWWKWWK.......","....KWWWWWWWWWWWWWWWWWWK......","...KWWWKWWWWWWWWWWWWKWWWK.....","...KWWWWWWWWWWWWWWWWWWWWK.....","..KWWWWKWWWWWWWWWWWWKWWWWK....","..KWWWWKWWWWWWWWWWWWKWWWWK....","...KWWWWWWWWWWWWWWWWWWWWK.....","...KWWWKWWWWWWWWWWWWKWWWK.....","....KWWWWWWWWWWWWWWWWWWK......",".....KWWKWWWWWWWWWWKWWK.......","......KWWWWWWWWWWWWWWK........",".......KKKWWWWWWWWKKK.........","..........KWKWWKWK............","...........KWWWWK.............","............KKKK.............."],{K:w,W:"#ff9e2c"},4,"#ff9e2c"),honeydew:S(["........","...KK...","..KGGK..",".KGWWGK.",".KGWWGK.","..KGGK..","...KK...","........"],{K:w,G:"#37f4ff",W:"#ffffff"},3,"#37f4ff"),stinger:S(["KKKKKKKKKKKK","KYYYYYYYYYYK","KKKKKKKKKKKK"],{K:w,Y:"#ffd23e"},2,"#ffd23e"),acid:S(["........","...KK...","..KAAK..",".KAAAAK.",".KAAAK..","..KAAK..","...KK...","........"],{K:w,A:"#a6ff00"},2,"#a6ff00"),elytra:S(["............","..KKKKKKKK..",".KEEEDDDDEK.",".KEDDDDDDEK.",".KEDDDDDDEK.",".KEEEDDDDEK.","..KKKKKKKK..","............"],{K:w,E:"#12b5a5",D:"#0a3f3a"},2,"#12b5a5"),grubshot:S(["..........",".KKKKKKKK.","KGWWGGGGGK","KGWWGGGGGK",".KKKKKKKK.",".........."],{K:w,G:"#a6ff00",W:"#ffffff"},2,"#a6ff00"),shard:S(["........","...KK...","..KEEK..",".KEEKEK.",".KEEKEK.","..KEEK..","...KK...","........"],{K:w,E:"#9be9ff"},2,"#9be9ff"),gland:S(["..........","...KKKK...","..KGGGGK..",".KGGGGGGK.",".KGGGGGGK.",".KGGGGGGK.","..KGGGGK..","...KKKK...","..........",".........."],{K:w,G:"#7dff5e"},3,"#7dff5e"),enemy_stinger:S(["KKKKKKKK","KRRRRRRK","KKKKKKKK"],{K:w,R:"#ff2d95"},2,"#ff2d95"),leaf:S(["..............","....KKKKK.....","...KGGGGGK....","..KGGGGGGGK...","..KGGDGGGGK...",".KGGDDGGGGGK..",".KGGDDGGGGGK..","..KGGDGGGGK...","..KGGGGGGGK...","...KGGGGGK...."],{K:w,G:"#ff2d95",D:"#8f1a55"},3),twig:S(["..................","....KKKKKKKKKK....","..KKTTTTTTTTTTKK..","....KKKKKKKKKK....","..................",".................."],{K:w,T:"#7a2d8f"},3),pebble:S(["........","...KK...","..KPPK..",".KPPPPK.","..KPPK..","...KK..."],{K:w,P:"#3d4470"},3)};function jt(){for(let[a,e]of Object.entries(rt)){let t=e.rows[0].length;for(let s of e.rows){if(s.length!==t)throw new Error(`sprite ${a}: ragged row (${s.length} vs ${t}): ${s}`);for(let i of s)if(i!=="."&&!(i in e.pal))throw new Error(`sprite ${a}: unknown palette char ${i}`)}}}jt();var ot=new Map;function Xt(a,e){let t={};for(let s of Object.keys(a.pal))t[s]=e;return t}function Jt(a,e){let t=a.rows[0].length,s=a.rows.length,i=a.scale,n=a.glow&&!e?i*3:0,o=document.createElement("canvas");o.width=t*i+n*2,o.height=s*i+n*2;let r=o.getContext("2d"),l=h=>Qt(r,a,h,n,n);return a.glow&&!e&&(r.save(),r.shadowColor=a.glow,r.shadowBlur=i*2.5,l(Xt(a,a.glow)),r.restore()),e?(l(a.pal),r.globalCompositeOperation="source-in",r.fillStyle="#ffffff",r.fillRect(0,0,o.width,o.height),r.globalCompositeOperation="source-over"):l(a.pal),o}function Qt(a,e,t,s=0,i=0){let n=e.scale;for(let o=0;o<e.rows.length;o++){let r=e.rows[o];for(let l=0;l<r.length;l++){let h=r[l];h!=="."&&(a.fillStyle=t[h],a.fillRect(s+l*n,i+o*n,n,n))}}}function L(a,e={}){if(typeof document>"u")return null;let t=e.flash?`${a}#flash`:a,s=ot.get(t);if(s)return s;let i=rt[a];if(!i)return null;let n=Jt(i,!!e.flash);return ot.set(t,n),n}function A(a,e,t,s,i={}){let n=L(e,i);if(!n)return;let o=n.width,r=n.height;a.save(),i.alpha!==void 0&&(a.globalAlpha=i.alpha),i.flip?(a.translate(t,s),a.scale(-1,1),a.drawImage(n,-o/2,-r/2)):a.drawImage(n,t-o/2,s-r/2),a.restore()}var ce={bat:"mite",zombie:"aphid",skeleton:"ant",wolf:"tiger",golem:"ironclad",ghost:"gnat",mage:"wasp",slime:"broodmother",slimeling:"grubling",bomber:"bombardier",illusionist:"mimic",reaper:"mantis",necromancer:"wasp_queen",void_lord:"spider_queen",ice_queen:"gloomwidow",chrono_lich:"termite_empress"},lt={knife:"stinger",magic_wand:"acid",boomerang:"elytra",retro_blaster:"grubshot",orbit:"shard"},ht="enemy_stinger";var R=class{constructor(e,t,s={}){this.x=e,this.y=t,this.size=v.PLAYER_SIZE,this.baseMaxHp=100,this.maxHp=this.baseMaxHp,this.hp=this.baseMaxHp,this.level=1,this.exp=0,this.expToNext=50,this.weapons=[],this.passives=Object.create(null),this.invincible=!1,this.invincibleTimer=0,this.dead=!1,this.unhitTimer=0,this.facing=1,this.playerIndex=s.playerIndex||0,this.spriteId=s.spriteId||"beetle_p1",this.respawnTimer=0}update(e,t){let s=t.input.getMoveVector(this.playerIndex);s.x!==0&&(this.facing=s.x>0?1:-1);let i=t.stageMods?.playerSpeedMult??1,n=v.PLAYER_SPEED*this.getSpeedMult()*i;this.x+=s.x*n*e,this.y+=s.y*n*e;let o=this.size,r=v.ARENA_WIDTH??v.CANVAS_WIDTH,l=v.ARENA_HEIGHT??v.CANVAS_HEIGHT;this.x<o?this.x=o:this.x>r-o&&(this.x=r-o),this.y<o?this.y=o:this.y>l-o&&(this.y=l-o);for(let c of this.weapons)c.update(e,this,t);this.invincible&&(this.invincibleTimer-=e,this.invincibleTimer<=0&&(this.invincible=!1));let h=this._passiveSum("hpRegen");h&&this.heal(h*e),this.unhitTimer+=e,t.run&&this.unhitTimer>(t.run.longestUnhit||0)&&(t.run.longestUnhit=this.unhitTimer)}addPassive(e){this.passives[e.id]??={def:e,count:0},!(this.passives[e.id].count>=v.PASSIVE_MAX_STACK)&&(this.passives[e.id].count++,this.recalculateStats())}_passiveSum(e){let t=0;for(let s in this.passives){let i=this.passives[s];i.def.effect[e]!==void 0&&(t+=i.def.effect[e]*i.count)}return t}_passiveMult(e){let t=1;for(let s in this.passives){let i=this.passives[s];i.def.effect[e]!==void 0&&(t*=Math.pow(1+i.def.effect[e],i.count))}return t}recalculateStats(){let e=this.maxHp;this.maxHp=this.baseMaxHp*this._passiveMult("maxHpMult"),this.hp+=this.maxHp-e,this.hp=Math.min(this.hp,this.maxHp)}getDamageMult(){return this._passiveMult("damageMult")}getAreaMult(){return this._passiveMult("areaMult")}getCooldownMult(){let e=1;for(let t in this.passives){let s=this.passives[t],i=s.def.effect.cooldownMult;i!==void 0&&(e*=Math.pow(1+i,s.count))}return Math.max(.2,e)}getSpeedMult(){return this._passiveMult("speedMult")}getExpMult(){return this._passiveMult("expMult")}getMagnetRange(){let e=1;for(let t in this.passives){let s=this.passives[t],i=s.def.effect.magnetMult;i!==void 0&&(e*=Math.pow(1+i,s.count))}return v.MAGNET_BASE*e}getArmor(){return this._passiveSum("armor")}getCritChance(){return this._passiveSum("critChance")}getDodgeChance(){return Math.min(.6,this._passiveSum("dodgeChance"))}getDamageReduction(){return Math.min(.6,this._passiveSum("damageReduction"))}gainExp(e){this.exp+=e*this.getExpMult();let t=[];for(;this.exp>=this.expToNext;)this.exp-=this.expToNext,this.level++,this.expToNext=Math.floor(this.expToNext*1.2),this.hp=Math.min(this.hp+20,this.maxHp),t.push(this.level);return t}takeDamage(e,t){if(this.invincible||this.dead)return;let s=this.getDodgeChance();if(s>0&&Math.random()<s){t?.createFloatingText?.("Miss!",this.x,this.y-30,"#88ffcc");return}let i=Math.max(1,e-this.getArmor()),n=Math.max(1,i*(1-this.getDamageReduction()));this.hp-=n,this.invincible=!0,this.invincibleTimer=v.INVINCIBILITY_TIME,this.unhitTimer=0,t?.run&&(t.run.tookAnyDamage=!0),t?.onPlayerHurt?.(n),this.hp<=0&&(this.hp=0,this.dead=!0)}heal(e){this.hp=Math.min(this.hp+e,this.maxHp)}render(e){let t=this.invincible&&Math.floor(performance.now()/60)%2===0?.4:1;A(e,this.spriteId,this.x,this.y,{flip:this.facing<0,alpha:t});let s=this.weapons.find(i=>i.id==="garlic");if(s){let i=s.getRange(this),n=performance.now()/400;e.save(),e.strokeStyle=`rgba(160,255,160,${.25+Math.sin(n)*.08})`,e.lineWidth=2,e.beginPath(),e.arc(this.x,this.y,i,0,Math.PI*2),e.stroke(),e.restore()}}};var G=class a{constructor(e,t,s,i,n){this.x=e,this.y=t,this.type=s,this.size=s.size,this.maxHp=s.hp*i,this.hp=this.maxHp,this.speed=s.speed,this.damage=s.damage*n,this.expValue=s.exp,this.color=s.color,this.id=s.id,this.boss=!!s.boss,this.flashTimer=0,this.flip=!1,this.ability=s.ability,this.abilityTimer=3,this.archetype=s.archetype||"chaser",this.ranged=!!s.ranged,this.splitter=!!s.splitter,this.dasher=!!s.dasher,this.shielded=!!s.shielded,this.bomber=!!s.bomber,this.illusionist=!!s.illusionist,this.fireTimer=s.fireCooldown?s.fireCooldown*(.5+Math.random()*.5):0,this.dashTimer=s.dashInterval?s.dashInterval*(.3+Math.random()*.7):0,this.dashActive=0,this.dashAngle=0,this.shieldHp=s.shieldHp?s.shieldHp*i:0,this.fuseTimer=0,this.fuseArmed=!1,this.cloneTimer=s.cloneCooldown?s.cloneCooldown*(.6+Math.random()*.8):0,this.slowTimer=0,this.slowPct=0,this.isClone=!1}update(e,t){let s=t.getNearestPlayer?.(this.x,this.y)||t.player,i=s.x-this.x,n=s.y-this.y,o=Math.hypot(i,n),r=0,l=0,h=o>.01?i/o:0,c=o>.01?n/o:0;this.slowTimer>0&&(this.slowTimer-=e);let d=this.slowTimer>0?1-(this.slowPct||0):1;if(this.bomber){let p=this.type.fuseRange||80;if(o<p&&(this.fuseArmed=!0),this.fuseArmed&&(this.fuseTimer+=e,this.fuseTimer>=(this.type.fuseTime||1.4))){let f=this.type.blastRadius||120,g=(this.type.blastDamage||40)*(t.enemyDmgMult||1);for(let m of t.players||[t.player]){if(!m||m.dead)continue;Math.hypot(m.x-this.x,m.y-this.y)<f&&!m.invincible&&(m.takeDamage(g,t),t.createFloatingText(Math.round(g),m.x,m.y-28,"#ff4433"))}t.createParticles(this.x,this.y,"#ff8833",24),t.shake?.(.25),t.audio?.explosion?.(),this.hp=0;return}r=h*this.speed*d,l=c*this.speed*d,this.x+=r*e,this.y+=l*e,this.flashTimer>0&&(this.flashTimer-=e);return}if(this.illusionist&&!this.isClone&&(this.cloneTimer-=e,this.cloneTimer<=0&&t.enemies.length<v.MAX_ENEMIES)){this.cloneTimer=this.type.cloneCooldown||5.5;let p=this.type.cloneCount||2;for(let f=0;f<p;f++){let g=f/p*Math.PI*2+Math.random()*.4,m=new a(this.x+Math.cos(g)*24,this.y+Math.sin(g)*24,this.type,this.maxHp/Math.max(1,this.type.hp),(t.enemyDmgMult||1)*.6);m.isClone=!0,m.hp=Math.max(8,this.type.hp*.4),m.maxHp=m.hp,m.color="#e0b0ff",t.enemies.push(m)}t.createParticles(this.x,this.y,"#cc88ff",12)}if(this.ranged&&this.type.keepDistance){let p=this.type.keepDistance,f=o>p+30?1:o<p-30?-1:0;if(r=h*this.speed*f*d,l=c*this.speed*f*d,this.fireTimer-=e,this.fireTimer<=0&&o<this.type.firingRange){let g=Math.atan2(n,i),m=this.type.projectileSpeed||220;t.enemyProjectiles=t.enemyProjectiles||[],t.enemyProjectiles.push(new Ce(this.x,this.y,g,m,this.type.projectileDamage*(t.enemyDmgMult||1))),this.fireTimer=this.type.fireCooldown||2,t.audio?.shoot?.()}}else this.dasher?(this.dashTimer-=e,this.dashActive>0?(this.dashActive-=e,r=Math.cos(this.dashAngle)*(this.type.dashSpeed||300)*d,l=Math.sin(this.dashAngle)*(this.type.dashSpeed||300)*d):this.dashTimer<=0?(this.dashAngle=Math.atan2(n,i),this.dashActive=this.type.dashDuration||.5,this.dashTimer=this.type.dashInterval||3.5):(r=h*this.speed*d,l=c*this.speed*d)):(r=h*this.speed*d,l=c*this.speed*d);this.x+=r*e,this.y+=l*e,r!==0&&(this.flip=r<0),this.flashTimer>0&&(this.flashTimer-=e),this.boss&&(this.abilityTimer-=e,this.abilityTimer<=0&&(this.abilityTimer=this.ability==="summon"?6:4.5,t.onBossAbility?.(this)))}takeDamage(e){let t=e;if(this.shielded&&this.shieldHp>0){let s=this.type.damageReduction??.5;t=e*(1-s),this.shieldHp-=e*s,this.shieldHp<=0&&(this.shieldHp=0,this.shielded=!1)}this.hp-=t,this.flashTimer=.08}render(e){let t=ce[this.type.id]||"mite",s=this.flashTimer>0,i=this.bomber&&this.fuseArmed&&Math.floor(performance.now()/120)%2===0;A(e,t,this.x,this.y,{flip:this.flip,flash:s||i});let n=L(t),o=n?n.height/2:this.size;!s&&this.slowTimer>0&&(e.save(),e.globalAlpha=.35,e.fillStyle="#88ccff",e.beginPath(),e.arc(this.x,this.y,o,0,Math.PI*2),e.fill(),e.restore()),this.shielded&&this.shieldHp>0&&(e.save(),e.strokeStyle="rgba(160,200,255,0.6)",e.lineWidth=2,e.beginPath(),e.arc(this.x,this.y,o+4,0,Math.PI*2),e.stroke(),e.restore());let r=Math.max(0,this.hp/this.maxHp),l=this.boss?80:30;e.fillStyle="#222",e.fillRect(this.x-l/2,this.y-o-10,l,4),e.fillStyle=r>.5?"#44ff44":r>.25?"#ffaa33":"#ff4444",e.fillRect(this.x-l/2,this.y-o-10,l*r,4),this.boss&&(e.save(),this.type?.iceQueen?(e.strokeStyle="rgba(170,220,255,0.85)",e.lineWidth=3,e.beginPath(),e.arc(this.x,this.y,o+4,0,Math.PI*2),e.stroke(),e.strokeStyle="rgba(220,240,255,0.45)",e.lineWidth=1.5,e.beginPath(),e.arc(this.x,this.y,o+10,0,Math.PI*2),e.stroke()):(e.strokeStyle="#ff33aa",e.lineWidth=3,e.beginPath(),e.arc(this.x,this.y,o+4,0,Math.PI*2),e.stroke()),e.restore())}},Ce=class{constructor(e,t,s,i,n){this.x=e,this.y=t,this.vx=Math.cos(s)*i,this.vy=Math.sin(s)*i,this.damage=n,this.life=3,this.size=6,this.shouldRemove=!1}update(e,t){if(this.x+=this.vx*e,this.y+=this.vy*e,this.life-=e,this.life<=0){this.shouldRemove=!0;return}let s=t.getNearestPlayer?.(this.x,this.y)||t.player;Math.hypot(this.x-s.x,this.y-s.y)<s.size+this.size&&(s.invincible||(s.takeDamage(this.damage,t),t.createFloatingText(Math.round(this.damage),s.x,s.y-30,"#ff6644")),this.shouldRemove=!0)}render(e){let t=L(ht);if(!t)return;let s=Math.atan2(this.vy,this.vx);e.save(),e.translate(this.x,this.y),e.rotate(s),e.drawImage(t,-t.width/2,-t.height/2),e.restore()}},de=class{constructor(e,t,s,i,n,o,r){this.x=e,this.y=t,this.startX=e,this.startY=t,this.angle=s,this.def=i,this.damage=n,this.level=o,this.size=8,this.speed=i.speed||300,this.piercing=!!i.piercing,this.homing=!!i.homing,this.arc=!!i.arc,this.boomerang=!!i.boomerang,this.explode=!!i.explode,this.explodeRadius=i.explodeRadius||60,this.vx=Math.cos(s)*this.speed,this.vy=Math.sin(s)*this.speed,this.life=4,this.hitEnemies=new Set,this.shouldRemove=!1,this.travelDist=0,this.maxDist=(i.baseRange||300)*(r?r.getAreaMult():1),this.id=i.id,this.owner=r||null}update(e,t){if(this.homing&&this.hitEnemies.size===0){let s=t.spatial.findNearestEnemy(this.x,this.y,9999);if(s){let n=Math.atan2(s.y-this.y,s.x-this.x)-this.angle;for(;n>Math.PI;)n-=Math.PI*2;for(;n<-Math.PI;)n+=Math.PI*2;this.angle+=n*Math.min(1,6*e),this.vx=Math.cos(this.angle)*this.speed,this.vy=Math.sin(this.angle)*this.speed}}if(this.arc&&(this.vy+=420*e),this.boomerang&&Math.hypot(this.x-this.startX,this.y-this.startY)>this.maxDist*.5){let i=this.owner&&!this.owner.dead?this.owner:t.player,n=Math.atan2(i.y-this.y,i.x-this.x);this.vx=Math.cos(n)*this.speed,this.vy=Math.sin(n)*this.speed}if(this.x+=this.vx*e,this.y+=this.vy*e,this.travelDist+=Math.hypot(this.vx,this.vy)*e,this.life-=e,(this.travelDist>this.maxDist||this.life<=0)&&(this._onEnd(t),this.shouldRemove=!0),this.boomerang){let s=this.owner&&!this.owner.dead?this.owner:t.player;Math.hypot(this.x-s.x,this.y-s.y)<24&&this.travelDist>60&&(this._onEnd(t),this.shouldRemove=!0)}}_onEnd(e){if(this.explode){e.audio.explosion();let t=e?.spatial?e.spatial.queryRect(this.x,this.y,this.explodeRadius):e.enemies;for(let s of t)Math.hypot(s.x-this.x,s.y-this.y)<this.explodeRadius&&s.takeDamage(this.damage*.6);e.createParticles(this.x,this.y,"#ff8800",20),e.shake(.15)}}render(e){e.save(),e.translate(this.x,this.y),e.rotate(this.angle);let t=lt[this.id],s=t?L(t):null;s?e.drawImage(s,-s.width/2,-s.height/2):(e.fillStyle="#ffffff",e.beginPath(),e.arc(0,0,5,0,Math.PI*2),e.fill()),e.restore()}},ue=class{constructor(e,t,s,i,n){this.weapon=e,this.index=t,this.total=s,this.radius=i,this.damage=n,this.angle=t/s*Math.PI*2,this.hitTimers=new Map,this.x=0,this.y=0}update(e,t,s){this.angle+=e*2.4,this.x=t.x+Math.cos(this.angle)*this.radius,this.y=t.y+Math.sin(this.angle)*this.radius;for(let[o,r]of this.hitTimers){let l=r-e;l<=0?this.hitTimers.delete(o):this.hitTimers.set(o,l)}let i=10,n=i+64;for(let o of s.spatial.queryRect(this.x,this.y,n)){if(this.hitTimers.has(o))continue;Math.hypot(o.x-this.x,o.y-this.y)<(o.size||12)+i&&(o.takeDamage(this.damage),this.hitTimers.set(o,.5),s.createFloatingText(Math.round(this.damage),o.x,o.y-18,"#ffffcc"))}}render(e){A(e,"shard",this.x,this.y)}},j=class{constructor(e,t,s,i,n){this.x=e,this.y=t,this.radius=s,this.damage=i,this.fuse=n,this.maxFuse=n,this.shouldRemove=!1}update(e,t){if(this.fuse-=e,this.fuse<=0){let s=t?.spatial?t.spatial.queryRect(this.x,this.y,this.radius):t.enemies;for(let i of s)Math.hypot(i.x-this.x,i.y-this.y)<this.radius&&(i.takeDamage(this.damage),t.createFloatingText(Math.round(this.damage),i.x,i.y-20,"#ff9944"));t.createParticles(this.x,this.y,"#ff8833",20),t.shake(.25),t.audio?.explosion?.(),this.shouldRemove=!0}}render(e){let t=this.fuse<this.maxFuse*.5,s=t?.5+Math.sin(performance.now()/60)*.5:.3;e.save(),e.fillStyle=`rgba(255,80,80,${.25+s*.35})`,e.beginPath(),e.arc(this.x,this.y,this.radius,0,Math.PI*2),e.fill(),A(e,"gland",this.x,this.y,{flash:t}),e.restore()}},pe=class{constructor(e,t,s){this.x=e,this.y=t,this.value=s,this.size=4+Math.log(s+1)*1.5,this.shouldRemove=!1,this.magnetSpeed=0,this.life=v.EXP_ORB_LIFETIME}update(e,t){if(this.life-=e,this.life<=0){this.shouldRemove=!0;return}let s=t.getNearestPlayer?.(this.x,this.y)||t.player,i=s.x-this.x,n=s.y-this.y,o=Math.hypot(i,n),r=s.getMagnetRange();if(o<v.PICKUP_DISTANCE){s.gainExp(this.value),t.createFloatingText(`+${this.value}XP`,s.x,s.y-40,"#c9f26b"),t.audio.pickup(),t.run&&(t.run.orbsCollected=(t.run.orbsCollected||0)+1),this.shouldRemove=!0;return}o<r&&(this.magnetSpeed=Math.min(this.magnetSpeed+600*e,560),this.x+=i/o*this.magnetSpeed*e,this.y+=n/o*this.magnetSpeed*e)}render(e){let t=this.life<2?Math.max(0,this.life/2):1;A(e,"honeydew",this.x,this.y,{alpha:t})}},fe=class{constructor(e,t,s,i={}){this.x=e,this.y=t,this.color=s,this.size=i.size??Math.random()*4+2,this.life=i.life??1,this.decay=i.decay??Math.random()*1.5+1;let n=i.angle??Math.random()*Math.PI*2,o=i.speed??Math.random()*180+60;this.vx=Math.cos(n)*o,this.vy=Math.sin(n)*o,this.friction=i.friction??.2}update(e){this.x+=this.vx*e,this.y+=this.vy*e,this.vx*=Math.pow(this.friction,e),this.vy*=Math.pow(this.friction,e),this.life-=this.decay*e,this.size*=Math.pow(.3,e)}render(e){this.life<=0||(e.globalAlpha=Math.max(0,this.life),e.fillStyle=this.color,e.beginPath(),e.arc(this.x,this.y,this.size,0,Math.PI*2),e.fill(),e.globalAlpha=1)}},me=class{constructor(e,t,s,i,n={}){this.text=e,this.x=t,this.y=s,this.color=i,this.life=n.life??1,this.vy=n.vy??-60,this.size=n.size??16,this.weight=n.weight??"bold",this.crit=!!n.crit}update(e){this.y+=this.vy*e,this.life-=1.2*e}render(e){if(this.life<=0)return;e.globalAlpha=Math.max(0,this.life),e.fillStyle=this.color;let t=this.crit?this.size*1.6:this.size;e.font=`${this.weight} ${t}px system-ui, sans-serif`,e.textAlign="center",this.crit&&(e.strokeStyle="#000",e.lineWidth=3,e.strokeText(this.text,this.x,this.y)),e.fillText(this.text,this.x,this.y),e.globalAlpha=1}};function ve(a){for(let e of Object.values(z))if(e.id===a)return e;return null}var Y=class{constructor(e){this.def=e,this.id=e.id,this.name=e.name,this.icon=e.icon,this.level=1,this.cooldown=0,this._shards=null}levelUp(){this.level++}isEvolved(){return!!this.def.evolveLevel&&this.level>=this.def.evolveLevel}update(e,t,s){if(this.def.type==="orbit"){this._ensureShards(t);for(let i of this._shards)i.update(e,t,s);return}this.cooldown-=e,this.cooldown<=0&&(this.fire(t,s),this.cooldown=this.getCooldown(t))}getDamage(e){let t=this.def.baseDamage*(1+(this.level-1)*.2)*e.getDamageMult();return this.isEvolved()&&this.def.evolveDamageMult&&(t*=this.def.evolveDamageMult),t}_rollCrit(e,t,s,i,n,o){let r=e.getCritChance();if(this.isEvolved()&&this.def.evolveBonusCrit&&(r+=this.def.evolveBonusCrit),r>0&&Math.random()<r){let l=s*2;return t.createFloatingText(Math.round(l),i,n,"#ffee44",{crit:!0}),l}return t.createFloatingText(Math.round(s),i,n,o),s}getCooldown(e){let t=this.def.baseCooldown*Math.pow(.92,this.level-1)*e.getCooldownMult();return this.isEvolved()&&this.def.evolveCooldownMult&&(t*=this.def.evolveCooldownMult),t}getRange(e){return this.def.baseRange*(1+(this.level-1)*.1)*e.getAreaMult()}getOrbitShardCount(e){let t=this.def.projectileCount+Math.floor((this.level-1)/2);this.isEvolved()&&(t=t*2);let s=Math.floor((e.passives?.cooldown?.count||0)/2);return Math.min(12,t+s)}_ensureShards(e){let t=this.getOrbitShardCount(e),s=this.getRange(e),i=this.getDamage(e);if(!this._shards||this._shards.length!==t){this._shards=[];for(let n=0;n<t;n++)this._shards.push(new ue(this,n,t,s,i))}else for(let n of this._shards)n.radius=s,n.damage=i,n.total=t}renderExtras(e){if(this.def.type==="orbit"&&this._shards)for(let t of this._shards)t.render(e)}fire(e,t){switch(this.def.type){case"melee":return this._fireMelee(e,t);case"projectile":return this._fireProjectile(e,t);case"instant":return this._fireInstant(e,t);case"aura":return this._fireAura(e,t);case"mine":return this._fireMine(e,t);case"nova":return this._fireNova(e,t);case"drain":return this._fireDrain(e,t)}}_fireMelee(e,t){let s=this.getRange(e),i=this.getDamage(e),n=new Set,o=this.isEvolved(),r=t?.spatial?t.spatial.queryRect(e.x,e.y,Math.max(s,40)):t.enemies;for(let l of r){let h=l.x-e.x,c=l.y-e.y;if(o){if(Math.hypot(h,c)>s)continue}else if(Math.abs(h)>s||Math.abs(c)>40)continue;if(n.has(l))continue;n.add(l);let d=this._rollCrit(e,t,i,l.x,l.y-20,"#ffaa00");l.takeDamage(d)}o?t.createParticles(e.x,e.y,"#ff6644",12):(t.createParticles(e.x-s/2,e.y,"#ffaa00",5),t.createParticles(e.x+s/2,e.y,"#ffaa00",5)),t.audio.shoot()}_fireProjectile(e,t){let s=this.def.projectileCount+Math.floor((this.level-1)/2);this.isEvolved()&&this.id==="knife"&&(s=Math.max(s,5)),this.isEvolved()&&this.id==="magic_wand"&&(s+=2);let i=s>1?this.isEvolved()?24:14:0,n=t.spatial.findNearestEnemy(e.x,e.y,this.getRange(e));if(!n)return;let o=Math.atan2(n.y-e.y,n.x-e.x);for(let r=0;r<s;r++){let l=(r-(s-1)/2)*i*Math.PI/180;t.projectiles.push(new de(e.x,e.y,o+l,this.def,this.getDamage(e),this.level,e))}t.audio.shoot()}_fireInstant(e,t){let s=this.getRange(e),i=this.getDamage(e),n=t?.spatial?t.spatial.queryRect(e.x,e.y,s):t.enemies,o=[];for(let c of n)Math.hypot(c.x-e.x,c.y-e.y)<s&&o.push(c);if(!o.length)return;let r=this.isEvolved(),l=r?Math.min(3,o.length):1,h=new Set;for(let c=0;c<l;c++){let d=null;for(;h.size<o.length;){let f=o[Math.floor(Math.random()*o.length)];if(!h.has(f)){d=f,h.add(f);break}}if(!d)break;let p=this._rollCrit(e,t,i,d.x,d.y-20,"#ffff66");if(d.takeDamage(p),t.createParticles(d.x,d.y,"#ffff66",14),this.def.chain&&this.level>=3){let f=d,g=new Set([f]),m=r?this.def.chainCount+2:this.def.chainCount;for(let K=0;K<m;K++){let y=null,M=1/0,N=t?.spatial?t.spatial.queryRect(f.x,f.y,180):t.enemies;for(let E of N){if(g.has(E))continue;let H=Math.hypot(E.x-f.x,E.y-f.y);H<180&&H<M&&(M=H,y=E)}if(!y)break;y.takeDamage(p*.7),t.createParticles(y.x,y.y,"#ffff66",8),g.add(y),f=y}}}t.audio.shoot()}_fireAura(e,t){let s=this.getRange(e),i=this.getDamage(e),n=t?.spatial?t.spatial.queryRect(e.x,e.y,s):t.enemies;for(let o of n)Math.hypot(o.x-e.x,o.y-e.y)<s&&o.takeDamage(i);if(Math.random()<.4){let o=Math.random()*Math.PI*2,r=Math.random()*s;t.createParticles(e.x+Math.cos(o)*r,e.y+Math.sin(o)*r,"#88ff88",1)}}_fireMine(e,t){let s=this.getRange(e),i=this.getDamage(e),n=this.def.fuse||1.2;if(t.mines=t.mines||[],t.mines.push(new j(e.x,e.y,s,i,n)),this.isEvolved()){let o=Math.random()*Math.PI*2;t.mines.push(new j(e.x+Math.cos(o)*60,e.y+Math.sin(o)*60,s*.8,i,n))}t.audio?.shoot?.()}_fireNova(e,t){let s=this.getRange(e),i=this.getDamage(e),n=this.def.slowPct??.5,o=this.def.slowDuration??1.2,r=t?.spatial?t.spatial.queryRect(e.x,e.y,s):t.enemies;for(let l of r)if(Math.hypot(l.x-e.x,l.y-e.y)<s){let c=this._rollCrit(e,t,i,l.x,l.y-20,"#88ddff");l.takeDamage(c),(!l.slowTimer||l.slowTimer<o)&&(l.slowTimer=o,l.slowPct=n)}if(t.createParticles(e.x,e.y,"#aaeeff",24),this.isEvolved()){let l=s,h=i*.6;t.effects?.schedule?.(.4,()=>{if(!t.player||t.player.dead)return;let c=t?.spatial?t.spatial.queryRect(e.x,e.y,l):t.enemies;for(let d of c)Math.hypot(d.x-e.x,d.y-e.y)<l&&d.takeDamage(h);t.createParticles(e.x,e.y,"#88ccff",16)})}t.audio?.shoot?.()}_fireDrain(e,t){let s=this.getRange(e),i=this.getDamage(e),n=this.def.lifestealPct??.25,o=this.isEvolved()?2:1,r=[],l=t.enemies.filter(c=>Math.hypot(c.x-e.x,c.y-e.y)<s).sort((c,d)=>Math.hypot(c.x-e.x,c.y-e.y)-Math.hypot(d.x-e.x,d.y-e.y));for(let c=0;c<o&&c<l.length;c++)r.push(l[c]);if(!r.length)return;let h=0;for(let c of r){let d=this._rollCrit(e,t,i,c.x,c.y-16,"#ff66aa");c.takeDamage(d),h+=d,t.createParticles((e.x+c.x)/2,(e.y+c.y)/2,"#ff88cc",2)}e.heal&&e.heal(h*n)}};var ge=class{constructor(e){this.settings=e,this.ctx=null,this.masterGain=null,this.sfxGain=null,this.musicGain=null,this.musicInterval=null,this.enabled=!0,this.unlocked=!1}init(){if(!this.ctx)try{let e=window.AudioContext||window.webkitAudioContext;if(!e){this.enabled=!1;return}this.ctx=new e,this.masterGain=this.ctx.createGain(),this.sfxGain=this.ctx.createGain(),this.musicGain=this.ctx.createGain(),this.sfxGain.connect(this.masterGain),this.musicGain.connect(this.masterGain),this.masterGain.connect(this.ctx.destination),this.applyVolumes()}catch(e){console.warn("[audio] disabled",e),this.enabled=!1}}unlock(){this.ctx||this.init(),this.ctx&&this.ctx.state==="suspended"&&this.ctx.resume().catch(()=>{}),this.unlocked=!0}applyVolumes(){if(!this.ctx)return;let e=this.settings,t=e.muted?0:1;this.masterGain.gain.value=(e.masterVolume??.6)*t,this.sfxGain.gain.value=e.sfxVolume??.8,this.musicGain.gain.value=(e.musicEnabled===!1?0:1)*(e.musicVolume??.4)}setMuted(e){this.settings.muted=!!e,this.applyVolumes()}tone({freq:e=440,dur:t=.08,type:s="sine",volume:i=.2,attack:n=.005,release:o=.05,sweep:r=0,noise:l=!1}){if(!this.enabled||!this.ctx||!this.unlocked)return;let h=this.ctx.currentTime,c=this.ctx.createGain();c.gain.setValueAtTime(0,h),c.gain.linearRampToValueAtTime(i,h+n),c.gain.exponentialRampToValueAtTime(1e-4,h+t+o),c.connect(this.sfxGain);let d;if(l)d=this.ctx.createBufferSource(),d.buffer=this._noiseBuffer();else{let p=this.ctx.createOscillator();p.type=s,p.frequency.setValueAtTime(e,h),r&&p.frequency.exponentialRampToValueAtTime(Math.max(40,e+r),h+t),d=p}d.connect(c),d.start(h),d.stop(h+t+o+.01)}_noiseBuffer(){if(this._noise)return this._noise;let e=this.ctx.sampleRate*.4,t=this.ctx.createBuffer(1,e,this.ctx.sampleRate),s=t.getChannelData(0);for(let i=0;i<e;i++)s[i]=Math.random()*2-1;return this._noise=t,t}hit(){this.tone({freq:320,dur:.05,type:"square",volume:.12,sweep:-120})}shoot(){this.tone({freq:780,dur:.04,type:"triangle",volume:.08,sweep:-200})}explosion(){this.tone({noise:!0,dur:.25,volume:.22,release:.15})}pickup(){this.tone({freq:1200,dur:.06,type:"sine",volume:.12,sweep:400})}levelUp(){this.tone({freq:660,dur:.1,type:"triangle",volume:.2}),setTimeout(()=>this.tone({freq:990,dur:.12,type:"triangle",volume:.22}),90),setTimeout(()=>this.tone({freq:1320,dur:.18,type:"triangle",volume:.24}),200)}damage(){this.tone({freq:180,dur:.18,type:"sawtooth",volume:.18,sweep:-80})}death(){this.tone({freq:220,dur:.4,type:"sawtooth",volume:.25,sweep:-180}),setTimeout(()=>this.tone({freq:110,dur:.6,type:"sawtooth",volume:.2,sweep:-80}),200)}bossSpawn(){this.tone({noise:!0,dur:.4,volume:.3,release:.25}),setTimeout(()=>this.tone({freq:80,dur:.6,type:"sawtooth",volume:.3}),100)}bossWarn(){this.tone({freq:480,dur:.12,type:"square",volume:.2}),setTimeout(()=>this.tone({freq:360,dur:.12,type:"square",volume:.2}),140),setTimeout(()=>this.tone({freq:240,dur:.2,type:"square",volume:.22}),280)}achievement(){this.tone({freq:880,dur:.08,type:"triangle",volume:.18}),setTimeout(()=>this.tone({freq:1174,dur:.1,type:"triangle",volume:.2}),70),setTimeout(()=>this.tone({freq:1567,dur:.14,type:"triangle",volume:.22}),150)}startMusic(){if(!this.enabled||!this.ctx||this.musicInterval||this.settings.musicEnabled===!1)return;this.unlock();let e=144,t=16,s=[0,-4,3,-2],i=[0,3,7],n=[0,4,7],o=[i,n,n,n],r=[0,3,7,12,15,12,7,3],l=0,h=p=>110*Math.pow(2,p/12),c=p=>{let{freq:f=440,dur:g=.2,type:m="sawtooth",vol:K=.1,attack:y=.01,release:M=.08,detune:N=0,sweepTo:E=0,filterFreq:H=0,filterType:Ft="lowpass",noise:Ut=!1,noiseFilter:zt="highpass",noiseFreq:qt=6e3}=p;if(!this.ctx)return;let k=this.ctx.currentTime,W=this.ctx.createGain();W.gain.setValueAtTime(1e-4,k),W.gain.linearRampToValueAtTime(K,k+y),W.gain.exponentialRampToValueAtTime(1e-4,k+g+M);let it=W;if(H>0){let B=this.ctx.createBiquadFilter();B.type=Ft,B.frequency.value=H,W.connect(B),it=B}if(it.connect(this.musicGain),Ut){let B=this.ctx.createBufferSource();B.buffer=this._noiseBuffer();let re=this.ctx.createBiquadFilter();re.type=zt,re.frequency.value=qt,B.connect(re),re.connect(W),B.start(k),B.stop(k+g+M+.05)}else{let B=this.ctx.createOscillator();B.type=m,B.frequency.value=f,B.detune.value=N,E>0&&B.frequency.exponentialRampToValueAtTime(E,k+g),B.connect(W),B.start(k),B.stop(k+g+M+.05)}},d=()=>{if(!this.ctx)return;let p=Math.floor(l/t)%4,f=l%t,g=s[p],m=o[p];if(f===0)for(let K of m)for(let y of[-7,7])c({freq:h(g+K+12),dur:2.2,type:"sawtooth",vol:.032,attack:.5,release:.6,detune:y,filterFreq:1100});if(f%2===0){let K=f%8===4?12:0;c({freq:h(g+K),dur:.16,type:"sawtooth",vol:.13,attack:.005,release:.06,filterFreq:750})}if(f%4===0&&c({freq:150,sweepTo:42,dur:.11,type:"sine",vol:.5,attack:.002,release:.05}),(f===4||f===12)&&(c({noise:!0,dur:.12,vol:.18,attack:.002,release:.08,noiseFilter:"bandpass",noiseFreq:1800}),c({freq:190,dur:.08,type:"triangle",vol:.1})),f%4===2?c({noise:!0,dur:.04,vol:.06,attack:.001,release:.03,noiseFreq:7500}):f%2===1&&c({noise:!0,dur:.03,vol:.028,attack:.001,release:.02,noiseFreq:8e3}),p===1||p===3){let K=r[(f>>1)%r.length];c({freq:h(g+K+24),dur:.14,type:"triangle",vol:.026,attack:.005,release:.1})}l++};this.musicInterval=setInterval(d,e)}stopMusic(){this.musicInterval&&(clearInterval(this.musicInterval),this.musicInterval=null)}toggleMusic(e){this.settings.musicEnabled=!!e,this.applyVolumes(),e?this.startMusic():this.stopMusic()}};var ct="vs_keymap_v1",P=Object.freeze(["up","down","left","right","pause","help","mute"]),_=Object.freeze({up:Object.freeze(["w","arrowup"]),down:Object.freeze(["s","arrowdown"]),left:Object.freeze(["a","arrowleft"]),right:Object.freeze(["d","arrowright"]),pause:Object.freeze(["escape","p"]),help:Object.freeze(["h","?"]),mute:Object.freeze(["m"])});function X(a){return typeof a!="string"||a.length===0?"":a.toLowerCase()}function T(a){let e={};for(let t of P){let s=Array.isArray(a?.[t])?a[t]:[];e[t]=s.slice()}return e}function dt(a){let e={};for(let t of P){let s=Array.isArray(a?.[t])?a[t]:null;if(!s){e[t]=_[t].slice();continue}let i=[];for(let n of s){let o=X(n);o&&!i.includes(o)&&i.push(o)}e[t]=i.length?i:_[t].slice()}return e}function ut(a,e,t,{replace:s=!0}={}){let i=T(a),n=X(t);if(!P.includes(e)||!n)return i;for(let o of P)o!==e&&(i[o]=i[o].filter(r=>r!==n));s?i[e]=[n]:i[e].includes(n)||i[e].push(n);for(let o of P)i[o].length===0&&(i[o]=_[o].slice());return i}function pt(a){let e=new Map;for(let s of P)for(let i of a?.[s]||[])e.has(i)||e.set(i,new Set),e.get(i).add(s);let t=[];for(let[s,i]of e)i.size>1&&t.push({key:s,actions:Array.from(i).sort()});return t}function Le(a){let e=X(a);if(!e)return"";switch(e){case"arrowup":return"\u2191";case"arrowdown":return"\u2193";case"arrowleft":return"\u2190";case"arrowright":return"\u2192";case"escape":return"Esc";case" ":return"Space";case"enter":return"Enter";case"tab":return"Tab";case"shift":return"Shift";case"control":return"Ctrl";case"alt":return"Alt";case"meta":return"Meta";default:return e.length===1?e.toUpperCase():e}}var Ie=null;function ft(){try{return!(typeof window>"u"||!window.localStorage)}catch{return!1}}function mt(){try{let a=ft()?window.localStorage.getItem(ct):Ie;if(!a)return T(_);let e=JSON.parse(a);return dt(e)}catch{return T(_)}}function vt(a){let e=dt(a),t;try{t=JSON.stringify(e)}catch{return!1}if(ft())try{return window.localStorage.setItem(ct,t),!0}catch{return Ie=t,!1}return Ie=t,!0}var Re=.15,Zt=260,es=.18,J=Object.freeze({A:0,B:1,X:2,Y:3,LB:4,RB:5,LT:6,RT:7,BACK:8,START:9});function F(a,e=es){if(!Number.isFinite(a))return 0;let t=Math.abs(a);return t<e?0:(a<0?-1:1)*((t-e)/(1-e))}var ye=class{constructor(){this.keys=Object.create(null),this.moveVec={x:0,y:0},this.touchVec={x:0,y:0},this.gamepadVec={x:0,y:0},this.gamepadVec2={x:0,y:0},this.aimVec={x:0,y:0},this.paused=!1,this.listeners=[],this.joystick=null,this.onTogglePause=()=>{},this.onGamepadConfirm=()=>{},this.onGamepadCancel=()=>{},this.onGamepadCycleNext=()=>{},this.onGamepadCyclePrev=()=>{},this._lastEdgeTapAt=0,this._prevButtons=[],this.onTouchSpecial=()=>{},this.keymap=T(_),this.onActionHelp=()=>{},this.onActionMute=()=>{},this.coopMode=!1}setKeymap(e){this.keymap=T(e||_)}_matches(e,t){let s=this.keymap?.[e];return Array.isArray(s)&&s.includes(t)}attach(e=window){let t=o=>{let r=o.key.toLowerCase();this.keys[r]=!0,this._matches("pause",r)?(o.preventDefault(),this.onTogglePause()):this._matches("help",r)?(o.preventDefault(),this.onActionHelp()):this._matches("mute",r)&&(o.preventDefault(),this.onActionMute())},s=o=>{this.keys[o.key.toLowerCase()]=!1},i=()=>{this.keys=Object.create(null)};e.addEventListener("keydown",t),e.addEventListener("keyup",s),e.addEventListener("blur",i),this.listeners.push(["keydown",t,e]),this.listeners.push(["keyup",s,e]),this.listeners.push(["blur",i,e]);let n=o=>{if(!o.touches||o.touches.length===0)return;let r=o.touches[0],l=window.innerWidth,h=r.clientX<l*.12,c=r.clientX>l*.88;if(!h&&!c)return;let d=Date.now();d-this._lastEdgeTapAt<Zt?(this._lastEdgeTapAt=0,this.onTogglePause()):this._lastEdgeTapAt=d};document.addEventListener("touchstart",n,{passive:!0}),this.listeners.push(["touchstart",n,document])}detach(){for(let[e,t,s]of this.listeners)s.removeEventListener(e,t);this.listeners.length=0,this.joystick&&this.joystick.destroy()}attachJoystick(e,t){this.joystick=new Ge(e,t,(s,i)=>{this.touchVec.x=s,this.touchVec.y=i})}attachSpecialButton(e){if(!e)return;let t=s=>{s.preventDefault?.(),this.onTouchSpecial()};e.addEventListener("touchstart",t,{passive:!1}),e.addEventListener("click",t),this.listeners.push(["touchstart",t,e]),this.listeners.push(["click",t,e])}pollGamepad(e=ts){let t=e();if(!t)return;let s=[];for(let m of t)m&&s.push(m);let i=s[0]||null,n=s[1]||null;if(!i){this.gamepadVec.x=0,this.gamepadVec.y=0,this.gamepadVec2.x=0,this.gamepadVec2.y=0,this.aimVec.x=0,this.aimVec.y=0,this._prevButtons.length=0;return}if(n){let m=F(n.axes[0]||0),K=F(n.axes[1]||0),y=Math.hypot(m,K);y>1?(this.gamepadVec2.x=m/y,this.gamepadVec2.y=K/y):(this.gamepadVec2.x=m,this.gamepadVec2.y=K)}else this.gamepadVec2.x=0,this.gamepadVec2.y=0;let o=F(i.axes[0]||0),r=F(i.axes[1]||0),l=Math.hypot(o,r);l>1?(this.gamepadVec.x=o/l,this.gamepadVec.y=r/l):(this.gamepadVec.x=o,this.gamepadVec.y=r);let h=F(i.axes[2]||0),c=F(i.axes[3]||0);this.aimVec.x=h,this.aimVec.y=c;let d=i.buttons||[],p=m=>!!this._prevButtons[m],f=m=>!!(d[m]&&d[m].pressed),g=m=>f(m)&&!p(m);g(J.A)&&this.onGamepadConfirm(),g(J.B)&&this.onGamepadCancel(),g(J.START)&&this.onTogglePause(),g(J.RB)&&this.onGamepadCycleNext(),g(J.LB)&&this.onGamepadCyclePrev(),this._prevButtons=d.map(m=>!!(m&&m.pressed))}getMoveVector(e=0){let t=0,s=0,i=this.keys;if(e===1)i.arrowup&&(s-=1),i.arrowdown&&(s+=1),i.arrowleft&&(t-=1),i.arrowright&&(t+=1),t===0&&s===0&&(t=this.gamepadVec2.x,s=this.gamepadVec2.y);else{let o=r=>{let l=this.keymap?.[r];if(!Array.isArray(l))return!1;for(let h of l)if(!(this.coopMode&&h.startsWith("arrow"))&&i[h])return!0;return!1};o("up")&&(s-=1),o("down")&&(s+=1),o("left")&&(t-=1),o("right")&&(t+=1),t===0&&s===0&&(this.gamepadVec.x!==0||this.gamepadVec.y!==0?(t=this.gamepadVec.x,s=this.gamepadVec.y):(t=this.touchVec.x,s=this.touchVec.y))}let n=Math.hypot(t,s);return n>1&&(t/=n,s/=n),this.moveVec.x=t,this.moveVec.y=s,this.moveVec}};function ts(){if(typeof navigator>"u"||typeof navigator.getGamepads!="function")return null;try{return navigator.getGamepads()}catch{return null}}var Ge=class{constructor(e,t,s){this.base=e,this.knob=t,this.cb=s,this.active=!1,this.cx=0,this.cy=0,this.maxR=60;let i=r=>{this.active=!0;let l=r.touches?r.touches[0]:r,h=e.getBoundingClientRect();this.cx=h.left+h.width/2,this.cy=h.top+h.height/2,this._update(l.clientX,l.clientY),r.preventDefault()},n=r=>{if(!this.active)return;let l=r.touches?r.touches[0]:r;this._update(l.clientX,l.clientY),r.preventDefault()},o=()=>{this.active=!1,t.style.transform="translate(-50%, -50%)",s(0,0)};e.addEventListener("touchstart",i,{passive:!1}),window.addEventListener("touchmove",n,{passive:!1}),window.addEventListener("touchend",o),e.addEventListener("mousedown",i),window.addEventListener("mousemove",n),window.addEventListener("mouseup",o),this._cleanup=()=>{e.removeEventListener("touchstart",i),window.removeEventListener("touchmove",n),window.removeEventListener("touchend",o),e.removeEventListener("mousedown",i),window.removeEventListener("mousemove",n),window.removeEventListener("mouseup",o)}}_update(e,t){let s=e-this.cx,i=t-this.cy,n=Math.hypot(s,i),o=Math.min(n,this.maxR),r=n===0?0:s/n*o,l=n===0?0:i/n*o;this.knob.style.transform=`translate(calc(-50% + ${r}px), calc(-50% + ${l}px))`;let h=o/this.maxR;if(h<Re){this.cb(0,0);return}let c=1-Re,d=Math.pow((h-Re)/c,1.3),p=n===0?0:s/n,f=n===0?0:i/n;this.cb(p*d,f*d)}destroy(){this._cleanup?.()}};var ss=Object.freeze({hurt:Object.freeze([30]),bossSpawn:Object.freeze([80,50,80]),levelUp:Object.freeze([20,40,60]),gameOver:Object.freeze([200,100,200])});function gt(a){return!a||typeof a.vibrate!="function"?null:a.vibrate.bind(a)}var Ke=class{constructor(e={},t=null){this.settings=e,this._navOverride=t,this._lastPattern=null}isSupported(){let e=this._navOverride||(typeof navigator<"u"?navigator:null);return!!gt(e)}isEnabled(){return this.settings?.vibration!==!1}vibrate(e){let t=ss[e];if(!t)return!1;if(this._lastPattern=t,!this.isEnabled())return!0;let s=this._navOverride||(typeof navigator<"u"?navigator:null),i=gt(s);if(!i)return!1;try{return i(t.slice()),!0}catch{return!1}}hurt(){return this.vibrate("hurt")}bossSpawn(){return this.vibrate("bossSpawn")}levelUp(){return this.vibrate("levelUp")}gameOver(){return this.vibrate("gameOver")}};var Q={en:{title:"BEETLE VS. THE SWARM",subtitle:"A bug-world swarm-survival roguelite",start:"Start Run",continue:"Continue",settings:"Settings",howToPlay:"How to play",move:"WASD / arrow keys to move",autoAttack:"Weapons auto-attack nearby foes",survive:"Survive as long as you can!",level:"LEVEL",xp:"XP",time:"TIME",kills:"KILLS",hp:"HP",gameover:"YOU DIED",finalTime:"Survived",finalKills:"Kills",finalLevel:"Level",retry:"Retry",mainMenu:"Main Menu",paused:"PAUSED",resume:"Resume",quit:"Quit to Menu",masterVolume:"Master Volume",sfxVolume:"SFX Volume",musicVolume:"Music Volume",musicEnabled:"Music",difficulty:"Difficulty",showFps:"Show FPS",screenShake:"Screen shake",reducedMotion:"Reduced motion",colorblind:"High contrast (colorblind)",locale:"Language",close:"Close",resetData:"Reset all saved data",confirmReset:"This will wipe achievements and high scores. Continue?",chooseUpgrade:"Choose an upgrade",highScore:"Best",highScores:"High Scores",wave:"Wave",bossIncoming:"A BOSS APPROACHES",achievementUnlocked:"Achievement Unlocked",date:"Date",noHighScores:"No runs recorded yet.",achievements:"Achievements",viewAchievements:"View Achievements",totals:"Totals",speedrun:"Speedrun",leaderboard:"Leaderboard",export:"Export",import:"Import",paste:"Paste JSON",splits:"Splits",noHit:"No-Hit",weapons:"Weapons",speedrunMode:"Speedrun Mode",newPb:"New personal best!",stage:"Stage",chooseStage:"Choose a Stage",dailyChallenge:"Daily Challenge",dailyToday:"Today's Challenge",shareDaily:"Share Result",copied:"Copied to clipboard",copyManual:"Select & copy manually",damageNumbers:"Show damage numbers",touchButtonScale:"Touch button size",viewStreak:"View Streak",dailyStreak:"Daily Streak",currentStreak:"Current streak",bestStreak:"Best streak",last14Days:"Last 14 days",noStreakYet:"No daily runs recorded yet \u2014 try today\u2019s challenge!",howToPlayBtn:"How to Play",helpTitle:"Keyboard shortcuts",hotkeyHint:"Tip: P/Esc pause \xB7 M mute \xB7 H help",helpKeyMove:"Move",helpKeyPause:"Pause / resume",helpKeyMute:"Mute audio",helpKeyHelp:"Toggle help",helpKeyLanguage:"Toggle language",helpKeySettings:"Settings panel",helpKeyConfirm:"Confirm / fire",howToTitle:"How to play",howToBody1:"You are auto-attacking. Move with WASD or arrow keys; weapons fire on their own.",howToBody2:"Pick up honeydew drops to gain XP. Each level lets you choose one upgrade.",howToBody3:"Survive long enough and a boss appears every few minutes.",howToBody4:"Hit P or Esc to pause, M to mute, H to see this list any time.",gotIt:"Got it",tutorialOffer:"Welcome! Take a quick 5-step tutorial?",tryTutorial:"Try Tutorial",skipTutorial:"Skip",tutorialSkipHint:"Press Esc to skip.",tutorialDone:"Tutorial complete!",replayLastRun:"Replay Last Run",noReplay:"No replay saved yet \u2014 finish a run first.",replaySpeed:"Speed",replayPlaying:"Replay (input disabled)",criticalFlash:"Critical-hit screen flash",vibration:"Vibration (mobile)",customizeControls:"Customize controls",remapHint:"Click a row, then press a key to bind it.",pressAnyKey:"Press any key\u2026",keymapConflict:"Conflicting bindings",resetDefaults:"Reset to defaults",cancel:"Cancel",save:"Save",remap_up:"Move up",remap_down:"Move down",remap_left:"Move left",remap_right:"Move right",remap_pause:"Pause / resume",remap_help:"Toggle help",remap_mute:"Mute audio"},zh:{title:"\u7532\u866B\u5927\u6218\u866B\u7FA4",subtitle:"\u866B\u866B\u4E16\u754C\u6C42\u751F Roguelite",start:"\u5F00\u59CB\u6E38\u620F",continue:"\u7EE7\u7EED",settings:"\u8BBE\u7F6E",howToPlay:"\u73A9\u6CD5",move:"WASD / \u65B9\u5411\u952E \u79FB\u52A8",autoAttack:"\u6B66\u5668\u81EA\u52A8\u653B\u51FB\u9644\u8FD1\u654C\u4EBA",survive:"\u5C3D\u53EF\u80FD\u5B58\u6D3B\u66F4\u4E45\uFF01",level:"\u7B49\u7EA7",xp:"\u7ECF\u9A8C",time:"\u65F6\u95F4",kills:"\u51FB\u6740",hp:"\u751F\u547D",gameover:"\u4F60\u6B7B\u4E86",finalTime:"\u5B58\u6D3B\u65F6\u95F4",finalKills:"\u51FB\u6740",finalLevel:"\u7B49\u7EA7",retry:"\u518D\u6765\u4E00\u5C40",mainMenu:"\u8FD4\u56DE\u83DC\u5355",paused:"\u5DF2\u6682\u505C",resume:"\u7EE7\u7EED\u6E38\u620F",quit:"\u9000\u51FA\u5230\u83DC\u5355",masterVolume:"\u4E3B\u97F3\u91CF",sfxVolume:"\u97F3\u6548",musicVolume:"\u97F3\u4E50",musicEnabled:"\u97F3\u4E50",difficulty:"\u96BE\u5EA6",showFps:"\u663E\u793A FPS",screenShake:"\u5C4F\u5E55\u6296\u52A8",reducedMotion:"\u51CF\u5C11\u52A8\u6548",colorblind:"\u9AD8\u5BF9\u6BD4\u5EA6\uFF08\u8272\u76F2\u53CB\u597D\uFF09",locale:"\u8BED\u8A00",close:"\u5173\u95ED",resetData:"\u6E05\u7A7A\u6240\u6709\u5B58\u6863",confirmReset:"\u8FD9\u4F1A\u62B9\u6389\u6210\u5C31\u548C\u6700\u9AD8\u5206\uFF0C\u786E\u8BA4\uFF1F",chooseUpgrade:"\u9009\u62E9\u4E00\u4E2A\u5347\u7EA7",highScore:"\u6700\u4F73",highScores:"\u9AD8\u5206\u699C",wave:"\u6CE2\u6B21",bossIncoming:"BOSS \u6765\u4E86",achievementUnlocked:"\u6210\u5C31\u89E3\u9501",date:"\u65E5\u671F",noHighScores:"\u6682\u65E0\u8BB0\u5F55",achievements:"\u6210\u5C31",viewAchievements:"\u67E5\u770B\u6210\u5C31",totals:"\u7D2F\u8BA1",speedrun:"\u901F\u901A",leaderboard:"\u6392\u884C\u699C",export:"\u5BFC\u51FA",import:"\u5BFC\u5165",paste:"\u7C98\u8D34 JSON",splits:"\u5206\u6BB5",noHit:"\u65E0\u4F24",weapons:"\u6B66\u5668",speedrunMode:"\u901F\u901A\u6A21\u5F0F",newPb:"\u4E2A\u4EBA\u6700\u4F73\uFF01",stage:"\u5173\u5361",chooseStage:"\u9009\u62E9\u5173\u5361",dailyChallenge:"\u4ECA\u65E5\u6311\u6218",dailyToday:"\u4ECA\u65E5\u6311\u6218",shareDaily:"\u5206\u4EAB\u6210\u7EE9",copied:"\u5DF2\u590D\u5236\u5230\u526A\u8D34\u677F",copyManual:"\u8BF7\u624B\u52A8\u590D\u5236",damageNumbers:"\u663E\u793A\u4F24\u5BB3\u6570\u5B57",touchButtonScale:"\u89E6\u6478\u6309\u94AE\u5927\u5C0F",viewStreak:"\u67E5\u770B\u8FDE\u80DC",dailyStreak:"\u6BCF\u65E5\u6311\u6218\u8FDE\u80DC",currentStreak:"\u5F53\u524D\u8FDE\u80DC",bestStreak:"\u6700\u4F73\u8FDE\u80DC",last14Days:"\u6700\u8FD1 14 \u5929",noStreakYet:"\u6682\u65E0\u6BCF\u65E5\u6311\u6218\u8BB0\u5F55\u2014\u2014\u6765\u6253\u4E00\u5C40\u4ECA\u5929\u7684\u5427\uFF01",howToPlayBtn:"\u73A9\u6CD5\u8BF4\u660E",helpTitle:"\u952E\u76D8\u5FEB\u6377\u952E",hotkeyHint:"\u63D0\u793A\uFF1AP/Esc \u6682\u505C \xB7 M \u9759\u97F3 \xB7 H \u5E2E\u52A9",helpKeyMove:"\u79FB\u52A8",helpKeyPause:"\u6682\u505C / \u7EE7\u7EED",helpKeyMute:"\u9759\u97F3",helpKeyHelp:"\u663E\u793A / \u5173\u95ED\u5E2E\u52A9",helpKeyLanguage:"\u5207\u6362\u8BED\u8A00",helpKeySettings:"\u8BBE\u7F6E\u9762\u677F",helpKeyConfirm:"\u786E\u8BA4 / \u653B\u51FB",howToTitle:"\u73A9\u6CD5\u8BF4\u660E",howToBody1:"\u6B66\u5668\u4F1A\u81EA\u52A8\u653B\u51FB\u3002WASD \u6216\u65B9\u5411\u952E\u79FB\u52A8\u5373\u53EF\u3002",howToBody2:"\u62FE\u53D6\u7EFF\u8272\u7ECF\u9A8C\u7403\u5347\u7EA7\uFF0C\u6BCF\u5347\u4E00\u7EA7\u53EF\u4EE5\u9009\u4E00\u4E2A\u5F3A\u5316\u3002",howToBody3:"\u6D3B\u5F97\u591F\u4E45\u5C31\u4F1A\u51FA\u73B0 BOSS\u2014\u2014\u6BCF\u9694\u51E0\u5206\u949F\u4E00\u53EA\u3002",howToBody4:"\u968F\u65F6\u6309 P/Esc \u6682\u505C\u3001M \u9759\u97F3\u3001H \u663E\u793A\u6B64\u8BF4\u660E\u3002",gotIt:"\u77E5\u9053\u4E86",tutorialOffer:"\u6B22\u8FCE\uFF01\u60F3\u5148\u6765\u4E2A 5 \u6B65\u6559\u5B66\u5417\uFF1F",tryTutorial:"\u5F00\u59CB\u6559\u5B66",skipTutorial:"\u8DF3\u8FC7",tutorialSkipHint:"\u6309 Esc \u8DF3\u8FC7\u3002",tutorialDone:"\u6559\u5B66\u5B8C\u6210\uFF01",replayLastRun:"\u91CD\u64AD\u4E0A\u4E00\u5C40",noReplay:"\u8FD8\u6CA1\u6709\u53EF\u91CD\u64AD\u7684\u5BF9\u5C40\u2014\u2014\u5148\u6253\u5B8C\u4E00\u628A\u5427\u3002",replaySpeed:"\u901F\u5EA6",replayPlaying:"\u91CD\u64AD\u4E2D\uFF08\u8F93\u5165\u5DF2\u7981\u7528\uFF09",criticalFlash:"\u66B4\u51FB\u5C4F\u5E55\u95EA\u5149",vibration:"\u632F\u52A8\u53CD\u9988\uFF08\u79FB\u52A8\u7AEF\uFF09",customizeControls:"\u81EA\u5B9A\u4E49\u6309\u952E",remapHint:"\u70B9\u51FB\u4E00\u9879\uFF0C\u7136\u540E\u6309\u4E0B\u4EFB\u610F\u952E\u5B8C\u6210\u7ED1\u5B9A\u3002",pressAnyKey:"\u8BF7\u6309\u4EFB\u610F\u952E\u2026",keymapConflict:"\u5B58\u5728\u6309\u952E\u51B2\u7A81",resetDefaults:"\u6062\u590D\u9ED8\u8BA4",cancel:"\u53D6\u6D88",save:"\u4FDD\u5B58",remap_up:"\u5411\u4E0A\u79FB\u52A8",remap_down:"\u5411\u4E0B\u79FB\u52A8",remap_left:"\u5411\u5DE6\u79FB\u52A8",remap_right:"\u5411\u53F3\u79FB\u52A8",remap_pause:"\u6682\u505C / \u7EE7\u7EED",remap_help:"\u663E\u793A / \u5173\u95ED\u5E2E\u52A9",remap_mute:"\u9759\u97F3"}},Z="en",is={en:"en",zh:"zh-Hans"};function we(a){Q[a]&&(Z=a),typeof document<"u"&&document.documentElement&&(document.documentElement.lang=is[Z]||Z)}function yt(){return Object.keys(Q)}function u(a){return Q[Z]&&Q[Z][a]||Q.en[a]||a}var U=Object.freeze({FOREST:Object.freeze({id:"forest",name:"Leaf Litter",icon:"\u{1F342}",description:"Crunchy leaf litter. Balanced swarm mix, bosses on schedule.",background:{fill:"#0d0221",gridAlpha:.14,gridColor:"#ff2d95"},musicStyle:"forest",poolOverrides:{},extraEnemies:[],bossOffsets:{}}),CRYPT:Object.freeze({id:"crypt",name:"The Compost Heap",icon:"\u{1FAB1}",description:"Rich and rotten. More ranged stingers. The Mantis rushes you at 4:00.",background:{fill:"#150327",gridAlpha:.12,gridColor:"#b537f2"},musicStyle:"crypt",poolOverrides:{mage:1.8,illusionist:1.6,ghost:1.4,skeleton:1.2,bat:.6,zombie:.5,wolf:.7},extraEnemies:["mage"],bossOffsets:{reaper:-60,necromancer:-30}}),TUNDRA:Object.freeze({id:"tundra",name:"Under the Bark",icon:"\u{1FAB5}",description:"Damp and dark (-10% speed), tougher bugs (+20% HP), creeping chill.",background:{fill:"#060a24",gridAlpha:.14,gridColor:"#00e5ff"},musicStyle:"forest",poolOverrides:{wolf:1.5,golem:1.4,zombie:1.1,skeleton:1.1,bat:.5,mage:.7},extraEnemies:[],bossOffsets:{},bossOverrides:{void_lord:"ice_queen"},modifiers:Object.freeze({playerSpeedMult:.9,enemyHpMult:1.2,coldTickInterval:10,coldTickDamage:1,warmthSourceEnabled:!1})})}),$e="forest";function $(a){if(!a)return U.FOREST;for(let e of Object.values(U))if(e.id===a)return e;return U.FOREST}function Kt(){return[U.FOREST,U.CRYPT,U.TUNDRA]}var ns=Object.freeze({playerSpeedMult:1,enemyHpMult:1,coldTickInterval:0,coldTickDamage:0,warmthSourceEnabled:!1});function wt(a){let e=$(a);return{...ns,...e.modifiers||{}}}function Oe(a){let t=$(a).extraEnemies||[];return q.map(s=>{let i=t.length?Array.from(new Set(s.pool.concat(t))):s.pool.slice();return{...s,pool:i}})}function Ne(a){let e=$(a),t=e.bossOffsets||{},s=e.bossOverrides||{},i=new Set(Object.values(s)),n={};for(let l of Object.values(V))n[l.id]=l;let o=new Set(["ice_queen"]),r=[];for(let l of Object.values(V)){if(o.has(l.id)&&!i.has(l.id)||i.has(l.id)&&!s[l.id])continue;let h=l;if(s[l.id]){let p=n[s[l.id]];p&&(h=p)}let c=t[l.id]||0,d=Math.max(30,l.spawnAt+c);r.push({...h,spawnAt:d,sourceId:l.id})}return r}function He(a){return $(a).background}function St(a,e,t=Math.random){if(!a.length)return null;let i=$(e).poolOverrides||{},n=0,o=a.map(l=>{let h=i[l]??1;return n+=Math.max(0,h),n});if(n<=0)return a[Math.floor(t()*a.length)];let r=t()*n;for(let l=0;l<a.length;l++)if(r<o[l])return a[l];return a[a.length-1]}var bt="vs_daily_history_v1";function as(a,e=0){let t=3735928559^e,s=1103547991^e;for(let i=0;i<a.length;i++){let n=a.charCodeAt(i);t=Math.imul(t^n,2654435761),s=Math.imul(s^n,1597334677)}return t=Math.imul(t^t>>>16,2246822507)^Math.imul(s^s>>>13,3266489909),s=Math.imul(s^s>>>16,2246822507)^Math.imul(t^t>>>13,3266489909),4294967296*(2097151&s)+(t>>>0)}function Se(a=new Date){let e=a.getUTCFullYear(),t=String(a.getUTCMonth()+1).padStart(2,"0"),s=String(a.getUTCDate()).padStart(2,"0");return`${e}-${t}-${s}`}function os(a){return as(a,54295)&4294967295}function Bt(a){let e=a||Se(),t=os(e),s=["forest","crypt","tundra"],i=s[Math.abs(t)%s.length],n=-((t>>>8)%61);return{date:e,seed:t>>>0,stage:i,bossOffset:n,label:`Daily ${e}`}}var xt=null;function Et(){try{if(typeof window>"u"||!window.localStorage)return!1;let a="__vs_daily_probe__";return window.localStorage.setItem(a,a),window.localStorage.removeItem(a),!0}catch{return!1}}function ee(){try{let a=Et()?window.localStorage.getItem(bt):xt;if(!a)return{};let e=JSON.parse(a);return e&&typeof e=="object"?e:{}}catch{return{}}}function rs(a){try{let e=JSON.stringify(a);Et()?window.localStorage.setItem(bt,e):xt=e}catch{}}function _t(a){if(!a||!a.date||!a.stage)return;let e=ee(),t=`${a.date}-${a.stage}`;e[t]={...a,savedAt:Date.now()};let s=Se(new Date(Date.now()-14*86400*1e3));for(let i of Object.keys(e))i.slice(0,10)<s&&delete e[i];rs(e)}function Mt(a,e=new Date){let t=a||ee(),s=new Map;for(let c of Object.values(t)){if(!c||!c.date)continue;let d=s.get(c.date);(!d||(c.timeSurvived||0)>(d.timeSurvived||0))&&s.set(c.date,c)}let i=[];for(let c=0;c<14;c++){let d=new Date(e.getTime()-c*86400*1e3),p=Se(d),f=s.get(p);i.push({date:p,played:!!f,won:!!f?.won,timeSurvived:f?.timeSurvived||0,kills:f?.kills||0})}let n=0;for(let c of i)if(c.played)n++;else break;let o=Array.from(s.keys()).sort(),r=0,l=0,h=null;for(let c of o)h&&ls(h)===c?l++:l=1,l>r&&(r=l),h=c;return{current:n,best:r,days:i}}function ls(a){let[e,t,s]=a.split("-").map(Number),i=new Date(Date.UTC(e,t-1,s)+86400*1e3);return Se(i)}function hs(a,e){if(e<=0)return a>0?"\u{1F7E9}":"\u2B1B";let t=a/e;return t>=1.5?"\u{1F7E9}":t>=1?"\u{1F7E8}":t>=.5?"\u{1F7EB}":"\u2B1B"}function Tt(a,e){let t=e||ee(),s=Object.values(t).filter(g=>g.stage===a.stage),i=s.map(g=>g.timeSurvived||0).filter(g=>g>0).sort((g,m)=>g-m),n=i.length?i[Math.floor(i.length/2)]:a.timeSurvived||1,r=s.sort((g,m)=>g.date<m.date?-1:g.date>m.date?1:0).slice(-7).map(g=>hs(g.timeSurvived||0,n));for(;r.length<7;)r.push("\u2B1B");let l=r.slice(0,7).join(""),h=Math.floor((a.timeSurvived||0)/60).toString().padStart(2,"0"),c=Math.floor((a.timeSurvived||0)%60).toString().padStart(2,"0"),d=a.stage==="crypt"?"Crypt":a.stage==="tundra"?"Tundra":"Forest",p=a.won?"\u{1F3C6} WIN":`\u23F1 ${h}:${c}`;return[`Survivor Daily ${a.date} \xB7 ${d}`,`${p} \xB7 Lv.${a.level||1} \xB7 ${a.kills||0} kills`,l,"https://ricardo-foundry.github.io/canvas-vampire-survivors/"].join(`
+`)}var be=class{constructor(e){this.game=e,this.els={},this._cache()}_cache(){let e=["hp","maxHp","hpBar","level","expBar","time","kills","weaponIcons","startScreen","gameOver","finalTime","finalKills","finalLevel","levelUpMenu","upgradeOptions","pauseMenu","settingsMenu","fpsCounter","bossBanner","p2hud","hp2","maxHp2","level2","levelUpPlayer","highScore","passiveIcons","achievementToasts","highScoreList","waveLabel","achievementsScreen","leaderboardScreen","stagePickerScreen","streakScreen","helpScreen","howToPlayScreen","btnStageChip"];for(let t of e)this.els[t]=document.getElementById(t);for(let t of["achievementsScreen","leaderboardScreen","stagePickerScreen","streakScreen","helpScreen","howToPlayScreen","settingsMenu"]){let s=this.els[t];if(!s||typeof s.setAttribute!="function")continue;let i=typeof s.hasAttribute=="function";(!i||!s.hasAttribute("role"))&&s.setAttribute("role","dialog"),(!i||!s.hasAttribute("aria-modal"))&&s.setAttribute("aria-modal","true")}}showStagePicker(e,t){let s=this.els.stagePickerScreen;if(!s)return;let i=Kt();s.innerHTML=`
+            <div class="overlay-card stage-picker-card">
+                <h2>${u("chooseStage")}</h2>
+                <div class="stage-grid">
+                    ${i.map(o=>`
+                            <button class="stage-card ${o.id===e?"active":""}" data-stage="${o.id}">
+                                <div class="stage-icon">${o.icon}</div>
+                                <div class="stage-name">${o.name}</div>
+                                <div class="stage-desc">${o.description}</div>
+                            </button>`).join("")}
+                </div>
+                <div class="btn-row">
+                    <button id="stageClose" class="btn primary">${u("close")}</button>
+                </div>
+            </div>`,s.style.display="flex";let n=()=>{s.style.display="none"};s.querySelector("#stageClose")?.addEventListener("click",n),s.querySelectorAll(".stage-card").forEach(o=>o.addEventListener("click",()=>{let r=o.dataset.stage;t&&t(r),n()}))}hideStagePicker(){this.els.stagePickerScreen&&(this.els.stagePickerScreen.style.display="none")}updateStageChip(e){if(!this.els.btnStageChip)return;let t=$(e);this.els.btnStageChip.textContent=`${t.icon} ${t.name}`,this.els.btnStageChip.dataset.stage=t.id}showStreak(e){let t=this.els.streakScreen;if(!t)return;let s=Mt(ee()),n=s.days.slice().reverse().map(l=>{let h=l.played?l.won?"streak-cell won":"streak-cell played":"streak-cell missed",c=l.played?`${l.date} \xB7 ${Math.floor(l.timeSurvived/60)}:${String(Math.floor(l.timeSurvived%60)).padStart(2,"0")} \xB7 ${l.kills} kills`:`${l.date} \u2014 no run`,d=l.date.slice(8);return`<div class="${h}" title="${c}" aria-label="${c}">${d}</div>`}).join(""),o=s.current===0&&s.best===0?`<div class="hs-empty">${u("noStreakYet")}</div>`:"";t.innerHTML=`
+            <div class="overlay-card streak-card">
+                <h2>${u("dailyStreak")}</h2>
+                <div class="streak-stats">
+                    <div class="streak-pill"><span>${u("currentStreak")}</span><strong>${s.current}</strong></div>
+                    <div class="streak-pill"><span>${u("bestStreak")}</span><strong>${s.best}</strong></div>
+                </div>
+                <div class="streak-label">${u("last14Days")}</div>
+                <div class="streak-grid" role="list">${n}</div>
+                ${o}
+                <div class="btn-row">
+                    <button id="streakClose" class="btn primary">${u("close")}</button>
+                </div>
+            </div>`,t.style.display="flex";let r=()=>{t.style.display="none",e&&e()};t.querySelector("#streakClose")?.addEventListener("click",r)}hideStreak(){this.els.streakScreen&&(this.els.streakScreen.style.display="none")}showHelp(e){let t=this.els.helpScreen;if(!t)return;let s=[["WASD / \u2190\u2191\u2193\u2192",u("helpKeyMove")],["P / Esc",u("helpKeyPause")],["M",u("helpKeyMute")],["H / ?",u("helpKeyHelp")],["L",u("helpKeyLanguage")],[",",u("helpKeySettings")],["Enter / Space",u("helpKeyConfirm")]];t.innerHTML=`
+            <div class="overlay-card help-card">
+                <h2>${u("helpTitle")}</h2>
+                <div class="help-rows">
+                    ${s.map(([n,o])=>`<div class="help-row"><kbd>${n}</kbd><span>${o}</span></div>`).join("")}
+                </div>
+                <div class="btn-row">
+                    <button id="helpClose" class="btn primary">${u("close")}</button>
+                </div>
+            </div>`,t.style.display="flex";let i=()=>{t.style.display="none",e&&e()};t.querySelector("#helpClose")?.addEventListener("click",i)}hideHelp(){this.els.helpScreen&&(this.els.helpScreen.style.display="none")}showHowToPlay(e){let t=this.els.howToPlayScreen;if(!t)return;t.innerHTML=`
+            <div class="overlay-card howto-card">
+                <h2>${u("howToTitle")}</h2>
+                <ol class="howto-list">
+                    <li>${u("howToBody1")}</li>
+                    <li>${u("howToBody2")}</li>
+                    <li>${u("howToBody3")}</li>
+                    <li>${u("howToBody4")}</li>
+                </ol>
+                <div class="btn-row">
+                    <button id="howtoClose" class="btn primary">${u("gotIt")}</button>
+                </div>
+            </div>`,t.style.display="flex";let s=()=>{t.style.display="none",e&&e()};t.querySelector("#howtoClose")?.addEventListener("click",s)}hideHowToPlay(){this.els.howToPlayScreen&&(this.els.howToPlayScreen.style.display="none")}showReplayMenu(e,t){let s=document.getElementById("replayScreen");if(s||(s=document.createElement("div"),s.id="replayScreen",s.className="overlay",s.style.display="none",document.getElementById("gameContainer")?.appendChild(s)),!e){s.innerHTML=`
+                <div class="overlay-card replay-card">
+                    <h2>${u("replayLastRun")}</h2>
+                    <div class="hs-empty">${u("noReplay")}</div>
+                    <div class="btn-row">
+                        <button id="replayClose" class="btn primary">${u("close")}</button>
+                    </div>
+                </div>`,s.style.display="flex",s.querySelector("#replayClose")?.addEventListener("click",()=>{s.style.display="none"});return}let i=Math.floor((e.finalTime||0)/60).toString().padStart(2,"0"),n=Math.floor((e.finalTime||0)%60).toString().padStart(2,"0");s.innerHTML=`
+            <div class="overlay-card replay-card">
+                <h2>${u("replayLastRun")}</h2>
+                <div class="replay-summary">
+                    <div><strong>${u("time")}:</strong> ${i}:${n}</div>
+                    <div><strong>${u("level")}:</strong> ${e.finalLevel??1}</div>
+                    <div><strong>${u("kills")}:</strong> ${e.finalKills??0}</div>
+                    <div><strong>${u("stage")}:</strong> ${e.stage}</div>
+                </div>
+                <div class="btn-row" role="group" aria-label="${u("replaySpeed")}">
+                    <button class="btn primary" data-replay-speed="1">1\xD7</button>
+                    <button class="btn ghost" data-replay-speed="2">2\xD7</button>
+                    <button class="btn ghost" data-replay-speed="4">4\xD7</button>
+                </div>
+                <div class="btn-row">
+                    <button id="replayClose" class="btn ghost">${u("close")}</button>
+                </div>
+            </div>`,s.style.display="flex";let o=()=>{s.style.display="none"};s.querySelectorAll("[data-replay-speed]").forEach(r=>r.addEventListener("click",()=>{let l=parseFloat(r.dataset.replaySpeed)||1;o(),t&&t(l)})),s.querySelector("#replayClose")?.addEventListener("click",o)}showLeaderboard(e,t,s){let i=this.els.leaderboardScreen;if(!i)return;let n=(h,c)=>{let d=Math.floor((h.timeSurvived??0)/60).toString().padStart(2,"0"),p=Math.floor((h.timeSurvived??0)%60).toString().padStart(2,"0"),f=new Date(h.date||0),g=isNaN(f.getTime())?"\u2014":`${f.getFullYear()}-${String(f.getMonth()+1).padStart(2,"0")}-${String(f.getDate()).padStart(2,"0")}`,m=Array.isArray(h.weapons)&&h.weapons.length?h.weapons.join(" + "):"\u2014",K=h.noHit?`<span class="no-hit">${u("noHit")}</span>`:"";return`<div class="hs-row wide"><span>${c+1}</span><span>${d}:${p}</span><span>Lv.${h.level??1}</span><span>${h.kills??0}</span><span class="weapons">${m}</span><span>${g}</span><span>${K}</span></div>`},o=(h,c)=>{let d=h.timeMs||0,p=Math.floor(d/6e4).toString().padStart(2,"0"),f=Math.floor(d%6e4/1e3).toString().padStart(2,"0"),g=Math.floor(d%1e3).toString().padStart(3,"0"),m=new Date(h.date||0),K=isNaN(m.getTime())?"\u2014":`${m.getFullYear()}-${String(m.getMonth()+1).padStart(2,"0")}-${String(m.getDate()).padStart(2,"0")}`,y=Array.isArray(h.weapons)&&h.weapons.length?h.weapons.join(" + "):"\u2014";return`<div class="hs-row wide"><span>${c+1}</span><span>${p}:${f}.${g}</span><span>Lv.${h.level??1}</span><span>${h.kills??0}</span><span class="weapons">${y}</span><span>${K}</span></div>`};i.innerHTML=`
+            <div class="overlay-card leaderboard-card">
+                <h2>${u("leaderboard")}</h2>
+                <section class="lb-section">
+                    <h3>${u("highScores")} (${e.length})</h3>
+                    <div class="hs-list scroll">
+                        ${e.length?`<div class="hs-head wide"><span>#</span><span>${u("time")}</span><span>${u("level")}</span><span>${u("kills")}</span><span>${u("weapons")}</span><span>${u("date")}</span><span>${u("noHit")}</span></div>`+e.map(n).join(""):`<div class="hs-empty">${u("noHighScores")}</div>`}
+                    </div>
+                </section>
+                <section class="lb-section">
+                    <h3>${u("speedrun")} (${t.length})</h3>
+                    <div class="hs-list scroll">
+                        ${t.length?`<div class="hs-head wide"><span>#</span><span>${u("time")}</span><span>${u("level")}</span><span>${u("kills")}</span><span>${u("weapons")}</span><span>${u("date")}</span></div>`+t.map(o).join(""):`<div class="hs-empty">${u("noHighScores")}</div>`}
+                    </div>
+                </section>
+                <textarea id="lbJson" class="lb-json" rows="4" aria-label="${u("paste")}" placeholder='${u("paste")}'></textarea>
+                <div class="btn-row">
+                    <button id="lbExport" class="btn ghost">${u("export")}</button>
+                    <button id="lbImport" class="btn ghost">${u("import")}</button>
+                    <button id="lbClose" class="btn primary">${u("close")}</button>
+                </div>
+            </div>`,i.style.display="flex";let r=()=>{i.style.display="none",s&&s()};i.querySelector("#lbClose")?.addEventListener("click",r);let l=i.querySelector("#lbJson");i.querySelector("#lbExport")?.addEventListener("click",()=>{l&&(l.value=JSON.stringify({normal:e,speedrun:t}))}),i.querySelector("#lbImport")?.addEventListener("click",()=>{if(l?.value?.trim())try{let h=JSON.parse(l.value),c=new CustomEvent("vs-leaderboard-import",{detail:h});window.dispatchEvent(c)}catch(h){console.warn("[ui] Import JSON parse failed",h),l.value="Invalid JSON: "+h.message}})}hideLeaderboard(){this.els.leaderboardScreen&&(this.els.leaderboardScreen.style.display="none")}showAchievements(e,t){let s=this.els.achievementsScreen;if(!s)return;let i=C.length,n=C.filter(r=>e[r.id]).length;s.innerHTML=`
+            <div class="overlay-card achievements-card">
+                <h2>${u("achievements")} <span class="ach-count">${n} / ${i}</span></h2>
+                <div class="ach-grid">
+                    ${C.map(r=>{let l=!!e[r.id];return`
+                            <div class="ach-card ${l?"earned":"locked"}">
+                                <div class="ach-card-icon">${l?r.icon:"\u{1F512}"}</div>
+                                <div class="ach-card-name">${l?r.name:"???"}</div>
+                                <div class="ach-card-desc">${r.description}</div>
+                            </div>`}).join("")}
+                </div>
+                <div class="btn-row">
+                    <button id="achClose" class="btn primary">${u("close")}</button>
+                </div>
+            </div>`,s.style.display="flex";let o=()=>{s.style.display="none",t&&t()};s.querySelector("#achClose")?.addEventListener("click",o)}hideAchievements(){this.els.achievementsScreen&&(this.els.achievementsScreen.style.display="none")}updateHud(e){let t=e.player;this.els.hp.textContent=Math.ceil(t.hp),this.els.maxHp.textContent=Math.ceil(t.maxHp),this.els.hpBar.style.width=Math.max(0,t.hp/t.maxHp*100)+"%",this.els.level.textContent=t.level,this.els.expBar.style.width=Math.min(100,t.exp/t.expToNext*100)+"%";let s=e.players?.[1];this.els.p2hud&&(s?(this.els.p2hud.style.display="",this.els.hp2.textContent=Math.ceil(s.hp),this.els.maxHp2.textContent=Math.ceil(s.maxHp),this.els.level2.textContent=s.level):this.els.p2hud.style.display="none");let i=Math.floor(e.gameTime/60).toString().padStart(2,"0"),n=Math.floor(e.gameTime%60).toString().padStart(2,"0");if(this.els.time.textContent=`${i}:${n}`,this.els.kills.textContent=e.kills,this.els.highScore){let r=e.save.highScore,l=Math.floor(r.timeSurvived/60).toString().padStart(2,"0"),h=Math.floor(r.timeSurvived%60).toString().padStart(2,"0");this.els.highScore.textContent=`${u("highScore")}: ${l}:${h} \xB7 ${r.kills}K`}this.els.waveLabel&&e.currentWave&&(this.els.waveLabel.textContent=`${u("wave")}: ${e.currentWave.label}`),this._renderChips(this.els.weaponIcons,t.weapons.map(r=>({icon:r.icon,level:r.level,max:v.WEAPON_MAX_LEVEL,evolved:!!r.isEvolved?.()})));let o=[];for(let r in t.passives){let l=t.passives[r];o.push({icon:l.def.icon,level:l.count,max:v.PASSIVE_MAX_STACK})}this._renderChips(this.els.passiveIcons,o)}_renderChips(e,t){if(e){e.innerHTML="";for(let s of t){let i=document.createElement("div");i.className="chip active"+(s.level>=s.max?" maxed":""),s.evolved&&i.classList.add("evolved"),i.textContent=s.icon;let n=document.createElement("span");n.className="chip-lvl",n.textContent=s.level,i.appendChild(n),e.appendChild(i)}}}setFps(e,t){this.els.fpsCounter&&(this.els.fpsCounter.style.display=t?"block":"none",this.els.fpsCounter.textContent=`${Math.round(e)} fps`)}showLevelUp(e,t){let s=this.els.upgradeOptions;s.innerHTML="",this.els.levelUpPlayer&&(this.els.levelUpPlayer.textContent=this.game?.players?.length>1&&e?.playerIndex!=null?`P${e.playerIndex+1} \u2014 `:"");let i=cs(e),n=i.filter(h=>ds(e,h)).length,o=i.slice(0,n),r=i.slice(n),l=us(o,3);for(;l.length<3&&r.length;){let h=Math.floor(Math.random()*r.length);l.push(r.splice(h,1)[0])}for(let h of l){let c=document.createElement("div");c.className="upgrade-option",c.setAttribute("role","menuitem");let d=h.type==="weapon"?e.weapons.find(y=>y.id===h.data.id):e.passives[h.data.id],p=h.type==="weapon"?d?.level??0:d?.count??0,f=h.type==="weapon"?p>=v.WEAPON_MAX_LEVEL:p>=v.PASSIVE_MAX_STACK,g=f?" (MAXED)":p>0?` (${h.type==="weapon"?"Lv.":"x"}${p+1})`:" (New!)",m=h.type==="weapon"&&!f&&p+1===h.data.evolveLevel&&h.data.evolveName,K=m?`<div class="evolve-tag">\u2192 ${h.data.evolveName}</div>`:"";f&&c.classList.add("maxed"),c.setAttribute("aria-label",`${h.data.name}${g}. ${h.data.description}${m?". Evolves into "+h.data.evolveName:""}`),c.innerHTML=`
+                <div class="name">${h.data.icon} ${h.data.name}${g}</div>
+                <div class="desc">${h.data.description}</div>
+                ${K}
+            `,c.addEventListener("click",()=>t(f?null:h)),c.setAttribute("tabindex","0"),c.addEventListener("keydown",y=>{y.key==="Enter"||y.key===" "?(y.preventDefault(),t(f?null:h)):y.key==="ArrowDown"||y.key==="ArrowRight"?(y.preventDefault(),(c.nextElementSibling||s.firstElementChild)?.focus()):(y.key==="ArrowUp"||y.key==="ArrowLeft")&&(y.preventDefault(),(c.previousElementSibling||s.lastElementChild)?.focus())}),s.appendChild(c)}if(l.length===0){e.hp=e.maxHp,t(null);return}this.els.levelUpMenu.style.display="flex",s.querySelector(".upgrade-option")?.focus()}hideLevelUp(){this.els.levelUpMenu.style.display="none"}showBossBanner(){this.els.bossBanner&&(this._activeBannerKey="bossIncoming",this.els.bossBanner.textContent=u("bossIncoming"),this.els.bossBanner.classList.add("visible"),clearTimeout(this._bannerTimer),this._bannerTimer=setTimeout(()=>{this.els.bossBanner.classList.remove("visible"),this._activeBannerKey=null},2500))}onLocaleChanged(){if(this._activeBannerKey&&this.els.bossBanner&&(this.els.bossBanner.textContent=u(this._activeBannerKey)),typeof document>"u")return;let e=document.querySelectorAll("[data-i18n]");for(let t of e){let s=t.getAttribute("data-i18n");if(!s)continue;let i=Array.from(t.childNodes).find(o=>o.nodeType===3),n=u(s);i?i.nodeValue=n:t.textContent=n}this.game?.stageId&&typeof this.updateStageChip=="function"&&this.updateStageChip(this.game.stageId)}showPause(){this.els.pauseMenu.style.display="flex"}hidePause(){this.els.pauseMenu.style.display="none"}showAchievementToast(e){let t=this.els.achievementToasts;if(!t)return;let s=document.createElement("div");s.className="ach-toast",s.innerHTML=`
+            <div class="ach-icon">${e.icon}</div>
+            <div class="ach-body">
+                <div class="ach-title">${u("achievementUnlocked")}</div>
+                <div class="ach-name">${e.name}</div>
+                <div class="ach-desc">${e.description}</div>
+            </div>`,t.appendChild(s),requestAnimationFrame(()=>s.classList.add("visible")),setTimeout(()=>{s.classList.remove("visible"),setTimeout(()=>s.remove(),500)},3500)}showSettings(e,t,s,i,n={}){let o=this.els.settingsMenu,r=n.vibrationSupported!==!1?D("vibration",e.vibration!==!1):"",l=n.onRemap?`<div class="settings-row"><span>${u("customizeControls")}</span><button data-action="remap">${u("customizeControls")}</button></div>`:"";o.innerHTML=`
+            <div class="settings-card">
+                <h2>${u("settings")}</h2>
+                ${Ve("masterVolume",e.masterVolume)}
+                ${Ve("sfxVolume",e.sfxVolume)}
+                ${Ve("musicVolume",e.musicVolume)}
+                ${D("musicEnabled",e.musicEnabled!==!1)}
+                ${Ye("difficulty",e.difficulty,["easy","normal","hard","nightmare"])}
+                ${D("showFps",e.showFps)}
+                ${D("screenShake",e.screenShake)}
+                ${D("reducedMotion",e.reducedMotion)}
+                ${D("colorblind",!!e.colorblind)}
+                ${D("damageNumbers",e.damageNumbers!==!1)}
+                ${D("criticalFlash",e.criticalFlash!==!1)}
+                ${r}
+                ${Ye("locale",e.locale,yt())}
+                ${Ye("touchButtonScale",String(e.touchButtonScale??1),["0.8","1","1.2"])}
+                ${l}
+                <div class="settings-buttons">
+                    <button class="danger" data-action="reset">${u("resetData")}</button>
+                    <button data-action="close">${u("close")}</button>
+                </div>
+            </div>`,o.style.display="flex",o.addEventListener("input",c),o.addEventListener("change",c),o.addEventListener("click",d);let h=this;function c(p){let f=p.target.dataset.key;if(!f)return;let g=p.target.type==="checkbox"?p.target.checked:p.target.type==="range"?parseFloat(p.target.value):p.target.value;if(f==="locale"&&(we(g),h.onLocaleChanged()),f==="colorblind"&&document.body.classList.toggle("cb-mode",!!g),f==="touchButtonScale"){let m=parseFloat(g);t(f,Number.isFinite(m)?m:1);return}t(f,g)}function d(p){let f=p.target.dataset.action;f==="close"?(o.removeEventListener("input",c),o.removeEventListener("change",c),o.removeEventListener("click",d),o.style.display="none",s()):f==="reset"?confirm(u("confirmReset"))&&i():f==="remap"&&typeof n.onRemap=="function"&&n.onRemap()}}hideSettings(){this.els.settingsMenu.style.display="none"}showRemap(e,t,s){let i=document.getElementById("remapDialog");i||(i=document.createElement("div"),i.id="remapDialog",i.className="menu-screen",document.body.appendChild(i));let n=T(e||_),o=null,r=()=>{let d=pt(n),p=new Set(d.map(m=>m.key)),f=P.map(m=>{let K=n[m]||[],y=o===m,M=K.map(E=>Le(E)).join(" / ")||"\u2014";return`<div class="remap-row${y?" capturing":""}" data-action="${m}" tabindex="0"><span class="remap-label">${u("remap_"+m)||m}</span><span class="remap-keys${p.has(K[0])?" conflict":""}">${y?u("pressAnyKey"):M}</span></div>`}).join(""),g=d.length?`<div class="remap-conflicts">${u("keymapConflict")}: ${d.map(m=>`${Le(m.key)} \u2192 ${m.actions.join(" / ")}`).join(", ")}</div>`:"";i.innerHTML=`
+                <div class="settings-card remap-card">
+                    <h2>${u("customizeControls")}</h2>
+                    <div class="remap-hint">${u("remapHint")}</div>
+                    ${f}
+                    ${g}
+                    <div class="settings-buttons">
+                        <button data-action="reset-defaults">${u("resetDefaults")}</button>
+                        <button data-action="cancel">${u("cancel")}</button>
+                        <button data-action="save">${u("save")}</button>
+                    </div>
+                </div>`,i.style.display="flex"},l=d=>{let p=d.target.closest(".remap-row");if(p){o=p.dataset.action,r();return}let f=d.target.dataset?.action;f==="cancel"?(c(),s?.()):f==="save"?(t?.(n),c(),s?.()):f==="reset-defaults"&&(n=T(_),o=null,r())},h=d=>{if(!o)return;d.preventDefault(),d.stopPropagation();let p=X(d.key);if(p){if(p==="tab"){o=null,r();return}n=ut(n,o,p,{replace:!0}),o=null,r()}},c=()=>{i.style.display="none",i.innerHTML="",i.removeEventListener("click",l),window.removeEventListener("keydown",h,!0)};i.addEventListener("click",l),window.addEventListener("keydown",h,!0),r()}showGameOver(e){let t=Math.floor(e.gameTime/60).toString().padStart(2,"0"),s=Math.floor(e.gameTime%60).toString().padStart(2,"0");if(this.els.finalTime.textContent=`${t}:${s}`,this.els.finalKills.textContent=e.kills,this.els.finalLevel.textContent=Math.max(...e.players.map(i=>i.level),e.player?.level??1),this.els.highScoreList){let i=e.save.highScores||[],n="";e.speedrunMode&&e.speedrunSplits?.length&&(n=`<div class="splits"><div class="splits-head">${u("splits")}</div>`+e.speedrunSplits.map(o=>{let r=Math.floor(o.mark/60).toString().padStart(2,"0"),l=Math.floor(o.mark%60).toString().padStart(2,"0"),h=(o.realMs/1e3).toFixed(2);return`<div class="split-row"><span>${r}:${l}</span><span>${h}s</span></div>`}).join("")+"</div>"),i.length?this.els.highScoreList.innerHTML=n+`<div class="hs-head"><span>#</span><span>${u("time")}</span><span>${u("level")}</span><span>${u("kills")}</span><span>${u("date")}</span></div>`+i.map((o,r)=>{let l=Math.floor(o.timeSurvived/60).toString().padStart(2,"0"),h=Math.floor(o.timeSurvived%60).toString().padStart(2,"0"),c=new Date(o.date||0),d=`${c.getFullYear()}-${String(c.getMonth()+1).padStart(2,"0")}-${String(c.getDate()).padStart(2,"0")}`;return`<div class="hs-row"><span>${r+1}</span><span>${l}:${h}</span><span>${o.level}</span><span>${o.kills}</span><span>${d}</span></div>`}).join(""):this.els.highScoreList.innerHTML=n+`<div class="hs-empty">${u("noHighScores")}</div>`}if(e.dailyMode&&e.dailyChallenge){let i=this.els.gameOver.querySelector(".gameover");if(i&&!i.querySelector(".daily-share-row")){let l=document.createElement("div");l.className="daily-share-row",l.innerHTML=`<button id="btnShareDaily" class="btn ghost">${u("shareDaily")}</button><pre id="dailyShareText" class="share-preview" hidden></pre>`;let h=i.querySelector(".btn-row");h?i.insertBefore(l,h):i.appendChild(l)}let n=this.els.gameOver.querySelector("#btnShareDaily"),o=this.els.gameOver.querySelector("#dailyShareText"),r={date:e.dailyChallenge.date,stage:e.stageId,timeSurvived:e.gameTime,kills:e.kills,level:e.player?.level||1,won:!!e.run?.bossesDefeated?.void_lord};n?.addEventListener("click",async()=>{let l=Tt(r);o&&(o.textContent=l,o.hidden=!1);try{await navigator.clipboard?.writeText?.(l),n.textContent=u("copied"),setTimeout(()=>n.textContent=u("shareDaily"),2e3)}catch{n.textContent=u("copyManual")}})}else this.els.gameOver.querySelector(".daily-share-row")?.remove();this.els.gameOver.style.display="flex"}hideGameOver(){this.els.gameOver.style.display="none"}hideStart(){this.els.startScreen.style.display="none"}showStart(){this.els.startScreen.style.display="flex"}};function cs(a){let e=[],t=[];for(let s of Object.values(he)){let i=a.weapons.find(n=>n.id===s.id);i?i.level<v.WEAPON_MAX_LEVEL?e.push({type:"weapon",data:s}):t.push({type:"weapon",data:s}):a.weapons.length<v.MAX_WEAPONS&&e.push({type:"weapon",data:s})}for(let s of Object.values(nt)){let i=a.passives[s.id];i?i.count<v.PASSIVE_MAX_STACK?e.push({type:"passive",data:s}):t.push({type:"passive",data:s}):Object.keys(a.passives).length<v.MAX_PASSIVES&&e.push({type:"passive",data:s})}return e.concat(t)}function ds(a,e){if(e.type==="weapon"){let s=a.weapons.find(i=>i.id===e.data.id);return!s||s.level<v.WEAPON_MAX_LEVEL}let t=a.passives[e.data.id];return!t||t.count<v.PASSIVE_MAX_STACK}function us(a,e){let t=[],s=a.slice();for(;t.length<e&&s.length;){let i=Math.floor(Math.random()*s.length);t.push(s.splice(i,1)[0])}return t}function Ve(a,e){return`
+        <label class="settings-row">
+            <span>${u(a)}</span>
+            <input type="range" min="0" max="1" step="0.05" value="${e}" data-key="${a}">
+            <output>${Math.round(e*100)}%</output>
+        </label>`}function Ye(a,e,t){return`
+        <label class="settings-row">
+            <span>${u(a)}</span>
+            <select data-key="${a}">
+                ${t.map(s=>`<option value="${s}" ${s===e?"selected":""}>${s}</option>`).join("")}
+            </select>
+        </label>`}function D(a,e){return`
+        <label class="settings-row">
+            <span>${u(a)}</span>
+            <input type="checkbox" data-key="${a}" ${e?"checked":""}>
+        </label>`}var te=class{constructor(e=64){this.cell=e,this.map=new Map,this._size=0}clear(){this.map.clear(),this._size=0}get size(){return this._size}_key(e,t){return`${Math.floor(e/this.cell)},${Math.floor(t/this.cell)}`}insert(e){let t=this._key(e.x,e.y),s=this.map.get(t);s||(s=[],this.map.set(t,s)),s.push(e),this._size++}insertAll(e){this.clear();for(let t of e)this.insert(t)}insertEnemies(e){this.insertAll(e)}queryRect(e,t,s){let i=this.cell,n=Math.floor((e-s)/i),o=Math.floor((e+s)/i),r=Math.floor((t-s)/i),l=Math.floor((t+s)/i),h=[];for(let c=n;c<=o;c++)for(let d=r;d<=l;d++){let p=this.map.get(`${c},${d}`);if(p)for(let f=0;f<p.length;f++)h.push(p[f])}return h}findNearest(e,t,s){let i=null,n=s;for(let o of this.queryRect(e,t,s)){let r=Math.hypot(o.x-e,o.y-t);r<n&&(n=r,i=o)}return i}findNearestEnemy(e,t,s){return this.findNearest(e,t,s)}occupiedCellCount(){return this.map.size}};var Be=class{constructor(){this.intensity=0,this.x=0,this.y=0,this.worldX=0,this.worldY=0}shake(e){this.intensity=Math.max(this.intensity,e)}update(e,t){if(!t||this.intensity<=0){this.x=0,this.y=0,this.intensity=0;return}let s=this.intensity*12;this.x=(Math.random()-.5)*s,this.y=(Math.random()-.5)*s,this.intensity=Math.max(0,this.intensity-2*e)}},xe=class{constructor(){this.samples=[],this.fps=0}tick(e){this.samples.push(e),this.samples.length>60&&this.samples.shift();let t=this.samples.reduce((s,i)=>s+i,0)/this.samples.length;this.fps=t>0?1/t:0}};var se=class{constructor(e,t,s={}){if(typeof e!="function")throw new TypeError("Pool: factory must be a function");this.factory=e,this.reset=typeof t=="function"?t:null,this.maxSize=s.maxSize??512,this.free=[],this.acquired=0,this.created=0;let i=Math.min(s.prealloc??0,this.maxSize);for(let n=0;n<i;n++)this.free.push(e()),this.created++}acquire(...e){let t=this.free.pop();return t||(t=this.factory(),this.created++),this.reset&&this.reset(t,...e),this.acquired++,t}release(e){e&&(this.free.length>=this.maxSize||(this.free.push(e),this.acquired=Math.max(0,this.acquired-1)))}stats(){return{free:this.free.length,acquired:this.acquired,created:this.created,maxSize:this.maxSize}}clear(){this.free.length=0}};function kt(a,e,t,s,i,n={}){a.text=e,a.x=t,a.y=s,a.color=i,a.life=n.life??1,a.vy=n.vy??-60,a.size=n.size??16,a.weight=n.weight??"bold",a.crit=!!n.crit}function At(a,e,t,s,i={}){a.x=e,a.y=t,a.color=s,a.size=i.size??Math.random()*4+2,a.life=i.life??1,a.decay=i.decay??Math.random()*1.5+1;let n=i.angle??Math.random()*Math.PI*2,o=i.speed??Math.random()*180+60;a.vx=Math.cos(n)*o,a.vy=Math.sin(n)*o,a.friction=i.friction??.2}var Fe=class{constructor(){this.color="rgba(255,255,255,0)",this.alpha=0,this.decay=3}flash(e="255,255,255",t=.4,s=3){this.color=e,this.alpha=Math.max(this.alpha,t),this.decay=s}update(e){this.alpha>0&&(this.alpha-=this.decay*e,this.alpha<0&&(this.alpha=0))}render(e,t,s){this.alpha<=0||(e.save(),e.globalAlpha=this.alpha,e.fillStyle=`rgb(${this.color})`,e.fillRect(0,0,t,s),e.restore())}},Ue=class{constructor(){this.pulses=[]}emit(e,t,s="255,210,77"){this.pulses.push({x:e,y:t,color:s,r:10,life:1})}update(e){for(let t=this.pulses.length-1;t>=0;t--){let s=this.pulses[t];s.r+=220*e,s.life-=1.5*e,s.life<=0&&this.pulses.splice(t,1)}}render(e){for(let t of this.pulses)e.save(),e.globalAlpha=Math.max(0,t.life),e.strokeStyle=`rgb(${t.color})`,e.lineWidth=3,e.beginPath(),e.arc(t.x,t.y,t.r,0,Math.PI*2),e.stroke(),e.restore()}},ze=class{constructor(){this.bursts=[],this.max=40}emit(e,t,s="255,255,255"){this.bursts.length>=this.max&&this.bursts.shift(),this.bursts.push({x:e,y:t,color:s,r:2,life:.25})}update(e){for(let t=this.bursts.length-1;t>=0;t--){let s=this.bursts[t];s.r+=160*e,s.life-=5*e,s.life<=0&&this.bursts.splice(t,1)}}render(e){for(let t of this.bursts)e.save(),e.globalAlpha=Math.max(0,t.life),e.strokeStyle=`rgb(${t.color})`,e.lineWidth=2,e.beginPath(),e.arc(t.x,t.y,t.r,0,Math.PI*2),e.stroke(),e.restore()}},qe=class{constructor(){this.drops=[],this.max=60,this.glyphs=["\u{1F389}","\u{1F38A}","\u2728","\u2B50","\u{1F3C6}","\u{1F973}"]}burst(e,t,s=24){let i=Number.isFinite(e)&&e>0?e:1200,n=Number.isFinite(t)&&t>0?t:800;for(let o=0;o<s&&!(this.drops.length>=this.max);o++)this.drops.push({x:Math.random()*i,y:-20-Math.random()*n*.5,vx:(Math.random()-.5)*60,vy:80+Math.random()*120,rot:Math.random()*Math.PI*2,vrot:(Math.random()-.5)*2,size:22+Math.random()*14,glyph:this.glyphs[Math.floor(Math.random()*this.glyphs.length)],life:5+Math.random()*3})}update(e,t){let s=Number.isFinite(t)&&t>0?t:800;for(let i=this.drops.length-1;i>=0;i--){let n=this.drops[i];n.x+=n.vx*e,n.y+=n.vy*e,n.vy+=80*e,n.rot+=n.vrot*e,n.life-=e,(n.life<=0||n.y>s+40)&&this.drops.splice(i,1)}}render(e){if(!(!this.drops.length||!e)){e.save(),e.textAlign="center",e.textBaseline="middle";for(let t of this.drops)e.save(),e.translate(t.x,t.y),e.rotate(t.rot),e.font=`${t.size}px serif`,e.fillText(t.glyph,0,0),e.restore();e.restore()}}clear(){this.drops.length=0}isActive(){return this.drops.length>0}},Ee=class{constructor(){this.flash=new Fe,this.pulses=new Ue,this.hits=new ze,this.emojiRain=new qe,this.delays=[]}celebrate(e,t){this.emojiRain.burst(e,t),this.flash.flash("200,255,200",.18,1.5)}levelUp(e,t){this.pulses.emit(e,t,"255,220,80"),this.flash.flash("255,230,140",.22,2.5)}hit(e,t,s="255,255,255"){this.hits.emit(e,t,s)}bossSpawn(){this.flash.flash("255,40,60",.55,1.6)}achievement(){this.flash.flash("200,255,200",.18,2)}criticalHit(){this.flash.flash("255,80,80",.18,6)}schedule(e,t){let s={t:e,fn:t,cancelled:!1};return this.delays.push(s),s}update(e,t){if(this.flash.update(e),this.pulses.update(e),this.hits.update(e),this.emojiRain.update(e,t&&t.h),this.delays.length)for(let s=this.delays.length-1;s>=0;s--){let i=this.delays[s];if(i.t-=e,i.t<=0&&(this.delays.splice(s,1),!i.cancelled))try{i.fn()}catch(n){console.warn("[effects] scheduled fn threw",n)}}}render(e,t,s){this.pulses.render(e),this.hits.render(e),this.flash.render(e,t,s),this.emojiRain.render(e)}};var ie=class a{constructor(e){this.save=e,this.run=a._freshRun(),this.queue=[]}static _freshRun(){return{bossesDefeated:{},maxedWeapon:!1,orbsCollected:0,longestUnhit:0,tookAnyDamage:!1,konamiCode:!1,fastBossClear:!1,pacifistTimer:0}}resetRun(){this.run=a._freshRun()}onBossDefeated(e){this.run.bossesDefeated[e]=!0}onWeaponMaxed(){this.run.maxedWeapon=!0}check(e){let t={game:e,run:this.run},s=[];for(let i of C)if(!this.save.achievements[i.id])try{i.check(t)&&(this.save.achievements[i.id]=Date.now(),s.push(i),this.queue.push(i))}catch(n){console.warn("[achievements] check failed",i.id,n)}return s}takeToasts(){let e=this.queue;return this.queue=[],e}unlockedStartingWeapons(){let e=new Set;for(let t of Object.keys(I))this.save.achievements[t]&&I[t].weapon&&e.add(I[t].weapon);return e}unlockedCosmetics(){let e=new Set;for(let t of Object.keys(I))this.save.achievements[t]&&I[t].cosmetic&&e.add(I[t].cosmetic);return e}};var je={highScore:{kills:0,timeSurvived:0,level:1},highScores:[],totals:{kills:0,timePlayed:0,runs:0,bossKills:0},achievements:{},stageHighScores:{},settings:{masterVolume:.6,sfxVolume:.8,musicVolume:.4,difficulty:"normal",showFps:!1,screenShake:!0,reducedMotion:!1,colorblind:!1,musicEnabled:!0,damageNumbers:!0,locale:"en",stage:"forest",muted:!1,touchButtonScale:1,criticalFlash:!0,vibration:!0},runs:0,flags:{howToSeen:!1,pwaPromptSeen:!1,tutorialDone:!1}},Me=null;function ps(){try{if(typeof window>"u"||!window.localStorage)return!1;let a="__vs_probe__";return window.localStorage.setItem(a,a),window.localStorage.removeItem(a),!0}catch{return!1}}var _e=null;function ne(){return _e===null&&(_e=ps()),_e}function Je(){try{let a=ne()?window.localStorage.getItem(le):Me;if(!a)return Xe(je);let e=JSON.parse(a);return It(Xe(je),e)}catch(a){return console.warn("[storage] Failed to load save, resetting.",a),Xe(je)}}function x(a){let e;try{e=JSON.stringify(a)}catch(t){return console.warn("[storage] Failed to serialise save.",t),!1}if(ne())try{return window.localStorage.setItem(le,e),!0}catch(t){return Pt||(console.warn("[storage] localStorage write failed, switching to memory.",t),Pt=!0),_e=!1,Me=e,!1}return Me=e,!0}var Pt=!1;function Dt(){ne()?window.localStorage.removeItem(le):Me=null}function Qe(a,e){let s=(Array.isArray(a.highScores)?a.highScores:[]).concat([e]);s.sort((o,r)=>r.timeSurvived!==o.timeSurvived?r.timeSurvived-o.timeSurvived:(r.kills||0)-(o.kills||0));let i=s.slice(0,v.HIGHSCORE_SLOTS);a.highScores=i;let n=i.indexOf(e)+1;if(e&&typeof e=="object"){let o=e.stage||"forest";a.stageHighScores??={};let l=(Array.isArray(a.stageHighScores[o])?a.stageHighScores[o]:[]).concat([e]);l.sort((h,c)=>c.timeSurvived!==h.timeSurvived?c.timeSurvived-h.timeSurvived:(c.kills||0)-(h.kills||0)),a.stageHighScores[o]=l.slice(0,v.HIGHSCORE_SLOTS)}return e.timeSurvived>(a.highScore?.timeSurvived||0)&&(a.highScore.timeSurvived=e.timeSurvived),e.kills>(a.highScore?.kills||0)&&(a.highScore.kills=e.kills),e.level>(a.highScore?.level||0)&&(a.highScore.level=e.level),n}function Wt(a){let e=Number(a?.settings?.touchButtonScale);return Number.isFinite(e)?Math.min(1.4,Math.max(.8,e)):1}function Ct(a,e){a.totals??={kills:0,timePlayed:0,runs:0,bossKills:0},a.totals.kills+=e.kills||0,a.totals.timePlayed+=e.gameTime||0,a.totals.runs+=1,a.totals.bossKills+=e.bossKills||0}function Xe(a){return typeof structuredClone=="function"?structuredClone(a):JSON.parse(JSON.stringify(a))}function It(a,e){for(let t of Object.keys(e))Array.isArray(e[t])?a[t]=e[t]:e[t]&&typeof e[t]=="object"?a[t]=It(a[t]??{},e[t]):a[t]=e[t];return a}function ae(){try{let a=ne()?window.localStorage.getItem(We):Lt;if(!a)return[];let e=JSON.parse(a);return Array.isArray(e)?e:[]}catch(a){return console.warn("[storage] Failed to load speedrun scores.",a),[]}}var Lt=null;function fs(a){try{let e=JSON.stringify(a);ne()?window.localStorage.setItem(We,e):Lt=e}catch(e){console.warn("[storage] Failed to write speedrun scores.",e)}}function Ze(a){let e=ae().concat([a]);e.sort((i,n)=>(i.timeMs||1/0)-(n.timeMs||1/0));let t=e.slice(0,v.SPEEDRUN_MAX_SLOTS);return fs(t),t.indexOf(a)+1}var O=class{constructor(e=1){this.state=e>>>0||1}nextInt(){return this.state=Math.imul(this.state,1664525)+1013904223>>>0,this.state}nextFloat(){return this.nextInt()/4294967296}pick(e){return e.length?e[this.nextInt()%e.length]:null}};var Te=[{id:"move",title:"Step 1 / 5 \u2014 Move",body:"Use WASD or arrow keys to walk. On touch devices, drag the joystick on the lower-left.",thresholdSeconds:.4},{id:"autoAttack",title:"Step 2 / 5 \u2014 Auto-Attack",body:"You don't fire manually. Stand near an enemy and your starter weapon swings on its own.",thresholdSeconds:1.5},{id:"pickupExp",title:"Step 3 / 5 \u2014 Pick up XP",body:"Defeated enemies drop honeydew. Walk over a drop to gain experience.",thresholdOrbs:1},{id:"levelUp",title:"Step 4 / 5 \u2014 Level Up",body:"Filling the XP bar opens the upgrade menu. Pick one \u2014 it sticks for the whole run.",thresholdLevelUps:1},{id:"pause",title:"Step 5 / 5 \u2014 Pause",body:"Press P or Esc to pause. Esc closes most overlays too. Press it now to finish.",thresholdPauses:1}],oe=class{constructor(e={}){this.active=!!e.active,this.stepIndex=0,this._moveSeconds=0,this._autoAttackSeconds=0,this._orbsPicked=0,this._levelUps=0,this._pauses=0,this.completed=!1,this.skipped=!1}start(){this.active=!0,this.stepIndex=0,this.completed=!1,this.skipped=!1,this._resetCounters()}skip(){this.active&&(this.active=!1,this.skipped=!0)}finish(){this.active&&(this.active=!1,this.completed=!0)}_resetCounters(){this._moveSeconds=0,this._autoAttackSeconds=0,this._orbsPicked=0,this._levelUps=0,this._pauses=0}get currentStep(){return this.active&&Te[this.stepIndex]||null}currentPrompt(){let e=this.currentStep;return e?{id:e.id,title:e.title,body:e.body}:null}advance(){return this.active?(this.stepIndex++,this._resetCounters(),this.stepIndex>=Te.length?(this.finish(),null):Te[this.stepIndex].id):null}tick(e,t){if(!this.active)return;let s=this.currentStep;if(s)switch(s.id){case"move":{t&&(Math.abs(t.x)>.05||Math.abs(t.y)>.05)&&(this._moveSeconds+=e,this._moveSeconds>=s.thresholdSeconds&&this.advance());break}case"autoAttack":{this._autoAttackSeconds+=e,this._autoAttackSeconds>=s.thresholdSeconds&&this.advance();break}default:break}}notifyOrbPickup(){if(!this.active)return;let e=this.currentStep;e&&e.id==="pickupExp"&&(this._orbsPicked++,this._orbsPicked>=e.thresholdOrbs&&this.advance())}notifyLevelUp(){if(!this.active)return;let e=this.currentStep;e&&e.id==="levelUp"&&(this._levelUps++,this._levelUps>=e.thresholdLevelUps&&this.advance())}notifyPause(){if(!this.active)return;let e=this.currentStep;e&&e.id==="pause"&&(this._pauses++,this._pauses>=e.thresholdPauses&&this.advance())}static get TOTAL_STEPS(){return Te.length}};var Gt="vs_replay_last_v1";var $t=null,et=null;function ms(){try{if(typeof window>"u"||!window.localStorage)return!1;let a="__vs_replay_probe__";return window.localStorage.setItem(a,a),window.localStorage.removeItem(a),!0}catch{return!1}}function Ot(){return et===null&&(et=ms()),et}function vs(a){let e=[];if(!a||!a.length)return e;let t=a[0][0],s=a[0][1],i=1;for(let n=1;n<a.length;n++){let[o,r]=a[n];o===t&&r===s?i++:(e.push([t,s,i]),t=o,s=r,i=1)}return e.push([t,s,i]),e}function gs(a){let e=[];if(!Array.isArray(a))return e;for(let t of a){if(!Array.isArray(t)||t.length<3)continue;let[s,i,n]=t;for(let o=0;o<n;o++)e.push([s,i])}return e}function Rt(a){return Number.isFinite(a)?Math.round(a*100)/100:0}var ke=class{constructor({seed:e,stage:t,difficulty:s,dt:i}){this.seed=e>>>0,this.stage=t||"forest",this.difficulty=s||"normal",this.dt=i||1/60,this.frames=[],this.finalKills=0,this.finalTime=0,this.finalLevel=1,this._truncated=!1}record(e){return this.frames.length>=108e3?(this._truncated=!0,!1):(this.frames.push([Rt(e?.x||0),Rt(e?.y||0)]),!0)}get frameCount(){return this.frames.length}finalize({kills:e,time:t,level:s}){this.finalKills=e|0,this.finalTime=+t||0,this.finalLevel=s|0||1}serialize(){return{version:1,savedAt:Date.now(),seed:this.seed,stage:this.stage,difficulty:this.difficulty,dt:this.dt,frames:vs(this.frames),finalKills:this.finalKills,finalTime:this.finalTime,finalLevel:this.finalLevel,truncated:this._truncated}}};function Nt(a){try{let e=JSON.stringify(a);return Ot()?window.localStorage.setItem(Gt,e):$t=e,!0}catch(e){return console.warn("[replay] failed to persist replay",e),!1}}function Ht(){try{let a=Ot()?window.localStorage.getItem(Gt):$t;if(!a)return null;let e=JSON.parse(a);return!e||e.version!==1?null:e}catch(a){return console.warn("[replay] failed to load replay",a),null}}var Ae=class a{constructor(e,{speed:t=1}={}){if(!e)throw new Error("[replay] cannot construct player without blob");this.blob=e,this.frames=gs(e.frames),this.cursor=0,this.speed=a.clampSpeed(t),this.done=!1}static get SPEEDS(){return[1,2,4]}static clampSpeed(e){let t=Number(e)||1,s=a.SPEEDS,i=s[0],n=1/0;for(let o of s){let r=Math.abs(o-t);r<n&&(n=r,i=o)}return i}setSpeed(e){this.speed=a.clampSpeed(e)}get totalFrames(){return this.frames.length}get progress(){return this.frames.length?Math.min(1,this.cursor/this.frames.length):1}tick(){this.done||(this.cursor+=this.speed,this.cursor>=this.frames.length&&(this.cursor=this.frames.length,this.done=!0))}getMoveVector(){if(!this.frames.length)return{x:0,y:0};let e=Math.min(this.cursor,this.frames.length-1),t=this.frames[e]||[0,0];return{x:t[0]||0,y:t[1]||0}}};var tt=Object.freeze(["arrowup","arrowup","arrowdown","arrowdown","arrowleft","arrowright","arrowleft","arrowright","b","a"]);function ys(a){return typeof a!="string"||!a?"":a.toLowerCase()}var Pe=class{constructor(e=()=>{}){this._idx=0,this._fired=!1,this.onUnlock=e}push(e){let t=ys(e);if(!t)return!1;let s=tt[this._idx];if(t===s){if(this._idx++,this._idx>=tt.length){if(this._idx=0,!this._fired){this._fired=!0;try{this.onUnlock()}catch{}}return!0}return!1}return this._idx=t===tt[0]?1:0,!1}reset(){this._idx=0}hasFired(){return this._fired}};Y;function Ks(a){return L(ce[a.id]||"mite")}function Vt(a,e){let t=a*374761393+e*668265263|0;return t=t^t>>13|0,t=t*1274126177|0,t=t^t>>16,t>>>0}var st=class{constructor(){this.canvas=document.getElementById("gameCanvas"),this.ctx=this.canvas.getContext("2d"),this.state=b.MENU,this.lastTime=0,this.gameTime=0,this.kills=0,this.raf=0,this.enemies=[],this.projectiles=[],this.enemyProjectiles=[],this.expOrbs=[],this.particles=[],this.floatingTexts=[],this.mines=[],this.player=null,this.spatial=new te(v.SPATIAL_CELL_SIZE),this.camera=new Be,this.fpsMeter=new xe,this.effects=new Ee,this.pools={floatingText:new se(()=>new me("",0,0,"#fff"),kt,{maxSize:256,prealloc:32}),particle:new se(()=>new fe(0,0,"#fff"),At,{maxSize:512,prealloc:64})},this._hiddenPaused=!1,typeof document<"u"&&document.addEventListener("visibilitychange",()=>this._onVisibilityChange()),this.save=Je(),we(this.save.settings.locale||"en"),this.save.settings.colorblind&&document.body.classList.add("cb-mode"),this._applyFxOverlays(),this.audio=new ge(this.save.settings),this.input=new ye,this.haptics=new Ke(this.save.settings),this.keymap=mt(),this.input.setKeymap(this.keymap),this.ui=new be(this),this.achievements=new ie(this.save),this._bossesSpawned=new Set,this._spawnAccumulator=0,this._bossWarnedAt=new Set,this._lastAnnouncedWave=null,this.stageId=this.save?.settings?.stage||$e,this.stageWaves=Oe(this.stageId),this.stageBosses=Ne(this.stageId),this.currentWave=this.stageWaves[0]||q[0],this.speedrunMode=!1,this.speedrunRng=null,this.speedrunStart=0,this.speedrunSplits=[],this._nextSplitIdx=0,this.dailyMode=!1,this.dailyChallenge=null,this.run=this.achievements.run,this.players=[],this.player=null,this.playerCount=1,this._levelUpQueue=[],this._bindInput(),this._bindDomButtons(),this._bindLeaderboardImport(),this._bindGlobalHotkeys(),this._bindKonamiCode(),this.ui.updateStageChip(this.stageId),this.tutorial=new oe,this.replayRecorder=null,this.replayPlayer=null,this.replayActive=!1,this._lastMoveVec={x:0,y:0},this._tutorialBanner=null,this.save?.flags?.howToSeen?this.save?.flags?.tutorialDone||Promise.resolve().then(()=>this._offerTutorial()):Promise.resolve().then(()=>{this.ui.showHowToPlay(()=>{this.save.flags=this.save.flags||{},this.save.flags.howToSeen=!0,x(this.save),this.save.flags.tutorialDone||this._offerTutorial()})}),this.save.settings.muted&&this.audio.setMuted(!0),this._applyTouchScale(),this._wirePwaPrompt(),window.addEventListener("resize",()=>this._resize()),this._resize()}_bindGlobalHotkeys(){typeof window>"u"||window.addEventListener("keydown",e=>{let t=e.target&&e.target.tagName||"";(t==="INPUT"||t==="TEXTAREA")&&e.stopPropagation()},!0)}_bindKonamiCode(){typeof window>"u"||(this._konami=new Pe(()=>this._onKonamiUnlocked()),window.addEventListener("keydown",e=>{if(this.state!==b.MENU)return;let t=e.target&&e.target.tagName||"";t==="INPUT"||t==="TEXTAREA"||this._konami.push(e.key)}))}_onKonamiUnlocked(){this.run&&(this.run.konamiCode=!0);try{this.achievements.check(this)}catch{}this._flushAchievementToasts?.(),this._announce("Cheat code unlocked. Retro Blaster available.")}toggleMute(){let e=!this.save.settings.muted;this.save.settings.muted=e,x(this.save),this.audio.setMuted(e),this._announce(e?"Audio muted":"Audio unmuted")}toggleHelp(){let e=this.ui.els.helpScreen;e&&e.style.display==="flex"?this.ui.hideHelp():this.ui.showHelp()}_bindLeaderboardImport(){typeof window>"u"||window.addEventListener("vs-leaderboard-import",e=>{let t=e.detail||{};try{if(Array.isArray(t.normal)){let s=new Set((this.save.highScores||[]).map(i=>`${i.date}|${i.timeSurvived}`));for(let i of t.normal){let n=`${i.date}|${i.timeSurvived}`;s.has(n)||(Qe(this.save,i),s.add(n))}x(this.save)}if(Array.isArray(t.speedrun)){let s=ae(),i=new Set(s.map(n=>`${n.date}|${n.timeMs}`));for(let n of t.speedrun){let o=`${n.date}|${n.timeMs}`;i.has(o)||(Ze(n),i.add(o))}}this.ui.showLeaderboard?.(this.save.highScores||[],ae(),()=>{})}catch(s){console.warn("[main] leaderboard import failed",s)}})}_bindInput(){this.input.attach(window),this.input.onTogglePause=()=>this.togglePause(),this.input.onActionHelp=()=>this.toggleHelp(),this.input.onActionMute=()=>this.toggleMute();let e=document.getElementById("joystickBase"),t=document.getElementById("joystickKnob");e&&t&&this.input.attachJoystick(e,t);let s=document.getElementById("specialSkillBtn");s&&(this.input.attachSpecialButton(s),this.input.onTouchSpecial=()=>this.togglePause()),this.input.onGamepadConfirm=()=>{this._dispatchKey("Enter")},this.input.onGamepadCancel=()=>{this._dispatchKey("Escape")},this.input.onGamepadCycleNext=()=>this._dispatchKey("Tab"),this.input.onGamepadCyclePrev=()=>this._dispatchKey("Tab",{shiftKey:!0})}_dispatchKey(e,t={}){if(typeof window>"u"||typeof KeyboardEvent>"u")return;let s=new KeyboardEvent("keydown",{key:e,bubbles:!0,...t});(document.activeElement||document.body).dispatchEvent(s)}_applyTouchScale(){if(typeof document>"u"||!document.documentElement)return;let e=Wt(this.save),t=140,s=58,i=96,n=document.documentElement.style;n.setProperty("--touch-button-size",`${Math.round(t*e)}px`),n.setProperty("--touch-knob-size",`${Math.round(s*e)}px`),n.setProperty("--touch-special-size",`${Math.round(i*e)}px`)}_wirePwaPrompt(){if(typeof window>"u"||this.save?.flags?.pwaPromptSeen)return;let e=null,t=document.getElementById("pwaInstallPrompt"),s=document.getElementById("pwaInstallBtn"),i=document.getElementById("pwaInstallDismiss");if(!t||!s||!i)return;let n=()=>{this.save.flags=this.save.flags||{},this.save.flags.pwaPromptSeen=!0,x(this.save),t.style.display="none"};window.addEventListener("beforeinstallprompt",o=>{o.preventDefault?.(),e=o,t.style.display="flex"},{once:!0}),s.addEventListener("click",async()=>{if(e){e.prompt?.();try{await e.userChoice}catch{}}n()}),i.addEventListener("click",n)}_bindDomButtons(){let e=s=>document.getElementById(s);e("btnStart")?.addEventListener("click",()=>{this.audio.unlock(),this.speedrunMode=!1,this.dailyMode=!1,this.start()});let t=()=>{e("btn1P")?.classList.toggle("active",this.playerCount===1),e("btn2P")?.classList.toggle("active",this.playerCount===2)};e("btn1P")?.addEventListener("click",()=>{this.playerCount=1,t(),this.audio.unlock()}),e("btn2P")?.addEventListener("click",()=>{this.playerCount=2,t(),this.audio.unlock()}),t(),e("btnSpeedrun")?.addEventListener("click",()=>{this.audio.unlock(),this.startSpeedrun()}),e("btnStage")?.addEventListener("click",()=>this.openStagePicker()),e("btnDaily")?.addEventListener("click",()=>{this.audio.unlock(),this.startDaily()}),e("btnLeaderboard")?.addEventListener("click",()=>this.openLeaderboard()),e("btnSettings")?.addEventListener("click",()=>this.openSettings()),e("btnAchievements")?.addEventListener("click",()=>this.openAchievements()),e("btnViewStreak")?.addEventListener("click",()=>this.openStreak()),e("btnHowTo")?.addEventListener("click",()=>this.openHowToPlay()),e("btnReplay")?.addEventListener("click",()=>this.openReplay()),e("btnTutorial")?.addEventListener("click",()=>this.startTutorialRun()),e("btnRetry")?.addEventListener("click",()=>{this.ui.hideGameOver(),this.dailyMode?this.startDaily():this.speedrunMode?this.startSpeedrun():this.start()}),e("btnMenu")?.addEventListener("click",()=>{this.ui.hideGameOver(),this.ui.showStart(),this.state=b.MENU,this.speedrunMode=!1}),e("btnResume")?.addEventListener("click",()=>this.togglePause()),e("btnQuit")?.addEventListener("click",()=>{this.state=b.MENU,this.ui.hidePause(),this.ui.showStart(),cancelAnimationFrame(this.raf),this.audio.stopMusic()})}_resize(){let e=document.getElementById("gameContainer");if(!e)return;let t=Math.min(window.innerWidth-16,v.CANVAS_WIDTH),s=Math.min(window.innerHeight-16,v.CANVAS_HEIGHT),i=Math.min(t/v.CANVAS_WIDTH,s/v.CANVAS_HEIGHT);e.style.width=`${v.CANVAS_WIDTH*i}px`,e.style.height=`${v.CANVAS_HEIGHT*i}px`}start(){this.state=b.PLAYING,this.gameTime=0,this.kills=0,this.enemies=[],this.projectiles=[],this.enemyProjectiles=[],this.expOrbs=[],this.particles=[],this.floatingTexts=[],this.mines=[],this._bossesSpawned.clear(),this._bossWarnedAt.clear(),this._spawnAccumulator=0,this._lastAnnouncedWave=null,this._nextSplitIdx=0,this._pauseStartedAt=0;let e=this.dailyMode&&this.dailyChallenge?this.dailyChallenge.stage:null;this.stageId=e||this.save?.settings?.stage||$e,this.stageWaves=Oe(this.stageId),this.stageBosses=this._applyDailyBossOffset(Ne(this.stageId)),this.currentWave=this.stageWaves[0],this.stageMods=wt(this.stageId),this._coldTickAccum=0,this.achievements.resetRun(),this.run=this.achievements.run,this.run.passivesPicked=0,this.run.maxedWeaponCount=0,this.run.evolvedBefore={},this.run.realSecondsToVoidLord=1/0,this.run.noHitBoss=!1,this.run.tookAnyDamage=!1,this.run.bossFightNoHit=new Set,this._runStartWallClock=performance.now(),this.speedrunSplits=[],this.input.coopMode=this.playerCount>1;let t=(v.ARENA_WIDTH??v.CANVAS_WIDTH)/2,s=(v.ARENA_HEIGHT??v.CANVAS_HEIGHT)/2;this.players=[new R(t,s,{playerIndex:0,spriteId:"beetle_p1"})],this.playerCount>1&&this.players.push(new R(t+70,s,{playerIndex:1,spriteId:"beetle_p2"})),this.player=this.players[0];for(let i of this.players)i.weapons.push(new Y(he.WHIP));if(this._updateCamera(),this.ui.hideStart(),this.ui.hideGameOver(),this.ui.hideLevelUp(),this.ui.hidePause(),this.save.runs=(this.save.runs||0)+1,x(this.save),!this.replayActive&&this.players.length<2){let i=this.speedrunRng?.state||Date.now()&4294967295||1;this.replayRecorder=new ke({seed:i,stage:this.stageId,difficulty:this.save.settings.difficulty||"normal",dt:1/60})}else this.replayRecorder=null;this.audio.unlock(),this.audio.startMusic(),this.lastTime=performance.now(),this._scheduleFrame()}startSpeedrun(){this.playerCount=1,this.speedrunMode=!0,this.dailyMode=!1,this.speedrunRng=new O(v.SPEEDRUN_SEED),this.speedrunStart=performance.now(),this.start(),this._announce("Speedrun started \u2014 deterministic seed.")}startDaily(){this.playerCount=1,this.dailyMode=!0,this.speedrunMode=!1,this.dailyChallenge=Bt(),this.speedrunRng=new O(this.dailyChallenge.seed),this.speedrunStart=performance.now(),this.start(),this._announce(`Daily Challenge ${this.dailyChallenge.date} \u2014 ${this.stageId}.`)}_applyDailyBossOffset(e){if(!this.dailyMode||!this.dailyChallenge?.bossOffset)return e;let t=this.dailyChallenge.bossOffset;return e.map(s=>({...s,spawnAt:Math.max(30,s.spawnAt+t)}))}openStagePicker(){this.ui.showStagePicker(this.stageId,e=>{this.stageId=e,this.save.settings.stage=e,x(this.save),this.ui.updateStageChip(e)})}openStreak(){this.ui.showStreak()}openHowToPlay(){this.ui.showHowToPlay(()=>{this.save.flags=this.save.flags||{},this.save.flags.howToSeen=!0,x(this.save)})}_offerTutorial(){if(typeof document>"u"||this.save?.flags?.tutorialDone)return;let e=document.getElementById("tutorialOffer");e||(e=document.createElement("div"),e.id="tutorialOffer",e.className="tutorial-offer",e.setAttribute("role","dialog"),e.setAttribute("aria-live","polite"),e.style.display="none",document.getElementById("gameContainer")?.appendChild(e));let t=()=>{e.style.display="none",this.save.flags=this.save.flags||{},this.save.flags.tutorialDone=!0,x(this.save)},s=()=>{e.style.display="none",this.startTutorialRun()};e.innerHTML=`
+            <div class="overlay-card tutorial-offer-card">
+                <h2>${u("tutorialOffer")}</h2>
+                <div class="btn-row">
+                    <button id="tutorialOfferYes" class="btn primary">${u("tryTutorial")}</button>
+                    <button id="tutorialOfferNo" class="btn ghost">${u("skipTutorial")}</button>
+                </div>
+            </div>`,e.style.display="flex",e.querySelector("#tutorialOfferYes")?.addEventListener("click",s),e.querySelector("#tutorialOfferNo")?.addEventListener("click",t)}startTutorialRun(){if(this.playerCount=1,this.tutorial=new oe,this.tutorial.start(),this.audio.unlock(),this.speedrunMode=!1,this.dailyMode=!1,this.start(),this._renderTutorialBanner(),typeof window<"u"){let e=t=>{this.tutorial.active&&t.key==="Escape"&&(t.preventDefault(),this.tutorial.skip(),this._renderTutorialBanner(),this.save.flags=this.save.flags||{},this.save.flags.tutorialDone=!0,x(this.save),window.removeEventListener("keydown",e,!0))};window.addEventListener("keydown",e,!0),this._tutorialKeyHandler=e}}_renderTutorialBanner(){if(typeof document>"u")return;let e=this._tutorialBanner;e||(e=document.createElement("div"),e.id="tutorialBanner",e.className="tutorial-banner",e.setAttribute("aria-live","polite"),document.getElementById("gameContainer")?.appendChild(e),this._tutorialBanner=e);let t=this.tutorial.currentPrompt();if(!t){e.style.display="none",this.tutorial.completed&&(this.save.flags=this.save.flags||{},this.save.flags.tutorialDone=!0,x(this.save),this._announce(u("tutorialDone")));return}e.innerHTML=`
+            <strong>${t.title}</strong>
+            <span class="tutorial-body">${t.body}</span>
+            <span class="tutorial-skip-hint">${u("tutorialSkipHint")}</span>`,e.style.display="block"}openReplay(){let e=Ht();this.ui.showReplayMenu(e,t=>{e&&this._beginReplay(e,t)})}_beginReplay(e,t){this.replayPlayer=new Ae(e,{speed:t}),this.replayActive=!0,e.stage&&(this.save.settings.stage=e.stage),e.difficulty&&(this.save.settings.difficulty=e.difficulty),this.speedrunMode=!1,this.dailyMode=!1,this.speedrunRng=new O(e.seed),this.start(),this.speedrunRng=new O(e.seed),this._announce(u("replayPlaying"))}_endReplay(){this.replayActive=!1,this.replayPlayer=null,this.state=b.MENU,cancelAnimationFrame(this.raf),this.audio.stopMusic(),this.ui.hideGameOver(),this.ui.showStart()}togglePause(){if(this.state===b.PLAYING)this.state=b.PAUSED,this.ui.showPause(),this.audio.stopMusic(),this._pauseStartedAt=performance.now(),this.tutorial?.active&&(this.tutorial.notifyPause(),this._renderTutorialBanner());else if(this.state===b.PAUSED){if(this.state=b.PLAYING,this.ui.hidePause(),this.audio.startMusic(),this.lastTime=performance.now(),this._pauseStartedAt){let e=performance.now()-this._pauseStartedAt;e>0&&Number.isFinite(e)&&(this.speedrunStart&&(this.speedrunStart+=e),this._runStartWallClock&&(this._runStartWallClock+=e)),this._pauseStartedAt=0}this._scheduleFrame()}}gameOver(){if(this.state=b.GAMEOVER,cancelAnimationFrame(this.raf),this.audio.stopMusic(),this.audio.death(),this.haptics?.gameOver(),this.replayRecorder){try{this.replayRecorder.finalize({kills:this.kills,time:this.gameTime,level:this.player?.level||1}),Nt(this.replayRecorder.serialize())}catch(i){console.warn("[main] failed to persist replay",i)}this.replayRecorder=null}this.save.totals??={kills:0,timePlayed:0,runs:0,bossKills:0},this.save.totals.seenBuilds??=[];let e=this.player.weapons.map(i=>i.id).sort().join("+");if(e&&!this.save.totals.seenBuilds.includes(e)){this.save.totals.seenBuilds.push(e);let i=v.SEEN_BUILDS_CAP||1e3;this.save.totals.seenBuilds.length>i&&this.save.totals.seenBuilds.splice(0,this.save.totals.seenBuilds.length-i),this.save.totals.uniqueBuilds=this.save.totals.seenBuilds.length}this.achievements.check(this),this._flushAchievementToasts();let t=this.player.weapons.map(i=>i.id),s={kills:this.kills,timeSurvived:this.gameTime,level:this.player.level,date:Date.now(),weapons:t,stage:this.stageId,noHit:!this.run.tookAnyDamage};if(this.dailyMode&&this.dailyChallenge?_t({...s,date:this.dailyChallenge.date,seed:this.dailyChallenge.seed,won:!!this.run.bossesDefeated?.void_lord}):Qe(this.save,s),Ct(this.save,{kills:this.kills,gameTime:this.gameTime,bossKills:Object.keys(this.run.bossesDefeated).length}),x(this.save),this.speedrunMode){let i={timeMs:performance.now()-this.speedrunStart,splits:this.speedrunSplits,level:this.player.level,kills:this.kills,date:Date.now(),weapons:t,noHit:s.noHit},n=Ze(i);this._speedrunRank=n,this._speedrunEntry=i}this.ui.showGameOver(this)}openLeaderboard(){this.ui.showLeaderboard(this.save.highScores||[],ae(),()=>{})}_scheduleFrame(){this.raf=requestAnimationFrame(e=>this._frame(e))}_onVisibilityChange(){typeof document>"u"||(document.hidden?this.state===b.PLAYING&&(this._hiddenPaused=!0,this.state=b.PAUSED,this.ui.showPause(),this.audio.stopMusic(),this._pauseStartedAt=performance.now()):this._hiddenPaused&&this.state===b.PAUSED&&(this._hiddenPaused=!1,this.lastTime=performance.now()))}_frame(e){if(this.state!==b.PLAYING&&this.state!==b.LEVEL_UP)return;let t=Math.min((e-this.lastTime)/1e3,v.DT_CLAMP);this.lastTime=e,this.input.pollGamepad?.(),this.state===b.PLAYING&&this.update(t),this.effects.update(t,{w:this.canvas?.width||v.CANVAS_WIDTH,h:this.canvas?.height||v.CANVAS_HEIGHT}),this.render(t),this.fpsMeter.tick(t),this.ui.setFps(this.fpsMeter.fps,this.save.settings.showFps),this._scheduleFrame()}update(e){this.gameTime+=e;let{hpMult:t,dmgMult:s,diff:i}=this._computeDifficultyMults();if(this.enemyDmgMult=s,this.currentWave=this._selectWave(),this.replayActive&&this.replayPlayer){let o=this.replayPlayer.getMoveVector();if(this.input.getMoveVector=()=>o,this.replayPlayer.tick(),this.replayPlayer.done){this._endReplay();return}}let n=this.input.getMoveVector();if(this._lastMoveVec={x:n.x,y:n.y},this.replayRecorder&&!this.replayActive&&this.replayRecorder.record(this._lastMoveVec),this.tutorial?.active&&(this.tutorial.tick(e,this._lastMoveVec),this._renderTutorialBanner()),this._updatePlayers(e),this.state===b.PLAYING){if(this._applyColdTick(e),this.run&&this.kills===0&&(this.run.pacifistTimer||0)<61&&(this.run.pacifistTimer=(this.run.pacifistTimer||0)+e),this.spatial.insertAll(this.enemies),this._updateEnemies(e,t,s),this._updateProjectiles(e),this._updateEnemyProjectiles(e),this._updateMines(e),this._updateExpOrbs(e),this._maybeTriggerLevelUp(),this._updateParticlesAndText(e),this._spawnLogic(e,t,s,i.spawnMult),this.speedrunMode){let o=v.SPEEDRUN_SPLITS;for(;this._nextSplitIdx<o.length&&this.gameTime>=o[this._nextSplitIdx];){let r=o[this._nextSplitIdx];this.speedrunSplits.push({mark:r,realMs:performance.now()-this.speedrunStart}),this._nextSplitIdx++}}this.achievements.check(this),this._flushAchievementToasts(),this.ui.updateHud(this),this.camera.update(e,this.save.settings.screenShake),this._updateCamera()}}isCoop(){return this.players.length>1}getNearestPlayer(e,t){let s=null,i=1/0;for(let n of this.players){if(!n||n.dead)continue;let o=Math.hypot(n.x-e,n.y-t);o<i&&(i=o,s=n)}return s}_updatePlayers(e){let t=this.isCoop();for(let s of this.players){if(s.dead){if(t&&s.respawnTimer>0&&(s.respawnTimer-=e,s.respawnTimer<=0)){let i=this.players.find(n=>n!==s&&!n.dead);i?this._respawnPlayer(s,i):s.respawnTimer=.5}continue}if(s.update(e,this),s.dead&&t&&s.respawnTimer<=0){s.respawnTimer=15;let i=s.playerIndex===1?"P2":"P1";this.createFloatingText(`${i} down! Revive in 15s`,s.x,s.y-40,"#ff8866"),this._announce(`${i} is down! They revive in 15 seconds.`)}}t&&this._applyLeash(e),this.players.length>0&&this.players.every(s=>s.dead)&&(t&&this.players.some(i=>i.respawnTimer>0)||this.gameOver())}_respawnPlayer(e,t){e.dead=!1,e.hp=e.maxHp,e.x=t.x,e.y=t.y,e.invincible=!0,e.invincibleTimer=2,e.respawnTimer=0,this.createFloatingText("Revived!",e.x,e.y-40,"#88ffcc"),this.audio?.levelUp?.()}_applyLeash(e){let[t,s]=this.players;if(!t||!s||t.dead||s.dead)return;let i=600,n=s.x-t.x,o=s.y-t.y,r=Math.hypot(n,o);if(r>i){let l=Math.min(r-i,420*e);s.x-=n/r*l,s.y-=o/r*l}}_updateCamera(){let e=this.players.filter(d=>!d.dead),t=e.length>0?e:this.players;if(!t.length)return;let s=0,i=0;for(let d of t)s+=d.x,i+=d.y;s/=t.length,i/=t.length;let n=v.CANVAS_WIDTH,o=v.CANVAS_HEIGHT,r=v.ARENA_WIDTH??n,l=v.ARENA_HEIGHT??o,h=s-n/2,c=i-o/2;h<0&&(h=0),c<0&&(c=0),h>r-n&&(h=r-n),c>l-o&&(c=l-o),this.camera.worldX=h,this.camera.worldY=c}_computeDifficultyMults(){let e=De[(this.save.settings.difficulty||"normal").toUpperCase()]||De.NORMAL,t=1+Math.floor(this.gameTime/60)*.3,s=this.stageMods?.enemyHpMult??1;return{diff:e,hpMult:e.hpMult*t*s,dmgMult:e.dmgMult*t}}_applyColdTick(e){let t=this.stageMods;if(!t||!t.coldTickInterval)return;let s=this.players.filter(i=>!i.dead);if(s.length)for(this._coldTickAccum+=e;this._coldTickAccum>=t.coldTickInterval;){this._coldTickAccum-=t.coldTickInterval;let i=t.coldTickDamage||1;for(let n of s){let o=Math.max(1,n.hp-i);o<n.hp&&(n.hp=o,this.createFloatingText(`-${i}\u2744`,n.x,n.y-36,"#88ccff"))}}}_updateEnemies(e,t,s){for(let i=this.enemies.length-1;i>=0;i--){let n=this.enemies[i];n.update(e,this);let o=n.x-this.player.x,r=n.y-this.player.y,l=Math.hypot(o,r);if(l<n.size+this.player.size&&!this.player.invincible&&(this.player.takeDamage(n.damage,this),this.createFloatingText(Math.round(n.damage),this.player.x,this.player.y-30,"#ff3333")),n.hp<=0){this._onEnemyKilled(n,t,s),this.enemies.splice(i,1);continue}l>v.DESPAWN_RADIUS&&!n.boss&&this.enemies.splice(i,1)}}_onEnemyKilled(e,t,s){if(this.kills++,this.createParticles(e.x,e.y,e.color,e.boss?40:8),this.effects.hit(e.x,e.y,this._rgbFromHex(e.color)),this.dropExp(e.x,e.y,e.expValue),e.boss&&(this.shake(.5),this.audio.explosion(),this.achievements.onBossDefeated(e.id),this._announce(`${e.id.replace("_"," ")} defeated`),this.player.unhitTimer>=8&&(this.run.noHitBoss=!0),e.id==="void_lord"&&(this.run.realSecondsToVoidLord=(performance.now()-this._runStartWallClock)/1e3),this._runStartWallClock&&(performance.now()-this._runStartWallClock)/1e3<300&&(this.run.fastBossClear=!0)),e.splitter&&e.type.splitInto){let i=ve(e.type.splitInto);if(i){let n=e.type.splitCount||2;for(let o=0;o<n;o++){let r=o/n*Math.PI*2;this.enemies.push(new G(e.x+Math.cos(r)*14,e.y+Math.sin(r)*14,i,t,s))}}}this.audio.hit()}_updateProjectiles(e){for(let t=this.projectiles.length-1;t>=0;t--){let s=this.projectiles[t];if(s.update(e,this),s.shouldRemove){this.projectiles.splice(t,1);continue}let i=s.size+32;for(let n of this.spatial.queryRect(s.x,s.y,i)){if(s.hitEnemies.has(n))continue;if(Math.hypot(s.x-n.x,s.y-n.y)<n.size+s.size){let r=s.damage,l=this.player.getCritChance(),h=l>0&&Math.random()<l;if(h&&(r*=2),n.takeDamage(r),s.hitEnemies.add(n),n.hp>0&&this.createFloatingText(Math.round(r),n.x,n.y-20,h?"#ffee44":"#fff",{crit:h}),h&&this.save.settings.criticalFlash!==!1&&!this.save.settings.reducedMotion&&this.effects.criticalHit(),this.effects.hit(n.x,n.y),!s.piercing){s._onEnd(this),s.shouldRemove=!0;break}}}}}_updateEnemyProjectiles(e){for(let t=this.enemyProjectiles.length-1;t>=0;t--){let s=this.enemyProjectiles[t];s.update(e,this),s.shouldRemove&&this.enemyProjectiles.splice(t,1)}}_updateMines(e){for(let t=this.mines.length-1;t>=0;t--){let s=this.mines[t];s.update(e,this),s.shouldRemove&&this.mines.splice(t,1)}}_updateExpOrbs(e){let t=this.run?.orbsCollected||0;for(let s=this.expOrbs.length-1;s>=0;s--){let i=this.expOrbs[s];i.update(e,this),i.shouldRemove&&this.expOrbs.splice(s,1)}if(this.tutorial?.active){let s=this.run?.orbsCollected||0;for(let i=0;i<s-t;i++)this.tutorial.notifyOrbPickup();s!==t&&this._renderTutorialBanner()}}_maybeTriggerLevelUp(){if(this.state!==b.PLAYING||this._levelUpQueue.length===0)return;let{player:e}=this._levelUpQueue.shift();if(!(!e||e.dead)){this.state=b.LEVEL_UP,this.audio.levelUp(),this.effects.levelUp(e.x,e.y),this.haptics?.levelUp();let t=this.isCoop()?`P${e.playerIndex+1} `:"";this._announce(`${t}Level ${e.level}! Choose an upgrade.`),this.tutorial?.active&&(this.tutorial.notifyLevelUp(),this._renderTutorialBanner()),this.ui.showLevelUp(e,s=>this._applyUpgrade(s,e))}}_updateParticlesAndText(e){for(let t=this.particles.length-1;t>=0;t--){let s=this.particles[t];s.update(e),s.life<=0&&(this.pools.particle.release(s),this.particles.splice(t,1))}for(let t=this.floatingTexts.length-1;t>=0;t--){let s=this.floatingTexts[t];s.update(e),s.life<=0&&(this.pools.floatingText.release(s),this.floatingTexts.splice(t,1))}}_announce(e){if(typeof document>"u")return;let t=document.getElementById("a11yLiveRegion");t&&(t.textContent="",Promise.resolve().then(()=>{t.textContent=e}))}_applyUpgrade(e,t){let s=t||this.player;if(e)if(e.type==="weapon"){let i=s.weapons.find(n=>n.id===e.data.id);if(i){let n=i.level;i.levelUp(),i.level>=v.WEAPON_MAX_LEVEL&&(this.achievements.onWeaponMaxed(),n<v.WEAPON_MAX_LEVEL&&(this.run.maxedWeaponCount=(this.run.maxedWeaponCount||0)+1)),i.def.evolveLevel&&n<i.def.evolveLevel&&i.level>=i.def.evolveLevel&&this.gameTime<v.EARLY_EVOLVE_THRESHOLD&&(this.run.evolvedBefore=this.run.evolvedBefore||{},this.run.evolvedBefore.sevenMin=!0)}else s.weapons.push(new Y(e.data))}else s.passives[e.data.id]??={def:e.data,count:0},s.passives[e.data.id].count<v.PASSIVE_MAX_STACK&&(s.passives[e.data.id].count++,s.recalculateStats(),this.run.passivesPicked=(this.run.passivesPicked||0)+1);this.ui.hideLevelUp(),this.state=b.PLAYING,this.lastTime=performance.now()}_selectWave(){let e=this.gameTime,t=this.stageWaves&&this.stageWaves.length?this.stageWaves:q,s=t[t.length-1];for(let i of t)if(e>=i.from&&e<i.to){s=i;break}return this._lastAnnouncedWave!==s.label&&(this._lastAnnouncedWave=s.label),s}_spawnLogic(e,t,s,i){let n=this.currentWave,o=n.spawnMult||1,r=Math.min(v.MAX_ENEMIES,20+Math.floor(this.gameTime/10)),l=Math.max(.2,1.2-this.gameTime/200)/(i*o);for(this._spawnAccumulator+=e;this._spawnAccumulator>=l&&this.enemies.length<r;)this._spawnAccumulator-=l,this._spawnOne(n.pool,t,s);let h=this.stageBosses&&this.stageBosses.length?this.stageBosses:Object.values(V);for(let c of h){let d=c.spawnAt-5;this.gameTime>=d&&!this._bossWarnedAt.has(c.id)&&(this._bossWarnedAt.add(c.id),this.audio.bossWarn()),this.gameTime>=c.spawnAt&&!this._bossesSpawned.has(c.id)&&(this._bossesSpawned.add(c.id),this._spawnBoss(c,t,s))}}_spawnOne(e,t,s){let i=(this.speedrunMode||this.dailyMode)&&this.speedrunRng?this.speedrunRng:null,n=i?()=>i.nextFloat():Math.random,o=St(e,this.stageId,n)||e[Math.floor(n()*e.length)],r=ve(o)||z.BAT,l=n()*Math.PI*2,h=v.SPAWN_RADIUS+n()*120,c=this.player.x+Math.cos(l)*h,d=this.player.y+Math.sin(l)*h;this.enemies.push(new G(c,d,r,t,s))}_spawnBoss(e,t,s){let i=Math.random()*Math.PI*2,n=v.SPAWN_RADIUS*.8,o=this.player.x+Math.cos(i)*n,r=this.player.y+Math.sin(i)*n;this.enemies.push(new G(o,r,e,t,s)),this.ui.showBossBanner(),this.audio.bossSpawn(),this.effects.bossSpawn(),this.shake(1.2),this.haptics?.bossSpawn(),this._announce(`Boss incoming: ${e.name||e.id}`)}_flushAchievementToasts(){let e=this.achievements.takeToasts();for(let t of e)if(this.ui.showAchievementToast(t),this.audio.achievement(),this.effects.achievement(),this._announce(`Achievement unlocked: ${t.name}. ${t.description}`),t.id==="survive_15min"){let s=this.canvas?.width||v.CANVAS_WIDTH,i=this.canvas?.height||v.CANVAS_HEIGHT;this.effects.celebrate(s,i)}}_rgbFromHex(e){if(!e||e[0]!=="#")return"255,255,255";let t=parseInt(e.slice(1),16);return`${t>>16&255},${t>>8&255},${t&255}`}dropExp(e,t,s){this.expOrbs.push(new pe(e,t,s))}createParticles(e,t,s,i){this.save.settings.reducedMotion&&(i=Math.min(i,2));for(let n=0;n<i;n++)this.particles.push(this.pools.particle.acquire(e,t,s))}createFloatingText(e,t,s,i,n){this.save.settings.reducedMotion||this.save.settings.damageNumbers!==!1&&this.floatingTexts.push(this.pools.floatingText.acquire(e,t,s,i,n||{}))}shake(e){let t=typeof window<"u"&&window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;this.save.settings.screenShake&&!t&&!this.save.settings.reducedMotion&&this.camera.shake(e)}onPlayerHurt(e){this.audio.damage(),this.shake(.25),this.haptics?.hurt()}onBossAbility(e){if(e.ability==="summon"){let t=ve("skeleton");for(let s=0;s<3;s++){let i=Math.random()*Math.PI*2,n=80;this.enemies.push(new G(e.x+Math.cos(i)*n,e.y+Math.sin(i)*n,t,2,1.5))}this.createParticles(e.x,e.y,"#aa33ff",20)}else if(e.ability==="charge"){let t=this.player.x-e.x,s=this.player.y-e.y,i=Math.hypot(t,s)||1;e.x+=t/i*120,e.y+=s/i*120,this.createParticles(e.x,e.y,"#ff3366",15)}}render(e){let t=this.ctx,s=He(this.stageId);t.fillStyle=s.fill,t.fillRect(0,0,v.CANVAS_WIDTH,v.CANVAS_HEIGHT),t.save(),t.translate(-this.camera.worldX+this.camera.x,-this.camera.worldY+this.camera.y),this._drawGrid(),this._drawDecor(t);for(let i of this.expOrbs)i.render(t);for(let i of this.mines)i.render(t);this._renderEnemies(t);for(let i of this.players)if(!i.dead){i.render(t);for(let n of i.weapons)n.renderExtras?.(t)}for(let i of this.projectiles)i.render(t);for(let i of this.enemyProjectiles)i.render(t);for(let i of this.particles)i.render(t);for(let i of this.floatingTexts)i.render(t);t.restore(),this.effects.render(t,v.CANVAS_WIDTH,v.CANVAS_HEIGHT)}_renderEnemies(e){for(let t of this.enemies){if(t.boss||t.flashTimer>0||t.shielded){t.render(e);continue}let s=Ks(t.type);if(s){let i=s.width,n=s.height;t.flip?(e.save(),e.translate(t.x,t.y),e.scale(-1,1),e.drawImage(s,-i/2,-n/2),e.restore()):e.drawImage(s,t.x-i/2,t.y-n/2);let o=Math.max(0,t.hp/t.maxHp);o<1&&(e.fillStyle="#222",e.fillRect(t.x-30/2,t.y-n/2-8,30,3),e.fillStyle=o>.5?"#44ff44":o>.25?"#ffaa33":"#ff4444",e.fillRect(t.x-30/2,t.y-n/2-8,30*o,3))}else t.render(e)}}_drawDecor(e){let s=this.camera.worldX,i=this.camera.worldY,n=v.CANVAS_WIDTH,o=v.CANVAS_HEIGHT,r=Math.floor(s/260),l=Math.floor((s+n)/260),h=Math.floor(i/260),c=Math.floor((i+o)/260),d=["leaf","twig","pebble"];for(let p=r;p<=l;p++)for(let f=h;f<=c;f++){let m=Vt(p,f)%3;for(let K=0;K<m;K++){let y=Vt(p*31+K*7,f*17+K*3),M=d[y%3],N=p*260+y%220,E=f*260+(y>>8)%220;A(e,M,N,E)}}}_applyFxOverlays(){let e=document.getElementById("gameContainer");e&&e.classList.toggle("fx-off",!!this.save?.settings?.reducedMotion)}_drawGrid(){let e=this.ctx,t=He(this.stageId),s=(t.gridAlpha??.04).toFixed(3),i=this._rgbFromHex(t.gridColor||"#ffffff");e.strokeStyle=`rgba(${i},${s})`,e.lineWidth=1;let n=v.GRID_SIZE,o=this.camera.worldX,r=this.camera.worldY,l=v.CANVAS_WIDTH,h=v.CANVAS_HEIGHT,c=Math.floor(o/n)*n,d=Math.floor(r/n)*n;for(let p=c;p<=o+l;p+=n)e.beginPath(),e.moveTo(p,r),e.lineTo(p,r+h),e.stroke();for(let p=d;p<=r+h;p+=n)e.beginPath(),e.moveTo(o,p),e.lineTo(o+l,p),e.stroke()}openAchievements(){this.ui.showAchievements(this.save.achievements||{},()=>{})}openSettings(){this.ui.showSettings(this.save.settings,(e,t)=>{this.save.settings[e]=t,x(this.save),(e==="masterVolume"||e==="sfxVolume"||e==="musicVolume")&&this.audio.applyVolumes(),e==="musicEnabled"&&this.audio.toggleMusic(t),e==="touchButtonScale"&&this._applyTouchScale(),e==="reducedMotion"&&this._applyFxOverlays()},()=>{},()=>{Dt(),this.save=Je(),this.achievements=new ie(this.save),this.run=this.achievements.run,this.audio.applyVolumes(),this.ui.hideSettings()},{vibrationSupported:this.haptics?.isSupported()??!1,onRemap:()=>this.openRemap()})}openRemap(){this.ui.showRemap(this.keymap,e=>{this.keymap=e,this.input.setKeymap(e),vt(e)},()=>{})}},ws=R.prototype.gainExp;R.prototype.gainExp=function(a){let e=ws.call(this,a);if(e.length&&window.__vsGame)for(let t=0;t<e.length;t++)window.__vsGame._levelUpQueue.push({player:this});return e};function Yt(){let a=new st;return window.__vsGame=a,typeof location<"u"&&(location.hostname==="localhost"||location.hostname==="127.0.0.1"||location.hostname==="")&&(window.__SURV_DEBUG__={advance(t=30){return!a.player||a.state!=="playing"?!1:(a.gameTime+=t,a._spawnAccumulator=0,!0)},grantLevel(t=1){if(!a.player)return!1;for(let s=0;s<t;s++)a.player.gainExp(a.player.expToNext+1);return!0},killPlayer(){return a.player?(a.player.hp=0,a.player.dead=!0,!0):!1},spawnBoss(t){let s=Object.values(V).find(i=>i.id===t);return s?(a._spawnBoss(s,1,1),a._bossesSpawned.add(s.id),!0):!1}}),a}window.__beetleBoot=Yt;})();
+
+        </script>
+        <script>
+            const game = window.__beetleBoot();
+            // Pause button (UI click) mirrors Esc.
+            document
+                .getElementById('btnPause')
+                ?.addEventListener('click', () => game.togglePause());
+        </script>
+
+        <!-- Optional offline support. SW registration is a no-op on file:// -->
+        <script>
+            if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker
+                        .register('./service-worker.js')
+                        .catch((err) => console.warn('[sw] registration failed', err));
+                });
+            }
+        </script>
+    </body>
+</html>
